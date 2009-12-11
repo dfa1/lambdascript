@@ -4,13 +4,12 @@
 /// `LambdaScript` is the namespace for the LambdaScript library.
 var LambdaScript = this.LambdaScript || {};
 
-/**
-* This function copies all the public functions in `LambdaScript` except itself
-* into the global namespace. If the optional argument $except$ is present,
-* functions named by its property names are not copied.
-* 
-* >> LambdaScript.install()
-*/
+//
+// This function copies all the public functions in `LambdaScript` except itself
+// into the global namespace. If the optional argument $except$ is present,
+// functions named by its property names are not copied.
+//
+//   >> LambdaScript.install()
 LambdaScript.install = function(except) {
     var source = LambdaScript, target = (function() {
         return this;
@@ -146,8 +145,31 @@ LambdaScript.expr = function(s) {
     }
 }
 
-//LambdaScript.compose = function(func1, func2) {
+// experimental
+
+//LambdaScript.around = function(func, beforeFunc, afterFunc) {
+//    return before(after(func, afterFunc), beforeFunc);
+//}
+//
+//LambdaScript.before = function(func, beforeFunc){
 //    return function() {
-//        return func1(func2.apply(null, arguments));
+//        beforeFunc.apply(this, arguments);
+//        return func.apply(this, arguments);
 //    };
+//}
+//
+//LambdaScript.after = function(func, afterFunc){
+//    return function() {
+//        var res = func.apply(this, arguments);
+//        afterFunc.apply(this, arguments);
+//        return res;
+//    };
+//}
+
+//LambdaScript.trace = function(func) {
+//  return around(func, printArguments, printResult);
+//}
+
+//LambdaScript.timeIt = function(func) {
+//  return around(func, startTimer, stopTimer);
 //}
