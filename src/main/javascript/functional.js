@@ -1,15 +1,36 @@
 // Functional Javascript
 // (C) 2009, Davide Angelocola <davide.angelocola@gmail.com>
-//
-// MIT license
 
-function each(array, f) {
+/// `LambdaScript` is the namespace for the LambdaScript library.
+var LambdaScript = this.LambdaScript || {};
+
+/**
+* This function copies all the public functions in `LambdaScript` except itself
+* into the global namespace. If the optional argument $except$ is present,
+* functions named by its property names are not copied.
+* 
+* >> LambdaScript.install()
+*/
+LambdaScript.install = function(except) {
+    var source = LambdaScript, target = (function() {
+        return this;
+    })(); // References the global object.
+
+    for (var name in source)
+        name == 'install'
+        || name.charAt(0) == '_'
+        || except && name in except
+        || !source.hasOwnProperty(name) // work around Prototype
+        || (target[name] = source[name]);
+}
+
+LambdaScript.each = function(array, f) {
     for (var i = 0; i < array.length; i++) {
         f(array[i]);
     }
 }
 
-function reduce(array, f, i) {
+LambdaScript.reduce = function(array, f, i) {
     each(array, function (element) {
         i = f(i, element);
     });
@@ -17,7 +38,7 @@ function reduce(array, f, i) {
     return i;
 }
 
-function map(array, f) {
+LambdaScript.map = function(array, f) {
     var result = [];
     
     each(array, function (element) {
@@ -27,7 +48,7 @@ function map(array, f) {
     return result;
 }
 
-function filter(array, f) {
+LambdaScript.filter = function(array, f) {
     var result = [];
 
     each(array, function(x) {
@@ -39,7 +60,8 @@ function filter(array, f) {
     return result;
 }
 
-function every(array, f) {
+// TODO: test me
+LambdaScript.every = function(array, f) {
     var result = true;
 
     each(array, function(x) {
@@ -51,7 +73,8 @@ function every(array, f) {
     return result;
 }
 
-function some(array, f) {
+// TODO: test me
+LambdaScript.some = function(array, f) {
     var result = false;
 
     each(array, function(x) {
@@ -63,21 +86,13 @@ function some(array, f) {
     return result;
 }
 
-function loopUntil(f) {
-    do {
-        if (!f()) {
-            break;
-        }
-    } while (true);
-}
-
-function compose(func1, func2) {
+LambdaScript.compose = function(func1, func2) {
     return function() {
         return func1(func2.apply(null, arguments));
     };
 }
 
-function range() {
+LambdaScript.range = function() {
     var begin = 1;
     var end = 1;
     var step = 1;
@@ -112,7 +127,7 @@ function range() {
 //
 // expr("a + b")     is function (a, b) { return a + b; }
 // expr("a * b + c") is function (a, b) { return a * b + c; }
-function expr(s) {
+LambdaScript.expr = function(s) {
     return function() {
         var a;
         var b;
