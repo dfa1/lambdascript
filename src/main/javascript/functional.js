@@ -60,7 +60,6 @@ LambdaScript.filter = function(array, f) {
     return result;
 }
 
-// TODO: test me
 LambdaScript.every = function(array, f) {
     var result = true;
 
@@ -73,7 +72,6 @@ LambdaScript.every = function(array, f) {
     return result;
 }
 
-// TODO: test me
 LambdaScript.some = function(array, f) {
     var result = false;
 
@@ -84,12 +82,6 @@ LambdaScript.some = function(array, f) {
     });
 
     return result;
-}
-
-LambdaScript.compose = function(func1, func2) {
-    return function() {
-        return func1(func2.apply(null, arguments));
-    };
 }
 
 LambdaScript.range = function() {
@@ -153,3 +145,9 @@ LambdaScript.expr = function(s) {
         return eval(s);
     }
 }
+
+//LambdaScript.compose = function(func1, func2) {
+//    return function() {
+//        return func1(func2.apply(null, arguments));
+//    };
+//}
