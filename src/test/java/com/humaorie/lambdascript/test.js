@@ -3,6 +3,9 @@ function Suite(name) {
     // TODO: customizable hooks
     function defaultEndTestHook(name, elapsed, result) {
         java.lang.System.out.println("'" + name + "' in " + elapsed + ' ms: ' + result);
+        if (result != 'Ok.') {
+            throw "'" + name + "' test failed";
+        }
     }
 
     function defaultEndSuiteHook(failures, tests, elapsed) {
