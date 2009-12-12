@@ -16,7 +16,7 @@ LambdaScript.install = function(except) {
     })(); // References the global object.
 
     for (var name in source) {
-        if (name !== 'install' && name.charAt(0) !== '_') {
+        if (name != 'install' && name.charAt(0) != '_') {
             target[name] = source[name];
         }
     }
