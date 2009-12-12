@@ -173,3 +173,54 @@ LambdaScript.expr = function(s) {
 //LambdaScript.timeIt = function(func) {
 //  return around(func, startTimer, stopTimer);
 //}
+
+// other experimental code
+// http://stackoverflow.com/questions/1266402/implementing-mathematical-sets-in-javascript
+//Array.prototype.contains = function(e) {
+//    return this.lastIndexOf(e, this.length) != -1;
+//}
+//
+//
+//Array.prototype.notContains = function(e) {
+//    return this.lastIndexOf(e, this.length) == -1;
+//}
+//
+//function union(a1, a2) {
+//    var res = [];
+//
+//    each(a1, function(e) {
+//        res.push(e);
+//    });
+//
+//    each(a2, function(e) {
+//        if (res.notContains(e)) {
+//            res.push(e);
+//        }
+//    });
+//
+//    return res;
+//}
+//
+//function intersection(a1, a2) {
+//    var res = [];
+//
+//    each(a1, function(e) {
+//        if (a2.contains(e)) {
+//            res.push(e);
+//        }
+//    });
+//
+//    return res;
+//}
+//
+//function product(a1, a2) {
+//    var res = [];
+//
+//    each(a1, function(e) {
+//        each(a2, function (f) {
+//            res.push(e + 'x' + f)
+//        })
+//    });
+//
+//    return res;
+//}
