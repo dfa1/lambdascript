@@ -76,7 +76,7 @@ function Description() {
     this.toString = function() {
         return this.description;
     }
-};
+}
 
 var Matcher = {
     is: function (expected) {
@@ -99,7 +99,7 @@ function NotMatcher(matcher) {
     this.matches = function(object) {
         return !matcher.matches(object);
     };
-};
+}
 
 function IsMatcher(expected) {
     this.expected = expected;
@@ -111,9 +111,20 @@ function IsMatcher(expected) {
     };
 
     this.describeTo = function(description) {
-        description.append("expected: {1} got: {2}", this.expected, this.actual);
+        var e = this.expected;
+        var a = this.actual;
+
+        if (typeof e == 'string') {
+            e = "'" + e + "'";
+        }
+
+        if (typeof a == 'string') {
+            a = "'" + a + "'";
+        }
+        
+        description.append("expected: {1} got: {2}", e, a);
     };
-};
+}
 
 function ArrayMatcher(expected) {
     this.expected = expected;
