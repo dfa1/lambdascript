@@ -7,6 +7,20 @@
     <version>1.0-SNAPSHOT</version>
     <name>lambdascript</name>
     <url>http://maven.apache.org</url>
+
+    <repositories>
+        <repository>
+            <id>jsdoctk1</id>
+            <url>http://jsdoctk-plugin.googlecode.com/svn/repo</url>
+        </repository>
+    </repositories>
+    <pluginRepositories>
+        <pluginRepository>
+            <id>jsdoctk2</id>
+            <url>http://jsdoctk-plugin.googlecode.com/svn/repo</url>
+        </pluginRepository>
+    </pluginRepositories>
+
     <build>
         <plugins>
             <plugin>
@@ -25,6 +39,20 @@
                 <version>2.2</version>
                 <configuration>
                     <encoding>${project.build.sourceEncoding}</encoding>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>nl.windgazer</groupId>
+                <artifactId>jsdoctk-plugin</artifactId>
+                <configuration>
+                    <template>jsdoc</template> <!-- Alternatives are not pre-installed for version 2.x-->
+                    <directory>${project.build.directory}/jsdoc</directory>
+                    <recurse>1</recurse>
+                    <ext>js</ext>
+                    <allfunctions>true</allfunctions>
+                    <Allfunctions>false</Allfunctions>
+                    <privateOption>false</privateOption>
+                    <srcDir>src/main/javascript</srcDir>
                 </configuration>
             </plugin>
         </plugins>
