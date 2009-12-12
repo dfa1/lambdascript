@@ -10,7 +10,7 @@ var LambdaScript = this.LambdaScript || {};
 // functions named by its property names are not copied.
 //
 //   >> LambdaScript.install()
-LambdaScript.install = function(except) {
+LambdaScript.install = function() {
     var source = LambdaScript, target = (function() {
         return this;
     })(); // References the global object.

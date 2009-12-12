@@ -45,7 +45,7 @@ suite.testReduceFact = function() {
 };
 
 suite.testMapSquare = function() {
-    Assert.that(map([1, 2, 3], expr("a*a")), Matcher.array([1, 4, 9]));
+    Assert.that(map([1, 2, 3], 'a*a'), Matcher.array([1, 4, 9]));
 };
 
 suite.testEvery = function() {
