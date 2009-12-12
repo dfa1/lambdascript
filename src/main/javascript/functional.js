@@ -1,15 +1,20 @@
 // LambdaScript: Yet Another Functional Javascript Library
 // (C) 2009, Davide Angelocola <davide.angelocola@gmail.com>
 
-/// `LambdaScript` is the namespace for the LambdaScript library.
+/**
+ * @namespace `LambdaScript` is the namespace for the LambdaScript library.
+ */
 var LambdaScript = this.LambdaScript || {};
 
-//
-// This function copies all the public functions in `LambdaScript` except itself
-// into the global namespace. If the optional argument $except$ is present,
-// functions named by its property names are not copied.
-//
-//   >> LambdaScript.install()
+/**
+ * @function
+ * 
+ * This function copies all the public functions in `LambdaScript` except itself
+ * into the global namespace.
+ * 
+ * @example
+ * LambdaScript.install()
+ */
 LambdaScript.install = function() {
     var source = LambdaScript, target = (function() {
         return this;
@@ -22,6 +27,21 @@ LambdaScript.install = function() {
     }
 };
 
+/**
+ * @function
+ *
+ * @example
+ * >>> range(5)
+ * [1, 2, 3, 4, 5]
+ *
+ * @example
+ * >>> range(5, 10)
+ * [5, 6, 7, 8, 9, 10]
+ *
+ * @example
+ * >>> range(5, 25, 5)
+ * [5, 10, 15, 20, 25]
+ */
 LambdaScript.range = function() {
     var begin = 1;
     var end = 1;
@@ -46,13 +66,16 @@ LambdaScript.range = function() {
 
     var result = [];
 
-    for (var i = begin; i <= end; i += step) {
+    for (var i = begin; i <= end; i += step(i)) {
         result.push(i);
     }
 
     return result;
 };
 
+/**
+ * @ignore 
+ */
 LambdaScript._toFunction = function(e) {
     if (typeof e === 'string') {
         return LambdaScript.expr(e);
@@ -63,6 +86,10 @@ LambdaScript._toFunction = function(e) {
     }
 };
 
+/**
+ * @function
+ *
+ */
 LambdaScript.each = function(array, e) {
     var f = LambdaScript._toFunction(e);
     
@@ -71,6 +98,10 @@ LambdaScript.each = function(array, e) {
     }
 };
 
+/**
+ * @function
+ *
+ */
 LambdaScript.reduce = function(array, e, i) {
     var f = LambdaScript._toFunction(e);
 
@@ -81,6 +112,38 @@ LambdaScript.reduce = function(array, e, i) {
     return i;
 };
 
+/**
+ * @function
+ *
+ * A synonym for 'reduce', #inject in Smalltalk.
+ */
+LambdaScript.inject = LambdaScript.reduce;
+
+/**
+ * @function
+ *
+ * A synonym for 'reduce', (fold) in lisp.
+ */
+LambdaScript.fold = LambdaScript.reduce;
+
+/**
+ * @function
+ * 
+ * It takes an array and an unary function then it returns a new array by applying
+ * the function to each of the elements of the original array (that is not touched).
+ *
+ * @example
+ * >>> map([2, 3, 4, 5], function(a) { return a*a; })
+ * [4, 9, 16, 25]
+ *
+ * @example
+ * >>> map([2, 3, 4, 5], expr('a*a')
+ * [4, 9, 16, 25]
+ *
+ * @example
+ * >>> map([2, 3, 4, 5], 'a*a')
+ * [4, 9, 16, 25]
+ */
 LambdaScript.map = function(array, e) {
     var f = LambdaScript._toFunction(e);
     var result = [];
@@ -92,6 +155,20 @@ LambdaScript.map = function(array, e) {
     return result;
 };
 
+/**
+ * @function
+ *
+ * A synonym for 'map', #collect in Smalltalk.
+ */
+LambdaScript.collect = LambdaScript.map;
+
+/***
+ * @function
+ * 
+ * It takes an array and a function, then returns a new array
+ * consisting of all the members of the input sequence for which the predicate
+ * returns true.
+ */
 LambdaScript.filter = function(array, e) {
     var f = LambdaScript._toFunction(e);
     var result = [];
@@ -105,6 +182,17 @@ LambdaScript.filter = function(array, e) {
     return result;
 };
 
+/**
+ * @function
+ *
+ * A synonym for 'filter', #select in Smalltalk.
+ */
+LambdaScript.select = LambdaScript.filter;
+
+/**
+ * @function
+ *
+ */
 LambdaScript.every = function(array, e) {
     var f = LambdaScript._toFunction(e);
     var result = true;
@@ -118,6 +206,10 @@ LambdaScript.every = function(array, e) {
     return result;
 };
 
+/**
+ * @function
+ *
+ */
 LambdaScript.some = function(array, e) {
     var f = LambdaScript._toFunction(e);
     var result = false;
@@ -131,6 +223,10 @@ LambdaScript.some = function(array, e) {
     return result;
 };
 
+/**
+ * @function
+ *
+ */
 LambdaScript.detect = function(array, x, e) {
     if (e === undefined) {
         e = 'a===b';
@@ -148,55 +244,77 @@ LambdaScript.detect = function(array, x, e) {
     return result;
 };
 
-// unary/binary/ternary function factory
-//
-// expr("a + b")     is function (a, b) { return a + b; }
-// expr("a * b + c") is function (a, b) { return a * b + c; }
+/**
+ * @function
+ *
+ * unary/binary/ternary function factory
+ *
+ * @example
+ * expr("-a") is equivalent to function negate(a) { return -a; }
+ *
+ * @example
+ * expr("a + b") is equivalent to function (a, b) { return a + b; }
+ *
+ * @example
+ * expr("a * b + c") is equivalent to function (a, b) { return a * b + c; }
+ */
 LambdaScript.expr = function(string) {
-return function() {
-    var a;
-    var b;
-    var c;
+    return function() {
+        var a;
+        var b;
+        var c;
 
-    switch (arguments.length) {
-        case 1:
-            a = arguments[0];
-            break;
+        switch (arguments.length) {
+            case 1:
+                a = arguments[0];
+                break;
 
-        case 2:
-            a = arguments[0];
-            b = arguments[1];
-            break;
+            case 2:
+                a = arguments[0];
+                b = arguments[1];
+                break;
 
-        case 3:
-            a = arguments[0];
-            b = arguments[1];
-            c = arguments[2];
-            break;
-    }
+            case 3:
+                a = arguments[0];
+                b = arguments[1];
+                c = arguments[2];
+                break;
+        }
 
-    // eval is evil
-    return eval(string);
+        // eval is evil
+        return eval(string);
+    };
 };
-};
 
+/**
+ * @function
+ *
+ */
 LambdaScript.before = function(func, beforeFunc){
-return function() {
-    beforeFunc.apply(this, arguments);
-    return func.apply(this, arguments);
-};
+    return function() {
+        beforeFunc.apply(this, arguments);
+        return func.apply(this, arguments);
+    };
 };
 
+/**
+ * @function
+ *
+ */
 LambdaScript.after = function(func, afterFunc){
-return function() {
-    var res = func.apply(this, arguments);
-    afterFunc.apply(this, arguments);
-    return res;
-};
+    return function() {
+        var res = func.apply(this, arguments);
+        afterFunc.apply(this, arguments);
+        return res;
+    };
 };
 
+/**
+ * @function
+ *
+ */
 LambdaScript.around = function(func, beforeFunc, afterFunc) {
-return LambdaScript.before(LambdaScript.after(func, afterFunc), beforeFunc);
+    return LambdaScript.before(LambdaScript.after(func, afterFunc), beforeFunc);
 };
 
 //LambdaScript.trace = function(func) {
