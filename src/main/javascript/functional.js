@@ -20,8 +20,39 @@ LambdaScript.install = function(except) {
     }
 };
 
+LambdaScript.range = function() {
+    var begin = 1;
+    var end = 1;
+    var step = 1;
+
+    switch (arguments.length) {
+        case 1:
+            end = arguments[0];
+            break;
+
+        case 2:
+            begin = arguments[0];
+            end = arguments[1];
+            break;
+
+        case 3:
+            begin = arguments[0];
+            end = arguments[1];
+            step = arguments[2];
+            break;
+    }
+
+    var result = [];
+
+    for (var i = begin; i <= end; i+=step) {
+        result.push(i);
+    }
+
+    return result;
+};
+
 LambdaScript.each = function(array, f) {
-    for (var i = 0; i < array.length; i++) {
+    for (var i in range(0, array.length - 1)) {
         f(array[i]);
     }
 };
@@ -76,37 +107,6 @@ LambdaScript.some = function(array, f) {
             result = true;
         }
     });
-
-    return result;
-};
-
-LambdaScript.range = function() {
-    var begin = 1;
-    var end = 1;
-    var step = 1;
-
-    switch (arguments.length) {
-        case 1:
-            end = arguments[0];
-            break;
-
-        case 2:
-            begin = arguments[0];
-            end = arguments[1];
-            break;
-
-        case 3:
-            begin = arguments[0];
-            end = arguments[1];
-            step = arguments[2];
-            break;
-    }
-
-    var result = [];
-
-    for (var i = begin; i <= end; i+=step) {
-        result.push(i);
-    }
 
     return result;
 };
