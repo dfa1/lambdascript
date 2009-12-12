@@ -16,7 +16,9 @@ LambdaScript.install = function(except) {
     })(); // References the global object.
 
     for (var name in source) {
-        name === 'install' || (target[name] = source[name]);
+        if (name !== 'install' && name.charAt(0) !== '_') {
+            target[name] = source[name];
+        }
     }
 };
 
@@ -51,47 +53,64 @@ LambdaScript.range = function() {
     return result;
 };
 
-LambdaScript.each = function(array, f) {
-    for (var i in range(0, array.length - 1)) {
+LambdaScript._toFunction = function(e) {
+    if (typeof e === 'string') {
+        return LambdaScript.expr(e);
+    } else if (typeof e === 'function') {
+        return e;
+    } else {
+        throw 'Not a string or function';
+    }
+};
+
+LambdaScript.each = function(array, e) {
+    var f = LambdaScript._toFunction(e);
+    
+    for (var i in LambdaScript.range(0, array.length - 1)) {
         f(array[i]);
     }
 };
 
-LambdaScript.reduce = function(array, f, i) {
-    each(array, function (element) {
+LambdaScript.reduce = function(array, e, i) {
+    var f = LambdaScript._toFunction(e);
+
+    LambdaScript.each(array, function (element) {
         i = f(i, element);
     });
 
     return i;
 };
 
-LambdaScript.map = function(array, f) {
+LambdaScript.map = function(array, e) {
+    var f = LambdaScript._toFunction(e);
     var result = [];
     
-    each(array, function (element) {
+    LambdaScript.each(array, function (element) {
         result.push(f(element));
     });
 
     return result;
 };
 
-LambdaScript.filter = function(array, f) {
+LambdaScript.filter = function(array, e) {
+    var f = LambdaScript._toFunction(e);
     var result = [];
 
-    each(array, function(x) {
-        if (f(x)) {
-            result.push(x);
+    LambdaScript.each(array, function(element) {
+        if (f(element)) {
+            result.push(element);
         } 
     });
 
     return result;
 };
 
-LambdaScript.every = function(array, f) {
+LambdaScript.every = function(array, e) {
+    var f = LambdaScript._toFunction(e);
     var result = true;
 
-    each(array, function(x) {
-        if (!f(x)) {
+    LambdaScript.each(array, function(element) {
+        if (!f(element)) {
             result = false;
         }
     });
@@ -99,11 +118,12 @@ LambdaScript.every = function(array, f) {
     return result;
 };
 
-LambdaScript.some = function(array, f) {
+LambdaScript.some = function(array, e) {
+    var f = LambdaScript._toFunction(e);
     var result = false;
 
-    each(array, function(x) {
-        if (f(x)) {
+    LambdaScript.each(array, function(element) {
+        if (f(element)) {
             result = true;
         }
     });
@@ -115,7 +135,7 @@ LambdaScript.some = function(array, f) {
 //
 // expr("a + b")     is function (a, b) { return a + b; }
 // expr("a * b + c") is function (a, b) { return a * b + c; }
-LambdaScript.expr = function(s) {
+LambdaScript.expr = function(string) {
     return function() {
         var a;
         var b;
@@ -138,8 +158,9 @@ LambdaScript.expr = function(s) {
                 break;
         }
 
-        return eval(s);
-    }
+        // eval is evil
+        return eval(string);
+    };
 };
 
 LambdaScript.before = function(func, beforeFunc){
@@ -158,7 +179,7 @@ LambdaScript.after = function(func, afterFunc){
 };
 
 LambdaScript.around = function(func, beforeFunc, afterFunc) {
-    return before(after(func, afterFunc), beforeFunc);
+    return LambdaScript.before(LambdaScript.after(func, afterFunc), beforeFunc);
 };
 
 //LambdaScript.trace = function(func) {

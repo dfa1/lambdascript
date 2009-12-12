@@ -28,6 +28,14 @@ suite.testReduceSum = function() {
     Assert.that(sum(1, 2, 3), Matcher.is(6))
 };
 
+suite.testReduceSum2 = function() {
+    function sum() {
+        return reduce(arguments, 'a+b', 0);
+    }
+
+    Assert.that(sum(1, 2, 3), Matcher.is(6))
+};
+
 suite.testReduceFact = function() {
     function fact(n) {
         return reduce(range(n), expr("a*b"), 1);
