@@ -13,16 +13,16 @@ suite.testRange3 = function() {
 };
 
 suite.testFilter = function() {
-    Assert.that(filter(range(1, 10), expr("a % 2 == 0")), Matcher.array([2, 4, 6, 8, 10]));
+    Assert.that(filter(range(1, 10), expr('a%2==0')), Matcher.array([2, 4, 6, 8, 10]));
 };
 
 suite.testFilter2 = function() {
-    Assert.that(filter(range(1, 10), expr("a === 3")), Matcher.array([3]));
+    Assert.that(filter(range(1, 10), expr('a===3')), Matcher.array([3]));
 };
 
 suite.testReduceSum = function() {
     function sum() {
-        return reduce(arguments, expr("a+b"), 0);
+        return reduce(arguments, expr('a+b'), 0);
     }
 
     Assert.that(sum(1, 2, 3), Matcher.is(6))
@@ -36,9 +36,9 @@ suite.testReduceSum2 = function() {
     Assert.that(sum(1, 2, 3), Matcher.is(6))
 };
 
-suite.testReduceFact = function() {
+suite.testReduceFactorial = function() {
     function fact(n) {
-        return reduce(range(n), expr("a*b"), 1);
+        return reduce(range(n), expr('a*b'), 1);
     }
 
     Assert.that(fact(5), Matcher.is(120));
@@ -49,20 +49,28 @@ suite.testMapSquare = function() {
 };
 
 suite.testEvery = function() {
-    Assert.that(every([1, 2, 3, 4], expr("a<5")), Matcher.is(true));
+    Assert.that(every([1, 2, 3, 4], expr('a<5')), Matcher.is(true));
 };
 
 suite.testEvery2 = function() {
-    Assert.that(every([1, 2, 3, 4], expr("a<2")), Matcher.is(false));
+    Assert.that(every([1, 2, 3, 4], expr('a<2')), Matcher.is(false));
 };
 
 suite.testSome = function() {
-    Assert.that(some([1, 2, 3, 4], expr("a > 3")), Matcher.is(true));
+    Assert.that(some([1, 2, 3, 4], expr('a>3')), Matcher.is(true));
 };
 
 suite.testSome2 = function() {
-    Assert.that(some([1, 2, 3, 4], expr("a > 6")), Matcher.is(false));
+    Assert.that(some([1, 2, 3, 4], expr('a>6')), Matcher.is(false));
 };
+
+suite.testDetect = function() {
+    Assert.that(detect([1, 2, 3, 4], 4), Matcher.is(3));
+}
+
+suite.testDetect2 = function() {
+    Assert.that(detect([1, 2, '3', 4], 4, 'a==b'), Matcher.is(3));
+}
 
 suite.testBefore = function() {
     var array = [ 'changeme', 'changeme' ];
@@ -113,23 +121,23 @@ suite.testAround = function() {
 
     thisFunction = around(thisFunction, beforeFunction, afterFunction);
     thisFunction();
-    Assert.that(array, Matcher.array(['before', 'this', 'after']));
+    Assert.that(array, Matcher.array([ 'before', 'this', 'after' ]));
 };
 
 suite.testExpr = function() {
-    var neg = expr("-a");
+    var neg = expr('-a');
     Assert.that(neg(42), Matcher.is(-42));
     Assert.that(neg(neg(42)), Matcher.is(42));
 };
 
 suite.testExpr2 = function() {
-    var add = expr("a + b");
+    var add = expr('a + b');
     Assert.that(add(1, 2), Matcher.is(3));
     Assert.that(add(-2, 2), Matcher.is(0));
 };
 
 suite.testExpr3 = function() {
-    var f = expr("a * b + c");
+    var f = expr('a * b + c');
     Assert.that(f(2, 3, 5), Matcher.is(11));
     Assert.that(f(3, 5, -10), Matcher.is(5));
 };

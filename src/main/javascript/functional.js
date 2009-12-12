@@ -46,7 +46,7 @@ LambdaScript.range = function() {
 
     var result = [];
 
-    for (var i = begin; i <= end; i+=step) {
+    for (var i = begin; i <= end; i += step) {
         result.push(i);
     }
 
@@ -67,7 +67,7 @@ LambdaScript.each = function(array, e) {
     var f = LambdaScript._toFunction(e);
     
     for (var i in LambdaScript.range(0, array.length - 1)) {
-        f(array[i]);
+        f(array[i], parseInt(i)); // TODO: hack
     }
 };
 
@@ -131,55 +131,72 @@ LambdaScript.some = function(array, e) {
     return result;
 };
 
+LambdaScript.detect = function(array, x, e) {
+    if (e === undefined) {
+        e = 'a===b';
+    }
+
+    var f = LambdaScript._toFunction(e);
+    var result = -1;
+
+    LambdaScript.each(array, function(element, index) {
+        if (f(x, element)) {
+            result = index;
+        }
+    });
+
+    return result;
+};
+
 // unary/binary/ternary function factory
 //
 // expr("a + b")     is function (a, b) { return a + b; }
 // expr("a * b + c") is function (a, b) { return a * b + c; }
 LambdaScript.expr = function(string) {
-    return function() {
-        var a;
-        var b;
-        var c;
+return function() {
+    var a;
+    var b;
+    var c;
 
-        switch (arguments.length) {
-            case 1:
-                a = arguments[0];
-                break;
+    switch (arguments.length) {
+        case 1:
+            a = arguments[0];
+            break;
 
-            case 2:
-                a = arguments[0];
-                b = arguments[1];
-                break;
+        case 2:
+            a = arguments[0];
+            b = arguments[1];
+            break;
 
-            case 3:
-                a = arguments[0];
-                b = arguments[1];
-                c = arguments[2];
-                break;
-        }
+        case 3:
+            a = arguments[0];
+            b = arguments[1];
+            c = arguments[2];
+            break;
+    }
 
-        // eval is evil
-        return eval(string);
-    };
+    // eval is evil
+    return eval(string);
+};
 };
 
 LambdaScript.before = function(func, beforeFunc){
-    return function() {
-        beforeFunc.apply(this, arguments);
-        return func.apply(this, arguments);
-    };
+return function() {
+    beforeFunc.apply(this, arguments);
+    return func.apply(this, arguments);
+};
 };
 
 LambdaScript.after = function(func, afterFunc){
-    return function() {
-        var res = func.apply(this, arguments);
-        afterFunc.apply(this, arguments);
-        return res;
-    };
+return function() {
+    var res = func.apply(this, arguments);
+    afterFunc.apply(this, arguments);
+    return res;
+};
 };
 
 LambdaScript.around = function(func, beforeFunc, afterFunc) {
-    return LambdaScript.before(LambdaScript.after(func, afterFunc), beforeFunc);
+return LambdaScript.before(LambdaScript.after(func, afterFunc), beforeFunc);
 };
 
 //LambdaScript.trace = function(func) {
