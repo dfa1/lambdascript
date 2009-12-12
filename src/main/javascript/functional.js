@@ -1,4 +1,4 @@
-// Functional Javascript
+// LambdaScript: Yet Another Functional Javascript Library
 // (C) 2009, Davide Angelocola <davide.angelocola@gmail.com>
 
 /// `LambdaScript` is the namespace for the LambdaScript library.
@@ -15,19 +15,16 @@ LambdaScript.install = function(except) {
         return this;
     })(); // References the global object.
 
-    for (var name in source)
-        name == 'install'
-        || name.charAt(0) == '_'
-        || except && name in except
-        || !source.hasOwnProperty(name) // work around Prototype
-        || (target[name] = source[name]);
-}
+    for (var name in source) {
+        name === 'install' || (target[name] = source[name]);
+    }
+};
 
 LambdaScript.each = function(array, f) {
     for (var i = 0; i < array.length; i++) {
         f(array[i]);
     }
-}
+};
 
 LambdaScript.reduce = function(array, f, i) {
     each(array, function (element) {
@@ -35,7 +32,7 @@ LambdaScript.reduce = function(array, f, i) {
     });
 
     return i;
-}
+};
 
 LambdaScript.map = function(array, f) {
     var result = [];
@@ -45,7 +42,7 @@ LambdaScript.map = function(array, f) {
     });
 
     return result;
-}
+};
 
 LambdaScript.filter = function(array, f) {
     var result = [];
@@ -57,7 +54,7 @@ LambdaScript.filter = function(array, f) {
     });
 
     return result;
-}
+};
 
 LambdaScript.every = function(array, f) {
     var result = true;
@@ -69,7 +66,7 @@ LambdaScript.every = function(array, f) {
     });
 
     return result;
-}
+};
 
 LambdaScript.some = function(array, f) {
     var result = false;
@@ -81,7 +78,7 @@ LambdaScript.some = function(array, f) {
     });
 
     return result;
-}
+};
 
 LambdaScript.range = function() {
     var begin = 1;
@@ -112,7 +109,7 @@ LambdaScript.range = function() {
     }
 
     return result;
-}
+};
 
 // unary/binary/ternary function factory
 //
@@ -143,14 +140,14 @@ LambdaScript.expr = function(s) {
 
         return eval(s);
     }
-}
+};
 
 LambdaScript.before = function(func, beforeFunc){
     return function() {
         beforeFunc.apply(this, arguments);
         return func.apply(this, arguments);
     };
-}
+};
 
 LambdaScript.after = function(func, afterFunc){
     return function() {
@@ -158,30 +155,30 @@ LambdaScript.after = function(func, afterFunc){
         afterFunc.apply(this, arguments);
         return res;
     };
-}
+};
 
 LambdaScript.around = function(func, beforeFunc, afterFunc) {
     return before(after(func, afterFunc), beforeFunc);
-}
+};
 
 //LambdaScript.trace = function(func) {
 //  return around(func, printArguments, printResult);
-//}
+//};
 
 //LambdaScript.timeIt = function(func) {
 //  return around(func, startTimer, stopTimer);
-//}
+//};
 
 // other experimental code
 // http://stackoverflow.com/questions/1266402/implementing-mathematical-sets-in-javascript
 //Array.prototype.contains = function(e) {
 //    return this.lastIndexOf(e, this.length) != -1;
-//}
+//};
 //
 //
 //Array.prototype.notContains = function(e) {
 //    return this.lastIndexOf(e, this.length) == -1;
-//}
+//};
 //
 //function union(a1, a2) {
 //    var res = [];
@@ -197,7 +194,7 @@ LambdaScript.around = function(func, beforeFunc, afterFunc) {
 //    });
 //
 //    return res;
-//}
+//};
 //
 //function intersection(a1, a2) {
 //    var res = [];
@@ -209,7 +206,7 @@ LambdaScript.around = function(func, beforeFunc, afterFunc) {
 //    });
 //
 //    return res;
-//}
+//};
 //
 //function product(a1, a2) {
 //    var res = [];
@@ -221,4 +218,4 @@ LambdaScript.around = function(func, beforeFunc, afterFunc) {
 //    });
 //
 //    return res;
-//}
+//};

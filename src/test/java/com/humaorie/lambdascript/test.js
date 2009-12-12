@@ -6,7 +6,7 @@ function Suite(name) {
     }
 
     function defaultEndSuiteHook(failures, tests, elapsed) {
-        java.lang.System.out.println(failures + "/" + tests + " in " + elapsed + " ms");
+        java.lang.System.out.println(tests + ' tests in ' + elapsed + ' ms: ' + failures + ' failures');
     }
 
     this.name = name;
@@ -21,7 +21,7 @@ function Suite(name) {
             if (/^test/.test(property)) {
                 var test = this[property];
                 var testTimer = new Timer;
-                var result = "Ok."
+                var result = 'Ok.';
                 testTimer.start();
 
                 try {
@@ -40,7 +40,7 @@ function Suite(name) {
 
         this.timer.stop();
         defaultEndSuiteHook(this.failures, this.totalTests, this.timer.elapsed())
-    }
+    };
 }
 
 var Assert = {
@@ -53,7 +53,7 @@ var Assert = {
             throw description.toString();
         }
     }
-}
+};
 
 function Description() {
     this.description = "";
@@ -73,7 +73,7 @@ function Description() {
     this.toString = function() {
         return this.description;
     }
-}
+};
 
 var Matcher = {
     is: function (expected) {
@@ -84,18 +84,19 @@ var Matcher = {
         return new NotMatcher(matcher);
     },
 
+    // TODO: merge with 'is'
     array: function (expected) {
         return new ArrayMatcher(expected);
     }
-}
+};
 
 function NotMatcher(matcher) {
     this.matcher = matcher;
 
     this.matches = function(object) {
         return !matcher.matches(object);
-    }
-}
+    };
+};
 
 function IsMatcher(expected) {
     this.expected = expected;
@@ -104,12 +105,12 @@ function IsMatcher(expected) {
     this.matches = function(actual) {
         this.actual = actual;
         return this.actual === this.expected;
-    }
+    };
 
     this.describeTo = function(description) {
         description.append("expected: {1} got: {2}", this.expected, this.actual);
-    }
-}
+    };
+};
 
 function ArrayMatcher(expected) {
     this.expected = expected;
@@ -128,11 +129,11 @@ function ArrayMatcher(expected) {
         } else {
             return false;
         }
-    }
+    };
 
     this.describeTo = function(description) {
         description.append("expected: {1} got: {2}", this.expected, this.actual);
-    }
+    };
 }
 
 function TypeOfMatcher(expected) {
@@ -149,14 +150,14 @@ function TypeOfMatcher(expected) {
         } else {
             return typeof(obj);
         }
-    }
+    };
 
     this.matches = function(actual) {
         this.actual = typeOf(actual);
         return this.actual === this.expected;
-    }
+    };
 
     this.describeTo = function(description) {
         description.append("expected: {1} got: {2}", this.expected, this.actual);
-    }
+    };
 }

@@ -7,19 +7,19 @@ function Timer() {
         this.begin = new Date();
         this.started = true;
         return this;
-    }
+    };
 
     this.stop = function() {
         this.end = new Date();
         this.started = false;
         return this;
-    }
+    };
 
     this.elapsed = function() {
         return this.end.getTime() - this.begin.getTime();
-    }
+    };
 
     this.running = function() {
         return this.started;
-    }
+    };
 }
