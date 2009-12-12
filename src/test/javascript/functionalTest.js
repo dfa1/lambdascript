@@ -13,11 +13,11 @@ suite.testRange3 = function() {
 }
 
 suite.testFilter = function() {
-    Assert.that(filter(range(1, 10), expr("a%2")), Matcher.is([2, 4, 6, 8]));
+    Assert.that(filter(range(1, 10), expr("a % 2 == 0")), Matcher.array([2, 4, 6, 8, 10]));
 }
 
 suite.testFilter2 = function() {
-    Assert.that(filter(range(1, 10), expr("a==3")), Matcher.is([3]));
+    Assert.that(filter(range(1, 10), expr("a === 3")), Matcher.array([3]));
 }
 
 suite.testReduceSum = function() {
@@ -41,19 +41,72 @@ suite.testMapSquare = function() {
 }
 
 suite.testEvery = function() {
-    Assert.that(every([1, 2, 3, 4]), expr("a<5"), Matcher.is(true));
+    Assert.that(every([1, 2, 3, 4], expr("a<5")), Matcher.is(true));
 }
 
 suite.testEvery2 = function() {
-    Assert.that(every([1, 2, 3, 4]), expr("a<2"), Matcher.is(false));
+    Assert.that(every([1, 2, 3, 4], expr("a<2")), Matcher.is(false));
 }
 
 suite.testSome = function() {
-    Assert.that(every([1, 2, 3, 4]), expr("a>3"), Matcher.is(true));
+    Assert.that(some([1, 2, 3, 4], expr("a > 3")), Matcher.is(true));
 }
 
-suite.testSome = function() {
-    Assert.that(every([1, 2, 3, 4]), expr("a>6"), Matcher.is(false));
+suite.testSome2 = function() {
+    Assert.that(some([1, 2, 3, 4], expr("a > 6")), Matcher.is(false));
 }
+
+suite.testBefore = function() {
+    var array = [ 'changeme', 'changeme' ];
+
+    function beforeFunction() {
+        array[1] = 'before';
+    }
+
+    function thisFunction() {
+        array[0] = 'this';
+    }
+
+    thisFunction = before(thisFunction, beforeFunction);
+    thisFunction();
+    Assert.that(array, Matcher.array(['this', 'before']));
+}
+
+suite.testAfter = function() {
+    var array = [ 'changeme', 'changeme' ];
+
+    function afterFunction() {
+        array[1] = 'after';
+    }
+
+    function thisFunction() {
+        array[0] = 'this';
+    }
+
+    thisFunction = after(thisFunction, afterFunction);
+    thisFunction();
+    Assert.that(array, Matcher.array(['this', 'after']));
+}
+
+suite.testAround = function() {
+    var array = [ 'changeme', 'changeme', 'changeme' ];
+
+    function beforeFunction() {
+        array[0] = 'before';
+    }
+
+    function afterFunction() {
+        array[2] = 'after';
+    }
+
+    function thisFunction() {
+        array[1] = 'this';
+    }
+
+    thisFunction = around(thisFunction, beforeFunction, afterFunction);
+    thisFunction();
+    Assert.that(array, Matcher.array(['before', 'this', 'after']));
+}
+
 
 suite.run();

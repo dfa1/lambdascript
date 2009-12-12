@@ -145,26 +145,24 @@ LambdaScript.expr = function(s) {
     }
 }
 
-// experimental
+LambdaScript.before = function(func, beforeFunc){
+    return function() {
+        beforeFunc.apply(this, arguments);
+        return func.apply(this, arguments);
+    };
+}
 
-//LambdaScript.around = function(func, beforeFunc, afterFunc) {
-//    return before(after(func, afterFunc), beforeFunc);
-//}
-//
-//LambdaScript.before = function(func, beforeFunc){
-//    return function() {
-//        beforeFunc.apply(this, arguments);
-//        return func.apply(this, arguments);
-//    };
-//}
-//
-//LambdaScript.after = function(func, afterFunc){
-//    return function() {
-//        var res = func.apply(this, arguments);
-//        afterFunc.apply(this, arguments);
-//        return res;
-//    };
-//}
+LambdaScript.after = function(func, afterFunc){
+    return function() {
+        var res = func.apply(this, arguments);
+        afterFunc.apply(this, arguments);
+        return res;
+    };
+}
+
+LambdaScript.around = function(func, beforeFunc, afterFunc) {
+    return before(after(func, afterFunc), beforeFunc);
+}
 
 //LambdaScript.trace = function(func) {
 //  return around(func, printArguments, printResult);
