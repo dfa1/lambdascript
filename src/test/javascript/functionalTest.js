@@ -108,4 +108,22 @@ suite.testAround = function() {
     Assert.that(array, Matcher.array(['before', 'this', 'after']));
 };
 
+suite.testExpr = function() {
+    var neg = expr("-a");
+    Assert.that(neg(42), Matcher.is(-42));
+    Assert.that(neg(neg(42)), Matcher.is(42));
+};
+
+suite.testExpr2 = function() {
+    var add = expr("a + b");
+    Assert.that(add(1, 2), Matcher.is(3));
+    Assert.that(add(-2, 2), Matcher.is(0));
+};
+
+suite.testExpr3 = function() {
+    var f = expr("a * b + c");
+    Assert.that(f(2, 3, 5), Matcher.is(11));
+    Assert.that(f(3, 5, -10), Matcher.is(5));
+};
+
 suite.run();
