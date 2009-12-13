@@ -184,20 +184,6 @@ LambdaScript.reduce = function(e, array, i) {
 
 /**
  * @function
- *
- * A synonym for 'reduce', #inject in Smalltalk.
- */
-LambdaScript.inject = LambdaScript.reduce;
-
-/**
- * @function
- *
- * A synonym for 'reduce', (fold) in lisp.
- */
-LambdaScript.fold = LambdaScript.reduce;
-
-/**
- * @function
  * 
  * It takes an array and an unary function then it returns a new array by applying
  * the function to each of the elements of the original array (that is not touched).
@@ -225,13 +211,6 @@ LambdaScript.map = function(e, array) {
     return result;
 };
 
-/**
- * @function
- *
- * A synonym for 'map', #collect in Smalltalk.
- */
-LambdaScript.collect = LambdaScript.map;
-
 /***
  * @function
  * 
@@ -255,13 +234,6 @@ LambdaScript.filter = function(e, array) {
 /**
  * @function
  *
- * A synonym for 'filter', #select in Smalltalk.
- */
-LambdaScript.select = LambdaScript.filter;
-
-/**
- * @function
- *
  */
 LambdaScript.every = function(e, array) {
     var f = LambdaScript._toFunction(e);
@@ -280,12 +252,6 @@ LambdaScript.every = function(e, array) {
  * @function
  *
  */
-LambdaScript.all = LambdaScript.every;
-
-/**
- * @function
- *
- */
 LambdaScript.some = function(e, array) {
     var f = LambdaScript._toFunction(e);
     var result = false;
@@ -298,12 +264,6 @@ LambdaScript.some = function(e, array) {
 
     return result;
 };
-
-/**
- * @function
- *
- */
-LambdaScript.any = LambdaScript.some;
 
 /**
  * @function
@@ -415,3 +375,43 @@ LambdaScript.around = function(func, beforeFunc, afterFunc) {
 //
 //    return res;
 //};
+
+/**
+ * @function
+ *
+ * A synonym for 'reduce', #inject in Smalltalk.
+ */
+LambdaScript.inject = LambdaScript.reduce;
+
+/**
+ * @function
+ *
+ * A synonym for 'reduce', (fold) in lisp.
+ */
+LambdaScript.fold = LambdaScript.reduce;
+
+/**
+ * @function
+ *
+ * A synonym for 'map', #collect in Smalltalk.
+ */
+LambdaScript.collect = LambdaScript.map;
+
+/**
+ * @function
+ *
+ * A synonym for 'filter', #select in Smalltalk.
+ */
+LambdaScript.select = LambdaScript.filter;
+
+/**
+ * @function
+ *
+ */
+LambdaScript.all = LambdaScript.every;
+
+/**
+ * @function
+ *
+ */
+LambdaScript.any = LambdaScript.some;
