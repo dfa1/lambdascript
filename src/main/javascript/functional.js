@@ -189,7 +189,8 @@ LambdaScript.reduce = function(e, array, i) {
  * the function to each of the elements of the original array (that is not touched).
  *
  * @example
- * >>> map(function(a) { return a*a; }, [2, 3, 4, 5])
+ * >>> function square(a) { return a*a; }
+ * >>> map(square, [2, 3, 4, 5])
  * [4, 9, 16, 25]
  *
  * @example
@@ -197,7 +198,7 @@ LambdaScript.reduce = function(e, array, i) {
  * [4, 9, 16, 25]
  *
  * @example
- * >>> map( 'a*a', [2, 3, 4, 5])
+ * >>> map('a*a', [2, 3, 4, 5])
  * [4, 9, 16, 25]
  */
 LambdaScript.map = function(e, array) {
@@ -381,37 +382,37 @@ LambdaScript.around = function(func, beforeFunc, afterFunc) {
  *
  * A synonym for 'reduce', #inject in Smalltalk.
  */
-LambdaScript.inject = LambdaScript.reduce;
+//LambdaScript.inject = LambdaScript.reduce;
 
 /**
  * @function
  *
  * A synonym for 'reduce', (fold) in lisp.
  */
-LambdaScript.fold = LambdaScript.reduce;
+//LambdaScript.fold = LambdaScript.reduce;
 
 /**
  * @function
  *
  * A synonym for 'map', #collect in Smalltalk.
  */
-LambdaScript.collect = LambdaScript.map;
+//LambdaScript.collect = LambdaScript.map;
 
 /**
  * @function
  *
  * A synonym for 'filter', #select in Smalltalk.
  */
-LambdaScript.select = LambdaScript.filter;
+//LambdaScript.select = LambdaScript.filter;
 
 /**
  * @function
  *
  */
-LambdaScript.all = LambdaScript.every;
+//LambdaScript.all = LambdaScript.every;
 
 /**
  * @function
  *
  */
-LambdaScript.any = LambdaScript.some;
+//LambdaScript.any = LambdaScript.some;
