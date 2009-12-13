@@ -12,6 +12,20 @@ suite.testRange3 = function() {
     Assert.that(range(1, 10, 2), Matcher.array([1, 3, 5, 7, 9]));
 };
 
+suite.testRange4 = function() {
+    Assert.that(range(1, 10, function(i) {
+        return i+2;
+    }), Matcher.array([1, 3, 5, 7, 9]));
+};
+
+suite.testRange5 = function() {
+    Assert.that(range(1, 10, 'a+2'), Matcher.array([1, 3, 5, 7, 9]));
+};
+
+suite.testRange5 = function() {
+    Assert.that(range(3, 100, function(a) { return a*3;}), Matcher.array([3, 9, 27, 81]));
+};
+
 suite.testFilter = function() {
     Assert.that(filter(range(1, 10), expr('a%2==0')), Matcher.array([2, 4, 6, 8, 10]));
 };

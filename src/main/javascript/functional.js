@@ -30,6 +30,10 @@ LambdaScript.install = function() {
 /**
  * @function
  *
+ * @param [Number] begin, 1 when not specified
+ * @param [Number] end, always specified
+ * @param [Number|String|Function] step function
+ * 
  * @example
  * >>> range(5)
  * [1, 2, 3, 4, 5]
@@ -41,11 +45,22 @@ LambdaScript.install = function() {
  * @example
  * >>> range(5, 25, 5)
  * [5, 10, 15, 20, 25]
+ *
+ * @example
+ * >>> range(1, 10, 'a+2')
+ * [1, 3, 5, 7, 9]
+ *
+ * @example
+ * >>> range(3, 100, function(a) { return a*3;})
+ * [3, 9, 27, 81]
+ *
  */
 LambdaScript.range = function() {
     var begin = 1;
     var end = 1;
-    var step = 1;
+    var step = function(i) {
+        return i + 1;
+    };
 
     switch (arguments.length) {
         case 1:
@@ -60,13 +75,26 @@ LambdaScript.range = function() {
         case 3:
             begin = arguments[0];
             end = arguments[1];
-            step = arguments[2];
+
+            if (typeof arguments[2] == 'number') {
+                var s = arguments[2];
+                step = function(i) {
+                    return i + s;
+                };
+            } else if (typeof arguments[2] == 'string') {
+                step = LambdaScript.expr(arguments[2]);
+            } else if (typeof arguments[2] == 'function') {
+                step = arguments[2];
+            } else {
+                throw 'third argument can be number, string or an unary function';
+            }
+
             break;
     }
 
     var result = [];
 
-    for (var i = begin; i <= end; i += step(i)) {
+    for (var i = begin; i <= end; i = step(i)) {
         result.push(i);
     }
 
@@ -210,6 +238,12 @@ LambdaScript.every = function(array, e) {
  * @function
  *
  */
+LambdaScript.all = LambdaScript.every;
+
+/**
+ * @function
+ *
+ */
 LambdaScript.some = function(array, e) {
     var f = LambdaScript._toFunction(e);
     var result = false;
@@ -222,6 +256,12 @@ LambdaScript.some = function(array, e) {
 
     return result;
 };
+
+/**
+ * @function
+ *
+ */
+LambdaScript.any = LambdaScript.some;
 
 /**
  * @function
