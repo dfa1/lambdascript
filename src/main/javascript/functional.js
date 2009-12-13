@@ -124,7 +124,7 @@ LambdaScript.range = function() {
                     return i + s;
                 };
             } else if (typeof arguments[2] == 'string') {
-                step = LambdaScript.expr(arguments[2]);
+                step = LambdaScript.lambda(arguments[2]);
             } else if (typeof arguments[2] == 'function') {
                 step = arguments[2];
             } else {
@@ -203,15 +203,15 @@ LambdaScript.fold = LambdaScript.reduce;
  * the function to each of the elements of the original array (that is not touched).
  *
  * @example
- * >>> map([2, 3, 4, 5], function(a) { return a*a; })
+ * >>> map(function(a) { return a*a; }, [2, 3, 4, 5])
  * [4, 9, 16, 25]
  *
  * @example
- * >>> map([2, 3, 4, 5], expr('a*a')
+ * >>> map(lambda('a*a'), [2, 3, 4, 5])
  * [4, 9, 16, 25]
  *
  * @example
- * >>> map([2, 3, 4, 5], 'a*a')
+ * >>> map( 'a*a', [2, 3, 4, 5])
  * [4, 9, 16, 25]
  */
 LambdaScript.map = function(e, array) {
