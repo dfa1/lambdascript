@@ -141,8 +141,8 @@ LambdaScript._toFunction = function(e) {
 LambdaScript.each = function(e, array) {
     var f = LambdaScript._toFunction(e);
     
-    for (var i in LambdaScript.range(0, array.length - 1)) {
-        f(array[i], parseInt(i)); // TODO: hack
+    for (var i = 0; i < array.length; i++) {
+        f(array[i], i);
     }
 };
 

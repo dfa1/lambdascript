@@ -2,10 +2,6 @@
 // (C) 2009, Davide Angelocola <davide.angelocola@gmail.com>
 
 
-/**
- * @function
- *
- */
 LambdaScript.before = function(func, beforeFunc){
     return function() {
         beforeFunc.apply(this, arguments);
@@ -13,10 +9,6 @@ LambdaScript.before = function(func, beforeFunc){
     };
 };
 
-/**
- * @function
- *
- */
 LambdaScript.after = function(func, afterFunc){
     return function() {
         var res = func.apply(this, arguments);
@@ -25,12 +17,60 @@ LambdaScript.after = function(func, afterFunc){
     };
 };
 
-/**
- * @function
- *
- */
 LambdaScript.around = function(func, beforeFunc, afterFunc) {
     return LambdaScript.before(LambdaScript.after(func, afterFunc), beforeFunc);
+};
+
+suite.testBefore = function() {
+    var array = [ 'changeme', 'changeme' ];
+
+    function beforeFunction() {
+        array[1] = 'before';
+    }
+
+    function thisFunction() {
+        array[0] = 'this';
+    }
+
+    thisFunction = before(thisFunction, beforeFunction);
+    thisFunction();
+    Assert.that(array, Matcher.array(['this', 'before']));
+};
+
+suite.testAfter = function() {
+    var array = [ 'changeme', 'changeme' ];
+
+    function afterFunction() {
+        array[1] = 'after';
+    }
+
+    function thisFunction() {
+        array[0] = 'this';
+    }
+
+    thisFunction = after(thisFunction, afterFunction);
+    thisFunction();
+    Assert.that(array, Matcher.array(['this', 'after']));
+};
+
+suite.testAround = function() {
+    var array = [ 'changeme', 'changeme', 'changeme' ];
+
+    function beforeFunction() {
+        array[0] = 'before';
+    }
+
+    function afterFunction() {
+        array[2] = 'after';
+    }
+
+    function thisFunction() {
+        array[1] = 'this';
+    }
+
+    thisFunction = around(thisFunction, beforeFunction, afterFunction);
+    thisFunction();
+    Assert.that(array, Matcher.array([ 'before', 'this', 'after' ]));
 };
 
 //LambdaScript.trace = function(func) {

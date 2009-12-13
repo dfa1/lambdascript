@@ -86,58 +86,6 @@ suite.testDetect2 = function() {
     Assert.that(detect(4, [1, 2, '3', 4], 'a==b'), Matcher.is(3));
 }
 
-suite.testBefore = function() {
-    var array = [ 'changeme', 'changeme' ];
-
-    function beforeFunction() {
-        array[1] = 'before';
-    }
-
-    function thisFunction() {
-        array[0] = 'this';
-    }
-
-    thisFunction = before(thisFunction, beforeFunction);
-    thisFunction();
-    Assert.that(array, Matcher.array(['this', 'before']));
-};
-
-suite.testAfter = function() {
-    var array = [ 'changeme', 'changeme' ];
-
-    function afterFunction() {
-        array[1] = 'after';
-    }
-
-    function thisFunction() {
-        array[0] = 'this';
-    }
-
-    thisFunction = after(thisFunction, afterFunction);
-    thisFunction();
-    Assert.that(array, Matcher.array(['this', 'after']));
-};
-
-suite.testAround = function() {
-    var array = [ 'changeme', 'changeme', 'changeme' ];
-
-    function beforeFunction() {
-        array[0] = 'before';
-    }
-
-    function afterFunction() {
-        array[2] = 'after';
-    }
-
-    function thisFunction() {
-        array[1] = 'this';
-    }
-
-    thisFunction = around(thisFunction, beforeFunction, afterFunction);
-    thisFunction();
-    Assert.that(array, Matcher.array([ 'before', 'this', 'after' ]));
-};
-
 suite.testLambda = function() {
     var neg = lambda('-a');
     Assert.that(neg(42), Matcher.is(-42));
