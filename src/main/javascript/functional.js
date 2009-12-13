@@ -30,6 +30,48 @@ LambdaScript.install = function() {
 /**
  * @function
  *
+ * unary/binary/ternary function factory
+ *
+ * @example
+ * lambda('-a') is equivalent to function negate(a) { return -a; }
+ *
+ * @example
+ * lambda('a + b') is equivalent to function (a, b) { return a + b; }
+ *
+ * @example
+ * lambda('a * b + c') is equivalent to function (a, b, c) { return a * b + c; }
+ */
+LambdaScript.lambda = function(string) {
+    return function() {
+        var a;
+        var b;
+        var c;
+
+        switch (arguments.length) {
+            case 1:
+                a = arguments[0];
+                break;
+
+            case 2:
+                a = arguments[0];
+                b = arguments[1];
+                break;
+
+            case 3:
+                a = arguments[0];
+                b = arguments[1];
+                c = arguments[2];
+                break;
+        }
+
+        // eval is evil
+        return eval(string);
+    };
+};
+
+/**
+ * @function
+ *
  * @param [Number] begin, 1 when not specified
  * @param [Number] end, always specified
  * @param [Number|String|Function] step function
@@ -106,7 +148,7 @@ LambdaScript.range = function() {
  */
 LambdaScript._toFunction = function(e) {
     if (typeof e === 'string') {
-        return LambdaScript.expr(e);
+        return LambdaScript.lambda(e);
     } else if (typeof e === 'function') {
         return e;
     } else {
@@ -118,7 +160,7 @@ LambdaScript._toFunction = function(e) {
  * @function
  *
  */
-LambdaScript.each = function(array, e) {
+LambdaScript.each = function(e, array) {
     var f = LambdaScript._toFunction(e);
     
     for (var i in LambdaScript.range(0, array.length - 1)) {
@@ -130,12 +172,12 @@ LambdaScript.each = function(array, e) {
  * @function
  *
  */
-LambdaScript.reduce = function(array, e, i) {
+LambdaScript.reduce = function(e, array, i) {
     var f = LambdaScript._toFunction(e);
 
-    LambdaScript.each(array, function (element) {
+    LambdaScript.each(function(element) {
         i = f(i, element);
-    });
+    }, array);
 
     return i;
 };
@@ -172,13 +214,13 @@ LambdaScript.fold = LambdaScript.reduce;
  * >>> map([2, 3, 4, 5], 'a*a')
  * [4, 9, 16, 25]
  */
-LambdaScript.map = function(array, e) {
+LambdaScript.map = function(e, array) {
     var f = LambdaScript._toFunction(e);
     var result = [];
     
-    LambdaScript.each(array, function (element) {
+    LambdaScript.each(function (element) {
         result.push(f(element));
-    });
+    }, array);
 
     return result;
 };
@@ -197,15 +239,15 @@ LambdaScript.collect = LambdaScript.map;
  * consisting of all the members of the input sequence for which the predicate
  * returns true.
  */
-LambdaScript.filter = function(array, e) {
+LambdaScript.filter = function(e, array) {
     var f = LambdaScript._toFunction(e);
     var result = [];
 
-    LambdaScript.each(array, function(element) {
+    LambdaScript.each(function(element) {
         if (f(element)) {
             result.push(element);
         } 
-    });
+    }, array);
 
     return result;
 };
@@ -221,15 +263,15 @@ LambdaScript.select = LambdaScript.filter;
  * @function
  *
  */
-LambdaScript.every = function(array, e) {
+LambdaScript.every = function(e, array) {
     var f = LambdaScript._toFunction(e);
     var result = true;
 
-    LambdaScript.each(array, function(element) {
+    LambdaScript.each(function(element) {
         if (!f(element)) {
             result = false;
         }
-    });
+    }, array);
 
     return result;
 };
@@ -244,15 +286,15 @@ LambdaScript.all = LambdaScript.every;
  * @function
  *
  */
-LambdaScript.some = function(array, e) {
+LambdaScript.some = function(e, array) {
     var f = LambdaScript._toFunction(e);
     var result = false;
 
-    LambdaScript.each(array, function(element) {
+    LambdaScript.each(function(element) {
         if (f(element)) {
             result = true;
         }
-    });
+    }, array);
 
     return result;
 };
@@ -267,7 +309,7 @@ LambdaScript.any = LambdaScript.some;
  * @function
  *
  */
-LambdaScript.detect = function(array, x, e) {
+LambdaScript.detect = function(x, array, e) {
     if (e === undefined) {
         e = 'a===b';
     }
@@ -275,55 +317,13 @@ LambdaScript.detect = function(array, x, e) {
     var f = LambdaScript._toFunction(e);
     var result = -1;
 
-    LambdaScript.each(array, function(element, index) {
+    LambdaScript.each(function(element, index) {
         if (f(x, element)) {
             result = index;
         }
-    });
+    }, array);
 
     return result;
-};
-
-/**
- * @function
- *
- * unary/binary/ternary function factory
- *
- * @example
- * expr("-a") is equivalent to function negate(a) { return -a; }
- *
- * @example
- * expr("a + b") is equivalent to function (a, b) { return a + b; }
- *
- * @example
- * expr("a * b + c") is equivalent to function (a, b) { return a * b + c; }
- */
-LambdaScript.expr = function(string) {
-    return function() {
-        var a;
-        var b;
-        var c;
-
-        switch (arguments.length) {
-            case 1:
-                a = arguments[0];
-                break;
-
-            case 2:
-                a = arguments[0];
-                b = arguments[1];
-                break;
-
-            case 3:
-                a = arguments[0];
-                b = arguments[1];
-                c = arguments[2];
-                break;
-        }
-
-        // eval is evil
-        return eval(string);
-    };
 };
 
 /**
@@ -361,7 +361,7 @@ LambdaScript.around = function(func, beforeFunc, afterFunc) {
 //  return around(func, printArguments, printResult);
 //};
 
-//LambdaScript.timeIt = function(func) {
+//LambdaScript.memoize = function(func) {
 //  return around(func, startTimer, stopTimer);
 //};
 
