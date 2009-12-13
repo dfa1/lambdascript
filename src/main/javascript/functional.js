@@ -265,3 +265,24 @@ LambdaScript.detect = function(x, array, e) {
     return result;
 };
 
+/**
+ * @function
+ *
+ */
+LambdaScript.curry = function(e) {
+    var f = LambdaScript._toFunction(e);
+    var innerArgs = Array.prototype.slice.call(arguments, 1);
+    return function () {
+        return f.apply(this, innerArgs.concat(Array.prototype.slice.call(arguments, 0)))
+    };
+};
+
+/**
+ * @function
+ *
+ */
+LambdaScript.pluck =  function(m) {
+    return function(o) {
+        return o[m];
+    }
+};

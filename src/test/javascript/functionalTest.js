@@ -23,7 +23,9 @@ suite.testRange5 = function() {
 };
 
 suite.testRange5 = function() {
-    Assert.that(range(3, 100, function(a) { return a*3;}), Matcher.array([3, 9, 27, 81]));
+    Assert.that(range(3, 100, function(a) {
+        return a*3;
+    }), Matcher.array([3, 9, 27, 81]));
 };
 
 suite.testFilter = function() {
@@ -102,6 +104,16 @@ suite.testLambda3 = function() {
     var f = lambda('a * b + c');
     Assert.that(f(2, 3, 5), Matcher.is(11));
     Assert.that(f(3, 5, -10), Matcher.is(5));
+};
+
+suite.testcurry = function() {
+    var by2 = curry('a*b', 2);
+    Assert.that(by2(21), Matcher.is(42));
+}
+
+suite.testPluck1 = function() {
+    var a = ['a', 'aa', 'aaa', 'aaaa'];
+    Assert.that(map(pluck('length'), a), Matcher.array([1, 2, 3, 4]));
 };
 
 suite.run();
