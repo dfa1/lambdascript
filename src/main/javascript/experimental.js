@@ -1,3 +1,7 @@
+// LambdaScript: Yet Another Functional Javascript Library; EXPERIMENTAL STUFF
+// (C) 2009, Davide Angelocola <davide.angelocola@gmail.com>
+
+
 /**
  * @function
  *
