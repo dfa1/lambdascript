@@ -6,7 +6,7 @@
     <packaging>jar</packaging>
     <version>1.1-SNAPSHOT</version>
     <name>lambdascript</name>
-    <url>http://maven.apache.org</url>
+    <url>http://bitbucket.org/dfa/lambdascript</url>
 
     <repositories>
         <repository>
