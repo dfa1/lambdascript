@@ -21,35 +21,35 @@ public class LambdaScriptTest {
         context.evaluateReader(scope, new FileReader("src/test/javascript/eulerTest.js"), "", 1, null);
     }
 
-    @Test
-    public void javascript10() throws IOException {
-        runSuite(Context.VERSION_1_0);
-    }
-
-    @Test
-    public void javascript11() throws IOException {
-        runSuite(Context.VERSION_1_1);
-    }
-
-    @Test
-    public void javascript12() throws IOException {
-        runSuite(Context.VERSION_1_2);
-    }
-
-    @Test
-    public void javascript13() throws IOException {
-        runSuite(Context.VERSION_1_3);
-    }
-
-    @Test
-    public void javascript14() throws IOException {
-        runSuite(Context.VERSION_1_4);
-    }
-
-    @Test
-    public void javascript15() throws IOException {
-        runSuite(Context.VERSION_1_5);
-    }
+//    @Test
+//    public void javascript10() throws IOException {
+//        runSuite(Context.VERSION_1_0);
+//    }
+//
+//    @Test
+//    public void javascript11() throws IOException {
+//        runSuite(Context.VERSION_1_1);
+//    }
+//
+//    @Test
+//    public void javascript12() throws IOException {
+//        runSuite(Context.VERSION_1_2);
+//    }
+//
+//    @Test
+//    public void javascript13() throws IOException {
+//        runSuite(Context.VERSION_1_3);
+//    }
+//
+//    @Test
+//    public void javascript14() throws IOException {
+//        runSuite(Context.VERSION_1_4);
+//    }
+//
+//    @Test
+//    public void javascript15() throws IOException {
+//        runSuite(Context.VERSION_1_5);
+//    }
 
     @Test
     public void javascript16() throws IOException {
