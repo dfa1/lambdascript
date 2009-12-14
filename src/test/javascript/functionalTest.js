@@ -60,8 +60,12 @@ suite.testReduceFactorial = function() {
     Assert.that(fact(5), Matcher.is(120));
 };
 
-suite.testMapSquare = function() {
+suite.testMap1= function() {
     Assert.that(map('a*a', [1, 2, 3]), Matcher.array([1, 4, 9]));
+};
+
+suite.testMap2= function() {
+    Assert.that(map(function(e) { return e.toUpperCase(); }, ['foo', 'bar', 'baZ']), Matcher.array(['FOO', 'BAR', 'BAZ']));
 };
 
 suite.testEvery = function() {
