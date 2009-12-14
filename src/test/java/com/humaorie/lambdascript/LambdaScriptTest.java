@@ -18,6 +18,7 @@ public class LambdaScriptTest {
         context.evaluateReader(scope, new FileReader("src/test/java/com/humaorie/lambdascript/test.js"), "test.js", 1, null);
         context.evaluateReader(scope, new FileReader("src/test/java/com/humaorie/lambdascript/timer.js"), "timer.js", 1, null);
         context.evaluateReader(scope, new FileReader("src/test/javascript/functionalTest.js"), "", 1, null);
+        context.evaluateReader(scope, new FileReader("src/test/javascript/eulerTest.js"), "", 1, null);
     }
 
     @Test
