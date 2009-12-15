@@ -37,19 +37,20 @@ suite.testProblem1 = function() {
 
 // problem 2
 function fib(n) {
-    if (n == 1 || n == 2) {
+    if (n == 1 || n == 0) {
         return n;
     } else {
         return fib(n - 1) + fib(n - 2);
     }
 }
 
+// fib serie is: odd odd even odd odd even odd odd even .... forever
 suite.testFib = function() {
-    Assert.that(map(fib, range(10)), Matcher.array([1, 2, 3, 5, 8, 13, 21, 34, 55, 89]));
+    Assert.that(map(fib, range(11)), Matcher.array([1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89]));
 }
 
 suite.testProblem2 = function() {
-    each(compose(println, fib), range(15));
+    each(compose(println, fib), range(20));
 }
 
 // problem 5
