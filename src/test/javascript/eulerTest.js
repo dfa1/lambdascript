@@ -1,4 +1,4 @@
-var suite = new Suite('Euler');
+var suite = new Suite('Project Euler');
 
 function println(object) {
     if (typeof object != 'string') {
@@ -59,6 +59,22 @@ function problem6(n) {
 suite.testProblem6 = function() {
     Assert.that(problem6(10), Matcher.is(2640));
     Assert.that(problem6(100), Matcher.is(25164150));
+}
+
+function fib(n) {
+    if (n == 1 || n == 2) {
+        return n;
+    } else {
+        return fib(n - 1) + fib(n - 2);
+    }
+}
+
+suite.testFib = function() {
+    Assert.that(map(fib, range(10)), Matcher.array([1, 2, 3, 5, 8, 13, 21, 34, 55, 89]));
+}
+
+suite.testProblem2 = function() {
 
 }
+
 suite.run();
