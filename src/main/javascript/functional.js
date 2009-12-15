@@ -286,3 +286,14 @@ LambdaScript.pluck =  function(m) {
         return o[m];
     }
 };
+
+/**
+ * @function
+ *
+ * NO TESTS!
+ */
+LambdaScript.compose = function(f, g) {
+    return function() {
+        return f(g.apply(null, arguments));
+    }
+};
