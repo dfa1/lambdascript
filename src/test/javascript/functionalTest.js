@@ -1,5 +1,13 @@
 var suite = new Suite('functional suite');
 
+suite.testRangeNegative = function() {
+    Assert.that(range(-1), Matcher.array([]));
+};
+
+suite.testRange0 = function() {
+    Assert.that(range(0), Matcher.array([]));
+};
+
 suite.testRange1 = function() {
     Assert.that(range(3), Matcher.array([1, 2, 3]));
 };
