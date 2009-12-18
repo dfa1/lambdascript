@@ -149,6 +149,7 @@ LambdaScript.each = function(e, array) {
 /**
  * @function
  *
+ * AKA: '#inject' in Smalltalk or 'fold' in lisp.
  */
 LambdaScript.reduce = function(e, array, i) {
     var f = LambdaScript._toFunction(e);
@@ -165,6 +166,8 @@ LambdaScript.reduce = function(e, array, i) {
  * 
  * It takes an array and an unary function then it returns a new array by applying
  * the function to each of the elements of the original array (that is not touched).
+ *
+ * AKA: '#collect' in Smalltalk.
  *
  * @example
  * >>> function square(a) { return a*a; }
@@ -196,6 +199,8 @@ LambdaScript.map = function(e, array) {
  * It takes an array and a function, then returns a new array
  * consisting of all the members of the input sequence for which the predicate
  * returns true.
+ *
+ * AKA: #select in Smalltalk.
  */
 LambdaScript.filter = function(e, array) {
     var f = LambdaScript._toFunction(e);
@@ -213,6 +218,7 @@ LambdaScript.filter = function(e, array) {
 /**
  * @function
  *
+ * 'all' maybe a convenient alias for this function.
  */
 LambdaScript.every = function(e, array) {
     var f = LambdaScript._toFunction(e);
@@ -230,6 +236,7 @@ LambdaScript.every = function(e, array) {
 /**
  * @function
  *
+ * 'any' maybe a convenient alias for this function.
  */
 LambdaScript.some = function(e, array) {
     var f = LambdaScript._toFunction(e);
@@ -290,7 +297,12 @@ LambdaScript.pluck =  function(m) {
 /**
  * @function
  *
- * NO TESTS!
+ * @example
+ * var greet    = function(name){ return "hi: " + name; };
+var exclaim  = function(statement){ return statement + "!"; };
+var welcome = _.compose(greet, exclaim);
+welcome('moe');
+=> 'hi: moe!'
  */
 LambdaScript.compose = function(f, g) {
     return function() {
