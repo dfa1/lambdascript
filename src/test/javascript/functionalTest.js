@@ -73,7 +73,9 @@ suite.testMap1= function() {
 };
 
 suite.testMap2= function() {
-    Assert.that(map(function(e) { return e.toUpperCase(); }, ['foo', 'bar', 'baZ']), Matcher.array(['FOO', 'BAR', 'BAZ']));
+    Assert.that(map(function(e) {
+        return e.toUpperCase();
+    }, ['foo', 'bar', 'baZ']), Matcher.array(['FOO', 'BAR', 'BAZ']));
 };
 
 suite.testEvery = function() {
@@ -126,6 +128,17 @@ suite.testcurry = function() {
 suite.testPluck1 = function() {
     var a = ['a', 'aa', 'aaa', 'aaaa'];
     Assert.that(map(pluck('length'), a), Matcher.array([1, 2, 3, 4]));
+};
+
+suite.testCompose1 = function() {
+    var greet = function(name){
+        return "hi " + name;
+    };
+    var exclaim = function(statement){
+        return statement + "!";
+    };
+    var welcome = LambdaScript.compose(greet, exclaim);
+    Assert.that(welcome('dfa'), Matcher.is('hi dfa!'));
 };
 
 suite.run();

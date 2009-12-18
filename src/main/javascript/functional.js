@@ -298,11 +298,11 @@ LambdaScript.pluck =  function(m) {
  * @function
  *
  * @example
- * var greet    = function(name){ return "hi: " + name; };
-var exclaim  = function(statement){ return statement + "!"; };
-var welcome = _.compose(greet, exclaim);
-welcome('moe');
-=> 'hi: moe!'
+ * >>> var greet = function(name){ return "hi: " + name; };
+ * >>> var exclaim  = function(statement){ return statement + "!"; };
+ * >>> var welcome = LambdaScript.compose(greet, exclaim);
+ * >>> welcome('moe');
+ * 'hi: moe!'
  */
 LambdaScript.compose = function(f, g) {
     return function() {
