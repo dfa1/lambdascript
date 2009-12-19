@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<actions>
+        <action>
+            <actionName>CUSTOM-dist</actionName>
+            <displayName>dist</displayName>
+            <goals>
+                <goal>assembly:assembly</goal>
+            </goals>
+            <properties>
+                <maven.test.skip>false</maven.test.skip>
+            </properties>
+            <activatedProfiles>
+                <activatedProfile>dist</activatedProfile>
+            </activatedProfiles>
+        </action>
+    </actions>
