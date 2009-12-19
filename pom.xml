@@ -71,15 +71,23 @@
                     <plugin>
                         <groupId>nl.windgazer</groupId>
                         <artifactId>jsdoctk-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <phase>process-resources</phase>
+                                <goals>
+                                    <goal>jsdoc</goal>
+                                </goals>
+                            </execution>
+                        </executions>
                         <configuration>
-                            <template>jsdoc</template> <!-- Alternatives are not pre-installed for version 2.x-->
-                            <directory>${project.build.directory}/jsdoc</directory>
+                            <template>jsdoc</template>
                             <recurse>1</recurse>
                             <ext>js</ext>
                             <allfunctions>true</allfunctions>
                             <Allfunctions>false</Allfunctions>
                             <privateOption>false</privateOption>
                             <srcDir>src/main/javascript</srcDir>
+                            <directory>${project.build.directory}/doc</directory>
                         </configuration>
                     </plugin>
                     <plugin>

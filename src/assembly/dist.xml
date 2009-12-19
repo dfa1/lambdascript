@@ -26,4 +26,13 @@
             <filtered>false</filtered>
         </file>
     </files>
+    <fileSets>
+        <fileSet>
+            <directory>${project.build.outputDirectory}</directory>
+            <outputDirectory>/doc</outputDirectory>
+            <includes>
+                <include>*.html</include>
+            </includes>
+        </fileSet>
+    </fileSets>
 </assembly>
