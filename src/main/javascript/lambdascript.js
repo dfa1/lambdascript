@@ -1,6 +1,9 @@
-// LambdaScript ${pom.version}: Yet Another Functional Javascript Library
-// (C) 2009, Davide Angelocola <davide.angelocola@gmail.com>
-// http://bitbucket.org/dfa/lambdascript
+/*
+ * LambdaScript ${pom.version}: Yet Another Functional Javascript Library
+ * http://bitbucket.org/dfa/lambdascript
+ *
+ * Copyright (C) 2009, Davide Angelocola <davide.angelocola@gmail.com>
+ */
 
 /**
  * @namespace `LambdaScript` is the namespace for the LambdaScript library.
