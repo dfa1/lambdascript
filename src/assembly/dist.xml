@@ -28,11 +28,8 @@
     </files>
     <fileSets>
         <fileSet>
-            <directory>${project.build.outputDirectory}</directory>
+            <directory>target/doc</directory>
             <outputDirectory>/doc</outputDirectory>
-            <includes>
-                <include>*.html</include>
-            </includes>
         </fileSet>
     </fileSets>
 </assembly>
