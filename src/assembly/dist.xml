@@ -20,5 +20,10 @@
             <outputDirectory>/</outputDirectory>
             <filtered>true</filtered>
         </file>
+        <file>
+            <source>${project.build.outputDirectory}/lambdascript-min.js</source>
+            <outputDirectory>/</outputDirectory>
+            <filtered>false</filtered>
+        </file>
     </files>
 </assembly>
