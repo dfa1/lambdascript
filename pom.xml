@@ -5,7 +5,7 @@
     <groupId>com.humaorie</groupId>
     <artifactId>lambdascript</artifactId>
     <packaging>jar</packaging>
-    <version>1.2-SNAPSHOT</version>
+    <version>1.2</version>
     <name>lambdascript</name>
     <url>http://bitbucket.org/dfa/lambdascript</url>
 
@@ -65,6 +65,7 @@
                     </descriptors>
                 </configuration>
             </plugin>
+            <!--
             <plugin>
                 <groupId>net.sf.alchim</groupId>
                 <artifactId>yuicompressor-maven-plugin</artifactId>
@@ -80,6 +81,24 @@
                         </configuration>
                     </execution>
                 </executions>
+            </plugin>
+            -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>buildnumber-maven-plugin</artifactId>
+                <version>1.0-beta-4</version>
+                <executions>
+                    <execution>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>hgchangeset</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <doCheck>false</doCheck>
+                    <doUpdate>false</doUpdate>
+                </configuration>
             </plugin>
         </plugins>
     </build>

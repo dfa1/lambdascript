@@ -1,5 +1,7 @@
 /*
- * LambdaScript ${pom.version}: Yet Another Functional Javascript Library
+ * LambdaScript "Yet Another Functional Javascript Library"
+ * Version: ${pom.version} (${changeSet} on ${changeSetDate})
+ * 
  * http://bitbucket.org/dfa/lambdascript
  *
  * Copyright (C) 2009, Davide Angelocola <davide.angelocola@gmail.com>

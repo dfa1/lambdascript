@@ -16,7 +16,7 @@
             <outputDirectory>/</outputDirectory>
         </file>
         <file>
-            <source>src/main/javascript/functional.js</source>
+            <source>src/main/javascript/lambdascript.js</source>
             <outputDirectory>/</outputDirectory>
             <filtered>true</filtered>
         </file>
