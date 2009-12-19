@@ -64,6 +64,22 @@
                     </descriptors>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>net.sf.alchim</groupId>
+                <artifactId>yuicompressor-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>jslint</goal>
+                            <goal>compress</goal>
+                        </goals>
+                        <configuration>
+                            <nosuffix>true</nosuffix>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
     <dependencies>
