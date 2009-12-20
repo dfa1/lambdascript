@@ -73,9 +73,10 @@ suite.testMap1= function() {
 };
 
 suite.testMap2= function() {
-    Assert.that(map(function(e) {
+    var toUpperCase = function(e) {
         return e.toUpperCase();
-    }, ['foo', 'bar', 'baZ']), Matcher.array(['FOO', 'BAR', 'BAZ']));
+    };
+    Assert.that(map(toUpperCase, ['foo', 'bar', 'baZ']), Matcher.array(['FOO', 'BAR', 'BAZ']));
 };
 
 suite.testEvery = function() {

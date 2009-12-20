@@ -36,6 +36,8 @@ LambdaScript.install = function() {
 /**
  * @function
  *
+ * @param [String] the expression
+ *
  * unary/binary/ternary function factory
  *
  * @example
@@ -56,10 +58,12 @@ LambdaScript.lambda = function(string) {
 /**
  * @function
  *
- * @param [Number] begin, 1 when not specified
+ * @param [Number] begin, defaults 1 when not specified
  * @param [Number] end, always specified
- * @param [Number|String|Function] step function
- * 
+ * @param [Number|String|Function] step 
+ *
+ * A very handy array builder.
+ *
  * @example
  * >>> range(5)
  * [1, 2, 3, 4, 5]
@@ -79,7 +83,6 @@ LambdaScript.lambda = function(string) {
  * @example
  * >>> range(3, 100, function(a) { return a*3;})
  * [3, 9, 27, 81]
- *
  */
 LambdaScript.range = function() {
     var begin = 1;
@@ -143,6 +146,16 @@ LambdaScript._toFunction = function(e) {
 /**
  * @function
  *
+ * @param [Function] a function to invoke for each element
+ * @param [Array] an array
+ *
+ * Iterates over 'array', yielding each in turn to the function 'e'.
+ *
+ * @example
+ *
+ * >>> function toUpperCase(s) { return s.toUpperCase(); }
+ * >>> map(toUpperCase, ['foo', 'bar', 'baZ'])
+ * ['FOO', 'BAR', 'BAZ']
  */
 LambdaScript.each = function(e, array) {
     var f = LambdaScript._toFunction(e);
@@ -155,7 +168,18 @@ LambdaScript.each = function(e, array) {
 /**
  * @function
  *
+ * @param [Function] a function with two parameters
+ * @param [Array] a array to reduce
+ * @param the initial value
+ *
+ * Reduce boils down 'array' into a single value using 'i' ss the initial state
+ * of the reduction, and each successive step of it should be returned by 'e'.
+ *
  * AKA: '#inject' in Smalltalk or 'fold' in lisp.
+ *
+ * @example
+ * >>> reduce(lambda('a+b'), [1, 2, 3, 4], 0) // sum of range(1, 4)
+ * 10
  */
 LambdaScript.reduce = function(e, array, i) {
     var f = LambdaScript._toFunction(e);
@@ -169,9 +193,12 @@ LambdaScript.reduce = function(e, array, i) {
 
 /**
  * @function
- * 
- * It takes an array and an unary function then it returns a new array by applying
- * the function to each of the elements of the original array (that is not touched).
+ *
+ * @param [Function] a mapping function
+ * @param [Array] an array 
+ *
+ * Produces a new array of values by mapping each value in 'array' through
+ * the unary transformation function 'e'. 
  *
  * AKA: '#collect' in Smalltalk.
  *
@@ -201,12 +228,18 @@ LambdaScript.map = function(e, array) {
 
 /***
  * @function
- * 
- * It takes an array and a function, then returns a new array
- * consisting of all the members of the input sequence for which the predicate
- * returns true.
+ *
+ * @param [Function] a truth test
+ * @param [Array] an array
+ *
+ * Looks through each value in 'array', returning a new array of all the values
+ * that pass the truth test 'e'.
  *
  * AKA: #select in Smalltalk.
+ *
+ * @example
+ * >>> filter(lambda('a%2==0'), range(1, 10))
+ * [2, 4, 6, 8, 10]
  */
 LambdaScript.filter = function(e, array) {
     var f = LambdaScript._toFunction(e);
@@ -223,6 +256,11 @@ LambdaScript.filter = function(e, array) {
 
 /**
  * @function
+ *
+ * @param [Function] the truth test
+ * @param [Array] an array
+ *
+ * Returns true if all of the values in 'array' pass the truth test 'e'.
  *
  * 'all' maybe a convenient alias for this function.
  */
@@ -241,6 +279,11 @@ LambdaScript.every = function(e, array) {
 
 /**
  * @function
+ *
+ * @param [Function] the truth test
+ * @param [Array] an array
+ *
+ * Returns true if <b>any</b> of the values in 'array' pass the truth test 'e'.
  *
  * 'any' maybe a convenient alias for this function.
  */
@@ -293,8 +336,15 @@ LambdaScript.curry = function(e) {
 /**
  * @function
  *
+ * @param [String] a property name
+ *
+ * Build a function that returns the value of the property 'm'.
+ *
+ * @example
+ * >>> map(pluck('length'), ['a', 'aa', 'aaa', 'aaaa'])
+ * [ 1, 2, 3, 4 ]
  */
-LambdaScript.pluck =  function(m) {
+LambdaScript.pluck = function(m) {
     return function(o) {
         return o[m];
     }
@@ -302,6 +352,9 @@ LambdaScript.pluck =  function(m) {
 
 /**
  * @function
+ *
+ * @param [Function] a function
+ * @param [Function] another function
  *
  * @example
  * >>> var greet = function(name){ return "hi: " + name; };
@@ -315,3 +368,6 @@ LambdaScript.compose = function(f, g) {
         return f(g.apply(null, arguments));
     }
 };
+
+/* jsdoc: http://code.google.com/p/jsdoc-toolkit/w/list */
+
