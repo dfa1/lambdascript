@@ -8,21 +8,28 @@
  */
 
 /**
+ * @author <a href="mailto:davide.angelocola@gmail.com">Davide Angelocola</a>
+ * @version ${pom.version}
+ */
+
+/**
  * @namespace `LambdaScript` is the namespace for the LambdaScript library.
  */
 var LambdaScript = this.LambdaScript || {};
 
 /**
- * @function
- * 
  * This function copies all the public functions in `LambdaScript` except itself
  * into the global namespace.
+ *
+ * @function
  * 
  * @example
- * LambdaScript.install()
+ * >>> LambdaScript.install()
  */
 LambdaScript.install = function() {
-    var source = LambdaScript, target = (function() {
+    var source = LambdaScript;
+    /** @ignore */
+    var target = (function() {
         return this;
     })(); // References the global object.
 
@@ -34,11 +41,11 @@ LambdaScript.install = function() {
 };
 
 /**
+ * unary/binary/ternary function factory.
+ *
  * @function
- *
- * @param [String] the expression
- *
- * unary/binary/ternary function factory
+ * @param {String} expr an expression
+ * @returns {Function} a function that evaluates to 'expr'
  *
  * @example
  * lambda('-a') is equivalent to function negate(a) { return -a; }
@@ -49,20 +56,20 @@ LambdaScript.install = function() {
  * @example
  * lambda('a * b + c') is equivalent to function (a, b, c) { return a * b + c; }
  */
-LambdaScript.lambda = function(string) {
+LambdaScript.lambda = function(expr) {
     return function(a, b, c) {
-        return eval(string);
+        return eval(expr);
     };
 };
 
 /**
+ * Handy array builder.
+ *
  * @function
- *
- * @param [Number] begin, defaults 1 when not specified
- * @param [Number] end, always specified
- * @param [Number|String|Function] step 
- *
- * A very handy array builder.
+ * @param [Number] begin defaults 1 when not specified
+ * @param [Number] end always specified
+ * @param [Number|String|Function] step a function or a costant
+ * @returns {Array} a new array
  *
  * @example
  * >>> range(5)
@@ -107,6 +114,7 @@ LambdaScript.range = function() {
 
             if (typeof arguments[2] == 'number') {
                 var s = arguments[2];
+                /** @ignore */
                 step = function(i) {
                     return i + s;
                 };
@@ -130,9 +138,7 @@ LambdaScript.range = function() {
     return result;
 };
 
-/**
- * @ignore 
- */
+/** @ignore */
 LambdaScript._toFunction = function(e) {
     if (typeof e === 'string') {
         return LambdaScript.lambda(e);
@@ -144,12 +150,12 @@ LambdaScript._toFunction = function(e) {
 };
 
 /**
- * @function
- *
- * @param [Function] a function to invoke for each element
- * @param [Array] an array
- *
  * Iterates over 'array', yielding each in turn to the function 'e'.
+ *
+ * @function
+ * @param {Function} e a unary function to invoke for each element
+ * @param {Array} array an array
+ * @returns {Array} the 'array' itself
  *
  * @example
  *
@@ -163,19 +169,21 @@ LambdaScript.each = function(e, array) {
     for (var i = 0; i < array.length; i++) {
         f(array[i], i);
     }
+
+    return array;
 };
 
 /**
- * @function
- *
- * @param [Function] a function with two parameters
- * @param [Array] a array to reduce
- * @param the initial value
- *
  * Reduce boils down 'array' into a single value using 'i' ss the initial state
  * of the reduction, and each successive step of it should be returned by 'e'.
  *
  * AKA: '#inject' in Smalltalk or 'fold' in lisp.
+ *
+ * @function
+ * @param {Function} e a binary function
+ * @param {Array} array an array to reduce
+ * @param {Object} i the initial value
+ * @returns {Array} a new array
  *
  * @example
  * >>> reduce(lambda('a+b'), [1, 2, 3, 4], 0) // sum of range(1, 4)
@@ -192,15 +200,15 @@ LambdaScript.reduce = function(e, array, i) {
 };
 
 /**
- * @function
- *
- * @param [Function] a mapping function
- * @param [Array] an array 
- *
  * Produces a new array of values by mapping each value in 'array' through
- * the unary transformation function 'e'. 
+ * the unary transformation function 'e'.
  *
  * AKA: '#collect' in Smalltalk.
+ *
+ * @function
+ * @param {Function} e an unary function
+ * @param {Array} array an array
+ * @returns {Array} a new array
  *
  * @example
  * >>> function square(a) { return a*a; }
@@ -227,15 +235,15 @@ LambdaScript.map = function(e, array) {
 };
 
 /***
- * @function
- *
- * @param [Function] a truth test
- * @param [Array] an array
- *
  * Looks through each value in 'array', returning a new array of all the values
  * that pass the truth test 'e'.
  *
  * AKA: #select in Smalltalk.
+ *
+ * @function
+ * @param {Function} e a truth test (a unary function)
+ * @param {Array} array an array
+ * @returns {Array} a new array 
  *
  * @example
  * >>> filter(lambda('a%2==0'), range(1, 10))
@@ -255,14 +263,16 @@ LambdaScript.filter = function(e, array) {
 };
 
 /**
- * @function
- *
- * @param [Function] the truth test
- * @param [Array] an array
- *
  * Returns true if all of the values in 'array' pass the truth test 'e'.
- *
  * 'all' maybe a convenient alias for this function.
+ *
+ * @function
+ * @param {Function} e a truth test (a unary function)
+ * @param {Array} array an array
+ * @returns {Boolean}
+ *
+ * @example
+ *
  */
 LambdaScript.every = function(e, array) {
     var f = LambdaScript._toFunction(e);
@@ -278,14 +288,15 @@ LambdaScript.every = function(e, array) {
 };
 
 /**
- * @function
- *
- * @param [Function] the truth test
- * @param [Array] an array
- *
  * Returns true if <b>any</b> of the values in 'array' pass the truth test 'e'.
- *
  * 'any' maybe a convenient alias for this function.
+ *
+ * @function
+ * @param {Function} e the truth test (a unary function)
+ * @param {Array} array an array
+ * @returns {Boolean}
+ *
+ * @example
  */
 LambdaScript.some = function(e, array) {
     var f = LambdaScript._toFunction(e);
@@ -301,8 +312,17 @@ LambdaScript.some = function(e, array) {
 };
 
 /**
- * @function
+ * Bind the last n-parameters to a function.
  *
+ * @function
+ * @param {Function} e a function
+ * @param [Arguments] ...
+ * @returns {Function} a function
+ *
+ * @example
+ * >>> var mulBy2 = curry('a*b', 2);
+ * >>> mulBy2(21)
+ * 42
  */
 LambdaScript.curry = function(e) {
     var f = LambdaScript._toFunction(e);
@@ -313,11 +333,11 @@ LambdaScript.curry = function(e) {
 };
 
 /**
- * @function
- *
- * @param [String] a property name
- *
  * Build a function that returns the value of the property 'm'.
+ *
+ * @function
+ * @param {String} m a property name
+ * @returns {Function} a pluck function
  *
  * @example
  * >>> map(pluck('length'), ['a', 'aa', 'aaa', 'aaaa'])
@@ -330,10 +350,12 @@ LambdaScript.pluck = function(m) {
 };
 
 /**
- * @function
+ * Given two functions, 'f' and 'g', returns another function f(g(x)).
  *
- * @param [Function] a function
- * @param [Function] another function
+ * @function
+ * @param {Function} f a function
+ * @param {Function} g another function
+ * @returns {Function} the composed function
  *
  * @example
  * >>> var greet = function(name){ return "hi: " + name; };
