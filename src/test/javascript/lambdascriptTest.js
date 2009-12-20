@@ -113,7 +113,7 @@ suite.testLambda3 = function() {
     Assert.that(f(3, 5, -10), Matcher.is(5));
 };
 
-suite.testcurry = function() {
+suite.testCurry = function() {
     var by2 = curry('a*b', 2);
     Assert.that(by2(21), Matcher.is(42));
 }
