@@ -4,21 +4,20 @@
         <title></title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta content=""
-        <script language="javascript" src="functional.js"></script>
+        <script language="javascript" src="lambdascript.js"></script>
     </head>
     <body>
-        <h1>LambdaScript ${pom.version}: another functional javascript library</h1>
-
-
+        <h1>LambdaScript ${pom.version}</h1>
+        <h2>Another functional javascript library</h2>
         <p>
             <script language="javascript">
                 LambdaScript.install();
-                alert(reduce([1,2,3], 'a+b', 0));
+                //alert(reduce([1,2,3], 'a+b', 0));
             </script>
         </p>
+
         <p>
             In order to build documentation:
-
             <code>$ mvn jsdoctk:jsdoc</code>
         </p>
     </body>
