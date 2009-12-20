@@ -1,15 +1,19 @@
 /*
- * LambdaScript "Yet Another Functional Javascript Library"
- * Version: ${pom.version} (${changeSet} on ${changeSetDate})
- * 
+ * LambdaScript ${pom.version} (${changeSet} on ${changeSetDate})
  * http://bitbucket.org/dfa/lambdascript
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- * Copyright (C) 2009, Davide Angelocola <davide.angelocola@gmail.com>
- */
-
-/**
- * @author <a href="mailto:davide.angelocola@gmail.com">Davide Angelocola</a>
- * @version ${pom.version}
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 /**
