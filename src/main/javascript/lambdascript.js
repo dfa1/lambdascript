@@ -304,27 +304,6 @@ LambdaScript.some = function(e, array) {
  * @function
  *
  */
-LambdaScript.detect = function(x, array, e) {
-    if (e === undefined) {
-        e = 'a===b';
-    }
-
-    var f = LambdaScript._toFunction(e);
-    var result = -1;
-
-    LambdaScript.each(function(element, index) {
-        if (f(x, element)) {
-            result = index;
-        }
-    }, array);
-
-    return result;
-};
-
-/**
- * @function
- *
- */
 LambdaScript.curry = function(e) {
     var f = LambdaScript._toFunction(e);
     var innerArgs = Array.prototype.slice.call(arguments, 1);

@@ -95,14 +95,6 @@ suite.testSome2 = function() {
     Assert.that(some(lambda('a>6'), [1, 2, 3, 4]), Matcher.is(false));
 };
 
-suite.testDetect = function() {
-    Assert.that(detect(4, [1, 2, 3, 4]), Matcher.is(3));
-}
-
-suite.testDetect2 = function() {
-    Assert.that(detect(4, [1, 2, '3', 4], 'a==b'), Matcher.is(3));
-}
-
 suite.testLambda = function() {
     var neg = lambda('-a');
     Assert.that(neg(42), Matcher.is(-42));

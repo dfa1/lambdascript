@@ -131,3 +131,29 @@ suite.testAround = function() {
 //
 //    return res;
 //};
+
+// detect
+LambdaScript.detect = function(x, array, e) {
+    if (e === undefined) {
+        e = 'a===b';
+    }
+
+    var f = LambdaScript._toFunction(e);
+    var result = -1;
+
+    LambdaScript.each(function(element, index) {
+        if (f(x, element)) {
+            result = index;
+        }
+    }, array);
+
+    return result;
+};
+
+suite.testDetect = function() {
+    Assert.that(detect(4, [1, 2, 3, 4]), Matcher.is(3));
+}
+
+suite.testDetect2 = function() {
+    Assert.that(detect(4, [1, 2, '3', 4], 'a==b'), Matcher.is(3));
+}
