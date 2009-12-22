@@ -371,7 +371,28 @@ LambdaScript.pluck = function(m) {
 LambdaScript.compose = function(f, g) {
     return function() {
         return f(g.apply(null, arguments));
-    }
+    };
+};
+
+/**
+ * Given a function 'f' returns another function that caches memoize results.
+ *
+ * @function
+ * @param {Function} f a function
+ * @returns {Function} a memoized version of 'f'
+ */
+LambdaScript.memoize = function(f) {
+    var cache = {};
+
+    return function() {
+        var args = Array.prototype.splice.call(arguments, 0);
+
+        if (!(args in cache)) {
+            cache[args] = f.apply(this, args);
+        }
+
+        return cache[args];
+    };
 };
 
 /* jsdoc: http://code.google.com/p/jsdoc-toolkit/w/list */

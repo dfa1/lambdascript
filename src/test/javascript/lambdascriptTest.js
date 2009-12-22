@@ -134,4 +134,11 @@ suite.testCompose1 = function() {
     Assert.that(welcome('dfa'), Matcher.is('hi dfa!'));
 };
 
+suite.testMemoize = function() {
+    var add = memoize(lambda('a + b'));
+    Assert.that(add(1,2), Matcher.is(3)); // miss
+    Assert.that(add(1,3), Matcher.is(4)); // miss
+    Assert.that(add(1,2), Matcher.is(3)); // hit!
+};
+
 suite.run();
