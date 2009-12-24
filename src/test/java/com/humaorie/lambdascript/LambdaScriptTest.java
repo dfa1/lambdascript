@@ -20,7 +20,7 @@ public class LambdaScriptTest {
         context.evaluateReader(scope, new FileReader("src/test/javascript/lambdascriptTest.js"), "", 1, null);
         context.evaluateReader(scope, new FileReader("src/test/javascript/eulerTest.js"), "", 1, null);
     }
-
+    
 //    @Test
 //    public void javascript10() throws IOException {
 //        runSuite(Context.VERSION_1_0);
