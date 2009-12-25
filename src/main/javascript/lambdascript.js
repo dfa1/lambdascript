@@ -21,6 +21,29 @@
  */
 var LambdaScript = this.LambdaScript || {};
 
+
+/** @ignore */
+LambdaScript._toFunction = function(e) {
+    if (typeof e === 'string') {
+        return LambdaScript.lambda(e);
+    } else if (typeof e === 'function') {
+        return e;
+    } else {
+        throw 'Not a string or function';
+    }
+};
+
+/** @ignore */
+LambdaScript._toIterable = function(object) {
+    if (object.constructor === Array) {
+        return new ArrayIterator(object);
+    } else if (object.next && object.hasNext) { // duck typing
+        return object;
+    } else {
+        throw 'Not iterable';
+    }
+}
+
 /**
  * This function copies all the public functions in `LambdaScript` except itself
  * into the global namespace.
@@ -140,17 +163,6 @@ LambdaScript.range = function() {
     }
 
     return result;
-};
-
-/** @ignore */
-LambdaScript._toFunction = function(e) {
-    if (typeof e === 'string') {
-        return LambdaScript.lambda(e);
-    } else if (typeof e === 'function') {
-        return e;
-    } else {
-        throw 'Not a string or function';
-    }
 };
 
 /**
