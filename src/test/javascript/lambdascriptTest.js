@@ -222,5 +222,3 @@ suite.testMemoize = function() {
     Assert.that(add(1,3), Matcher.is(4)); // miss
     Assert.that(add(1,2), Matcher.is(3)); // hit!
 };
-
-suite.run();

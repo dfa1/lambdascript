@@ -7,7 +7,7 @@ import org.mozilla.javascript.Context;
 import org.mozilla.javascript.Scriptable;
 
 // TODO: write a custom runner
-public class LambdaScriptTest {
+public class OldLambdaScriptTest {
 
     public void runSuite(int javascriptVersion) throws IOException {
         Context context = Context.enter();

@@ -1,49 +1,5 @@
 function Suite(name) {
-
-    // TODO: customizable hooks
-    function defaultEndTestHook(name, elapsed, result) {
-        java.lang.System.out.println("'" + name + "' in " + elapsed + ' ms: ' + result);
-        if (result != 'Ok.') {
-            throw "'" + name + "' test failed";
-        }
-    }
-
-    function defaultEndSuiteHook(failures, tests, elapsed) {
-        java.lang.System.out.println(tests + ' tests in ' + elapsed + ' ms: ' + failures + ' failures');
-    }
-
     this.name = name;
-    this.totalTests = 0;
-    this.failures = 0;
-    this.timer = new Timer();
-
-    this.run = function() {
-        this.timer.start();
-
-        for (var property in this) {
-            if (/^test/.test(property)) {
-                var test = this[property];
-                var testTimer = new Timer;
-                var result = 'Ok.';
-                testTimer.start();
-
-                try {
-                    test();
-                } catch (e) {
-                    this.failures++;
-                    result = e;
-                } finally {
-                    testTimer.stop();
-                    var elapsed = testTimer.elapsed()
-                    defaultEndTestHook(property, elapsed, result);
-                    this.totalTests++;
-                }
-            }
-        }
-
-        this.timer.stop();
-        defaultEndSuiteHook(this.failures, this.totalTests, this.timer.elapsed())
-    };
 }
 
 var Assert = {
