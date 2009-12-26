@@ -2,7 +2,6 @@ package com.humaorie.lambdascript;
 
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.Arrays;
 import org.junit.runner.Description;
 import org.junit.runner.Runner;
 import org.junit.runner.notification.Failure;
@@ -16,6 +15,7 @@ import org.mozilla.javascript.Scriptable;
 public class RhinoRunner extends Runner {
 
     private final Class cls;
+    private final String sourceFile;
 
     public RhinoRunner(Class cls) throws Exception {
         if (!cls.isAnnotationPresent(JavaScriptSourceFile.class)) {
@@ -23,11 +23,12 @@ public class RhinoRunner extends Runner {
         }
 
         this.cls = cls;
+        this.sourceFile = ((JavaScriptSourceFile) cls.getAnnotation(JavaScriptSourceFile.class)).value();
     }
 
     @Override
     public Description getDescription() {
-        return Description.createTestDescription(String.class, "lambdascript");
+        return Description.createTestDescription(String.class, sourceFile);
     }
 
     @Override
@@ -45,10 +46,10 @@ public class RhinoRunner extends Runner {
             context.evaluateString(scope, "LambdaScript.install();", "string", 1, null);
             context.evaluateReader(scope, new FileReader("src/test/java/com/humaorie/lambdascript/test.js"), "test.js", 1, null);
 
-            // 
-            JavaScriptSourceFile annotation = (JavaScriptSourceFile) cls.getAnnotation(JavaScriptSourceFile.class);
-            context.evaluateReader(scope, new FileReader(annotation.value()), "", 1, null);
+            // evaluates sourceFile
+            context.evaluateReader(scope, new FileReader(sourceFile), sourceFile, 1, null);
 
+            // run all functions that starts with "test" in the object "suite"
             Scriptable suite = (Scriptable) scope.get("suite", scope);
 
             for (Object name : NativeObject.getPropertyIds(suite)) {
