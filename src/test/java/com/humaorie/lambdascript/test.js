@@ -1,3 +1,4 @@
+// test helpers
 var Assert = {
     that: function(actual, matcher) {
         var passed = matcher.matches(actual);
@@ -29,21 +30,6 @@ function Description() {
         return this.description;
     }
 }
-
-var Matcher = {
-    is: function (expected) {
-        return new IsMatcher(expected);
-    },
-
-    not: function (matcher) {
-        return new NotMatcher(matcher);
-    },
-
-    // TODO: merge with 'is'
-    array: function (expected) {
-        return new ArrayMatcher(expected);
-    }
-};
 
 function NotMatcher(matcher) {
     this.matcher = matcher;
@@ -138,4 +124,24 @@ function TypeOfMatcher(expected) {
     this.describeTo = function(description) {
         description.append("expected: {1} got: {2}", this.expected, this.actual);
     };
+}
+
+// matcher interface
+function isArray(object) {
+    return object
+    && typeof object === 'object'
+    && typeof object.length === 'number'
+    && !(object.propertyIsEnumerable('lenght'));
+}
+
+function is(expected) {
+    if (isArray(expected)) {
+        return new ArrayMatcher(expected);
+    } else {
+        return new IsMatcher(expected);
+    }
+}
+
+function not(matcher) {
+    return new NotMatcher(matcher);
 }

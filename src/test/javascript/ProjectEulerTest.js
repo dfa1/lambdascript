@@ -31,8 +31,8 @@ function problem1(upTo) {
 }
 
 suite.testProblem1 = function() {
-    Assert.that(problem1(9), Matcher.is(23));
-    Assert.that(problem1(999), Matcher.is(233168));
+    Assert.that(problem1(9), is(23));
+    Assert.that(problem1(999), is(233168));
 };
 
 // problem 2
@@ -46,7 +46,7 @@ function fib(n) {
 
 // fib serie is: odd odd even odd odd even odd odd even .... forever
 suite.testFib = function() {
-    Assert.that(map(fib, range(11)), Matcher.array([1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89]));
+    Assert.that(map(fib, range(11)), is([1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89]));
 };
 
 suite.testProblem2 = function() {
@@ -80,6 +80,6 @@ function problem6(n) {
 }
 
 suite.testProblem6 = function() {
-    Assert.that(problem6(10), Matcher.is(2640));
-    Assert.that(problem6(100), Matcher.is(25164150));
+    Assert.that(problem6(10), is(2640));
+    Assert.that(problem6(100), is(25164150));
 };
