@@ -1,8 +1,8 @@
 package com.humaorie.lambdascript;
 
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Arrays;
 import org.junit.runner.Description;
 import org.junit.runner.Runner;
 import org.junit.runner.notification.Failure;
@@ -15,8 +15,14 @@ import org.mozilla.javascript.Scriptable;
 
 public class RhinoRunner extends Runner {
 
+    private final Class cls;
+
     public RhinoRunner(Class cls) throws Exception {
-        // required by JUnit
+        if (!cls.isAnnotationPresent(JavaScriptSourceFile.class)) {
+            throw new IllegalArgumentException("missing @JavaScriptSourceFile annotation");
+        }
+
+        this.cls = cls;
     }
 
     @Override
@@ -31,30 +37,30 @@ public class RhinoRunner extends Runner {
 
     private void setup(RunNotifier notifier) {
         try {
+            // dependencies
             Context context = Context.enter();
             context.setLanguageVersion(Context.VERSION_1_5);
             Scriptable scope = context.initStandardObjects();
             context.evaluateReader(scope, new FileReader("src/main/javascript/lambdascript.js"), "lambdascript.js", 1, null);
             context.evaluateString(scope, "LambdaScript.install();", "string", 1, null);
             context.evaluateReader(scope, new FileReader("src/test/java/com/humaorie/lambdascript/test.js"), "test.js", 1, null);
-            context.evaluateReader(scope, new FileReader("src/test/javascript/lambdascriptTest.js"), "", 1, null);
-            //context.evaluateReader(scope, new FileReader("src/test/javascript/eulerTest.js"), "", 1, null);
 
-            // getting Suite and invoke the run method
+            // 
+            JavaScriptSourceFile annotation = (JavaScriptSourceFile) cls.getAnnotation(JavaScriptSourceFile.class);
+            context.evaluateReader(scope, new FileReader(annotation.value()), "", 1, null);
+
             Scriptable suite = (Scriptable) scope.get("suite", scope);
 
             for (Object name : NativeObject.getPropertyIds(suite)) {
                 String propertyName = (String) name;
 
                 if (propertyName.startsWith("test")) {
-                    // we are interested only in test functions
                     Object property = NativeObject.getProperty(suite, (String) name);
 
                     if (property instanceof Function) {
                         Function test = (Function) property;
                         notifier.fireTestStarted(Description.createTestDescription(String.class, propertyName));
                         test.call(context, scope, suite, null);
-
                         notifier.fireTestFinished(Description.createTestDescription(String.class, propertyName));
                     }
                 }

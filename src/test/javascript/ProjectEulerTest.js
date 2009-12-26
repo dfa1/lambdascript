@@ -1,4 +1,4 @@
-var suite = new Suite('Project Euler');
+var suite = {};
 
 // utils
 function println(object) {
@@ -33,7 +33,7 @@ function problem1(upTo) {
 suite.testProblem1 = function() {
     Assert.that(problem1(9), Matcher.is(23));
     Assert.that(problem1(999), Matcher.is(233168));
-}
+};
 
 // problem 2
 function fib(n) {
@@ -47,11 +47,11 @@ function fib(n) {
 // fib serie is: odd odd even odd odd even odd odd even .... forever
 suite.testFib = function() {
     Assert.that(map(fib, range(11)), Matcher.array([1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89]));
-}
+};
 
 suite.testProblem2 = function() {
     each(compose(println, fib), range(20));
-}
+};
 
 // problem 5
 function smallestIntegerDividedBy(factors) {
@@ -63,7 +63,8 @@ function problem5(n) {
 }
 
 suite.testProblem5 = function() {
-    }
+    return 'TODO';
+};
 
 // problem 6: naive version
 function sumOfSquares(n) {
@@ -81,7 +82,4 @@ function problem6(n) {
 suite.testProblem6 = function() {
     Assert.that(problem6(10), Matcher.is(2640));
     Assert.that(problem6(100), Matcher.is(25164150));
-}
-
-// run all tests
-suite.run();
+};

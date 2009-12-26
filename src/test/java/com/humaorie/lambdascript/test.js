@@ -1,7 +1,3 @@
-function Suite(name) {
-    this.name = name;
-}
-
 var Assert = {
     that: function(actual, matcher) {
         var passed = matcher.matches(actual);

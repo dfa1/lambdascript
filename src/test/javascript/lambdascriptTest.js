@@ -1,4 +1,4 @@
-var suite = new Suite('functional suite');
+var suite = {};
 
 suite.testCompose1 = function() {
     var greet = function(name) {
