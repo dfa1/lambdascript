@@ -127,6 +127,8 @@ function TypeOfMatcher(expected) {
 }
 
 // matcher interface
+
+// from "JavaScript: the good parts", pp. 106 
 function isArray(object) {
     return object
     && typeof object === 'object'
