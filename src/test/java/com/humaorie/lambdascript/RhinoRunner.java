@@ -14,7 +14,6 @@ import org.mozilla.javascript.Scriptable;
 
 public class RhinoRunner extends Runner {
 
-    private final Class cls;
     private final String sourceFile;
 
     public RhinoRunner(Class cls) throws Exception {
@@ -22,7 +21,6 @@ public class RhinoRunner extends Runner {
             throw new IllegalArgumentException("missing @JavaScriptSourceFile annotation");
         }
 
-        this.cls = cls;
         this.sourceFile = ((JavaScriptSourceFile) cls.getAnnotation(JavaScriptSourceFile.class)).value();
     }
 
