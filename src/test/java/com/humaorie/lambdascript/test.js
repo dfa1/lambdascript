@@ -146,7 +146,19 @@ function ArrayMatcher(expected) {
     };
 
     this.describeTo = function(description) {
-        description.append("expected: {1} got: {2}", this.expected, this.actual);
+        var exp = this.expected.toString();
+
+        if (exp.length == 0) {
+            exp = '[]';
+        }
+
+        var act = this.actual.toString();
+
+        if (act.length == 0) {
+            act = '[]';
+        }
+        
+        description.append("expected: {1} got: {2}", exp, act);
     };
 }
 
