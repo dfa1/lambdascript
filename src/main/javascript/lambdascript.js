@@ -35,15 +35,70 @@ LambdaScript._toFunction = function(e) {
 };
 
 /** @ignore */
-LambdaScript._toIterable = function(object) {
-    if (object.constructor === Array) {
-        return new ArrayIterator(object);
-    } else if (object.next && object.hasNext) { // duck typing
-        return object;
+LambdaScript._toIterator = function(iterable) {
+    if (iterable.constructor === Array) {
+        return new LambdaScript._ArrayIterator(iterable);
+    } else if (iterable.next && iterable.hasNext) {
+        return iterable;
     } else {
         throw 'Not iterable';
     }
 }
+
+/** @ignore */
+LambdaScript._RangeIterator = function(start, stopAt, stepBy) {
+    this.stopAt = stopAt;
+    this.step = stepBy;
+    this.i = start;
+
+    this.next = function() {
+        var res = this.i;
+        this.i = this.step(this.i);
+        return res;
+    };
+
+    this.hasNext = function() {
+        return this.i <= this.stopAt;
+    };
+
+    // convert the rest of this iterator to a regular array
+    this.toArray = function() {
+        var result = [];
+
+        for (var j = this.i; j <= this.stopAt; j = this.step(j)) {
+            result.push(j);
+        }
+
+        return result;
+    };
+
+    this.toString = function() {
+        return 'RangeIterator';
+    };
+};
+
+/** @ignore */
+LambdaScript._ArrayIterator = function(array) {
+    this.array = array;
+    this.i = 0;
+
+    this.next = function() {
+        return this.array[this.i++];
+    };
+
+    this.hasNext = function() {
+        return this.i < this.array.length;
+    };
+
+    // returns a copy of this array
+    this.toArray = function() {
+        return Array.prototype.slice.call(this.array);
+    };
+
+    this.toString = function() {
+        return 'ArrayIterator';
+    };
+};
 
 /**
  * This function copies all the public functions in `LambdaScript` except itself
@@ -157,13 +212,7 @@ LambdaScript.range = function() {
             break;
     }
 
-    var result = [];
-
-    for (var i = begin; i <= end; i = step(i)) {
-        result.push(i);
-    }
-
-    return result;
+    return new LambdaScript._RangeIterator(begin, end, step);
 };
 
 /**
@@ -180,14 +229,15 @@ LambdaScript.range = function() {
  * >>> map(toUpperCase, ['foo', 'bar', 'baZ'])
  * ['FOO', 'BAR', 'BAZ']
  */
-LambdaScript.each = function(e, array) {
-    var f = LambdaScript._toFunction(e);
-    
-    for (var i = 0; i < array.length; i++) {
-        f(array[i], i);
+LambdaScript.each = function(e, iterable) {
+    var fn = LambdaScript._toFunction(e);
+    var iterator = LambdaScript._toIterator(iterable);
+
+    while (iterator.hasNext()) {
+        fn(iterator.next());
     }
 
-    return array;
+    return iterable;
 };
 
 /**
@@ -198,20 +248,22 @@ LambdaScript.each = function(e, array) {
  *
  * @function
  * @param {Function} e a binary function
- * @param {Array} array an array to reduce
- * @param {Object} i the initial value
+ * @param {Array} iterable an array to reduce
+ * @param {Object} initialValue the initial value
  * @returns {Array} a new array
  *
  * @example
  * >>> reduce(lambda('a+b'), [1, 2, 3, 4], 0) // sum of range(1, 4)
  * 10
  */
-LambdaScript.reduce = function(e, array, i) {
-    var f = LambdaScript._toFunction(e);
+LambdaScript.reduce = function(e, iterable, initialValue) {
+    var i = initialValue;
+    var fn = LambdaScript._toFunction(e);
+    var iterator = LambdaScript._toIterator(iterable);
 
     LambdaScript.each(function(element) {
-        i = f(i, element);
-    }, array);
+        i = fn(i, element);
+    }, iterator);
 
     return i;
 };
@@ -224,7 +276,7 @@ LambdaScript.reduce = function(e, array, i) {
  *
  * @function
  * @param {Function} e an unary function
- * @param {Array} array an array
+ * @param {Array} iterable an array
  * @returns {Array} a new array
  *
  * @example
@@ -240,13 +292,14 @@ LambdaScript.reduce = function(e, array, i) {
  * >>> map('a*a', [2, 3, 4, 5])
  * [4, 9, 16, 25]
  */
-LambdaScript.map = function(e, array) {
-    var f = LambdaScript._toFunction(e);
+LambdaScript.map = function(e, iterable) {
+    var fn = LambdaScript._toFunction(e);
+    var iterator = LambdaScript._toIterator(iterable);
     var result = [];
     
     LambdaScript.each(function (element) {
-        result.push(f(element));
-    }, array);
+        result.push(fn(element));
+    }, iterator);
 
     return result;
 };
@@ -266,15 +319,16 @@ LambdaScript.map = function(e, array) {
  * >>> filter(lambda('a%2==0'), range(1, 10))
  * [2, 4, 6, 8, 10]
  */
-LambdaScript.filter = function(e, array) {
-    var f = LambdaScript._toFunction(e);
+LambdaScript.filter = function(e, iterable) {
+    var fn = LambdaScript._toFunction(e);
+    var iterator = LambdaScript._toIterator(iterable);
     var result = [];
 
     LambdaScript.each(function(element) {
-        if (f(element)) {
+        if (fn(element)) {
             result.push(element);
         } 
-    }, array);
+    }, iterator);
 
     return result;
 };
@@ -285,21 +339,22 @@ LambdaScript.filter = function(e, array) {
  *
  * @function
  * @param {Function} e a truth test (a unary function)
- * @param {Array} array an array
+ * @param {Array} iterable an array
  * @returns {Boolean}
  *
  * @example
  *
  */
-LambdaScript.every = function(e, array) {
-    var f = LambdaScript._toFunction(e);
+LambdaScript.every = function(e, iterable) {
+    var fn = LambdaScript._toFunction(e);
+    var iterator = LambdaScript._toIterator(iterable);
     var result = true;
 
     LambdaScript.each(function(element) {
-        if (!f(element)) {
+        if (!fn(element)) {
             result = false;
         }
-    }, array);
+    }, iterator);
 
     return result;
 };
@@ -310,20 +365,21 @@ LambdaScript.every = function(e, array) {
  *
  * @function
  * @param {Function} e the truth test (a unary function)
- * @param {Array} array an array
+ * @param {Array} iterable an array
  * @returns {Boolean}
  *
  * @example
  */
-LambdaScript.some = function(e, array) {
-    var f = LambdaScript._toFunction(e);
+LambdaScript.some = function(e, iterable) {
+    var fn = LambdaScript._toFunction(e);
+    var iterator = LambdaScript._toIterator(iterable);
     var result = false;
 
     LambdaScript.each(function(element) {
-        if (f(element)) {
+        if (fn(element)) {
             result = true;
         }
-    }, array);
+    }, iterator);
 
     return result;
 };
@@ -342,10 +398,10 @@ LambdaScript.some = function(e, array) {
  * 42
  */
 LambdaScript.curry = function(e) {
-    var f = LambdaScript._toFunction(e);
+    var fn = LambdaScript._toFunction(e);
     var innerArgs = Array.prototype.slice.call(arguments, 1);
     return function () {
-        return f.apply(this, innerArgs.concat(Array.prototype.slice.call(arguments, 0)))
+        return fn.apply(this, innerArgs.concat(Array.prototype.slice.call(arguments, 0)))
     };
 };
 

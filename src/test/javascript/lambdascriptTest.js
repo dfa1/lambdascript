@@ -1,39 +1,79 @@
 var suite = new Suite('functional suite');
 
-suite.testRangeNegative = function() {
-    Assert.that(range(-1), Matcher.array([]));
+suite.testToIterator1 = function() {
+    var iterator = LambdaScript._toIterator([1, 2, 3, 4, 5]);
+    Assert.that(iterator.toString(), Matcher.is('ArrayIterator'));
+};
+
+suite.testToIterator2 = function() {
+    var iterator = LambdaScript._toIterator([1, 2, 3, 4, 5]);
+    var iterator2 = LambdaScript._toIterator(iterator);
+    Assert.that(iterator2.toString(), Matcher.is('ArrayIterator'));
+    Assert.that(iterator2 === iterator, Matcher.is(true));
+};
+
+suite.testArrayIterator = function() {
+    var iterator = new LambdaScript._ArrayIterator([1, 2, 3, 4, 5]);
+    Assert.that(iterator.toArray(), Matcher.array([1, 2, 3, 4, 5]));
+};
+
+suite.testRangeIterator = function() {
+    var iterator = new LambdaScript._RangeIterator(1, 10, function(i) {
+        return i + 1;
+    });
+    Assert.that(iterator.toArray(), Matcher.array([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]));
+};
+
+suite.testNegativeRange = function() {
+    Assert.that(range(-1).toArray(), Matcher.array([]));
 };
 
 suite.testRange0 = function() {
-    Assert.that(range(0), Matcher.array([]));
+    Assert.that(range(0).toArray(), Matcher.array([]));
 };
 
 suite.testRange1 = function() {
-    Assert.that(range(3), Matcher.array([1, 2, 3]));
+    Assert.that(range(3).toArray(), Matcher.array([1, 2, 3]));
 };
 
 suite.testRange2 = function() {
-    Assert.that(range(5, 7), Matcher.array([5, 6, 7]));
+    Assert.that(range(5, 7).toArray(), Matcher.array([5, 6, 7]));
 };
 
 suite.testRange3 = function() {
-    Assert.that(range(1, 10, 2), Matcher.array([1, 3, 5, 7, 9]));
+    Assert.that(range(1, 10, 2).toArray(), Matcher.array([1, 3, 5, 7, 9]));
 };
 
 suite.testRange4 = function() {
     Assert.that(range(1, 10, function(i) {
         return i + 2;
-    }), Matcher.array([1, 3, 5, 7, 9]));
+    }).toArray(), Matcher.array([1, 3, 5, 7, 9]));
 };
 
 suite.testRange5 = function() {
-    Assert.that(range(1, 10, 'a+2'), Matcher.array([1, 3, 5, 7, 9]));
+    Assert.that(range(1, 10, 'a+2').toArray(), Matcher.array([1, 3, 5, 7, 9]));
 };
 
-suite.testRange5 = function() {
+suite.testRange6 = function() {
     Assert.that(range(3, 100, function(a) {
         return a*3;
-    }), Matcher.array([3, 9, 27, 81]));
+    }).toArray(), Matcher.array([3, 9, 27, 81]));
+};
+
+suite.testRange42 = function() {
+    var r = range(2);
+    Assert.that(r.hasNext(), Matcher.is(true));
+    Assert.that(r.next(), Matcher.is(1));
+    Assert.that(r.hasNext(), Matcher.is(true));
+    Assert.that(r.next(), Matcher.is(2));
+    Assert.that(r.hasNext(), Matcher.is(false));
+};
+suite.testEach = function() {
+    var count = 0;
+    each(function counter() {
+        count++;
+    }, [1, 2, 3]);
+    Assert.that(count, Matcher.is(3));
 };
 
 suite.testFilter = function() {
@@ -45,27 +85,19 @@ suite.testFilter2 = function() {
 };
 
 suite.testReduceSum = function() {
-    function sum() {
-        return reduce(lambda('a+b'), arguments, 0);
-    }
-
-    Assert.that(sum(1, 2, 3), Matcher.is(6))
+    Assert.that(reduce(lambda('a+b'), range(3), 0), Matcher.is(6));
 };
 
 suite.testReduceSum2 = function() {
-    function sum() {
-        return reduce('a+b', arguments, 0);
-    }
-
-    Assert.that(sum(1, 2, 3), Matcher.is(6))
+    Assert.that(reduce('a+b', range(3), 0), Matcher.is(6))
 };
 
 suite.testReduceFactorial = function() {
-    function fact(n) {
-        return reduce(lambda('a*b'), range(n), 1);
-    }
+    Assert.that(reduce(lambda('a*b'), range(5), 1), Matcher.is(120));
+};
 
-    Assert.that(fact(5), Matcher.is(120));
+suite.testReduceFactoria2 = function() {
+    Assert.that(reduce('a*b', range(5), 1), Matcher.is(120));
 };
 
 suite.testMap1 = function() {
@@ -139,83 +171,6 @@ suite.testMemoize = function() {
     Assert.that(add(1,2), Matcher.is(3)); // miss
     Assert.that(add(1,3), Matcher.is(4)); // miss
     Assert.that(add(1,2), Matcher.is(3)); // hit!
-};
-
-function RangeIterator(start, stopAt, stepBy) {
-    this.stopAt = stopAt;
-    this.stepBy = stepBy;
-    this.i = start;
-
-    this.next = function() {
-        var res = this.i;
-        this.i += this.stepBy;
-        return res;
-    }
-
-    this.hasNext = function() {
-        return this.i <= this.stopAt;
-    }
-
-    // convert the rest of this iterator to a regular array
-    this.toArray = function() {
-        return this.array;
-    }
-}
-
-suite.testRangeIterator = function() {
-    var a = new RangeIterator(1, 20, 2);
-
-    while (a.hasNext()) {
-        java.lang.System.out.println("range > " + a.next())
-    }
-}
-
-function ArrayIterator(array) {
-    this.array = array;
-    this.i = 0;
-
-    this.next = function() {
-        return this.array[this.i++];
-    }
-
-    this.hasNext = function() {
-        return this.i < this.array.length;
-    }
-
-    // convert the rest of this iterator to a regular array
-    this.toArray = function() {
-        return this.array;
-    }
-}
-
-function Generator(fn) {
-    this.fn = fn;
-
-    this.next = function() {
-        return fn();
-    }
-
-    this.hasNext = function() {
-        return true;
-    }
-}
-suite.testIterator = function() {
-    var a = new ArrayIterator(range(10));
-    while (a.hasNext()) {
-        java.lang.System.out.println(a.next())
-    }
-};
-
-suite.testGenerator = function() {
-    var i = 0;
-    var b = [];
-
-    var a = new Generator(function() {
-        return "a";
-    });
-    while (a.hasNext() && i++ < 10) {
-        java.lang.System.out.println(a.next())
-    }
 };
 
 suite.run();
