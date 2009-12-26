@@ -152,13 +152,13 @@ function ArrayMatcher(expected) {
             exp = '[]';
         }
 
-        var act = this.actual.toString();
+        var got = this.actual.toString();
 
-        if (act.length == 0) {
-            act = '[]';
+        if (got.length == 0) {
+            got = '[]';
         }
         
-        description.append("expected: {1} got: {2}", exp, act);
+        description.append("expected: {1} got: {2}", exp, got);
     };
 }
 
