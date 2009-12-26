@@ -1,5 +1,66 @@
 var suite = new Suite('functional suite');
 
+suite.testCompose1 = function() {
+    var greet = function(name) {
+        return "hi " + name;
+    };
+    var exclaim = function(statement) {
+        return statement + "!";
+    };
+    var welcome = LambdaScript.compose(greet, exclaim);
+    Assert.that(welcome('dfa'), Matcher.is('hi dfa!'));
+};
+
+suite.testCompose2 = function() {
+    var square = function(i) {
+        return i * i;
+    };
+    var squareOfSquare= LambdaScript.compose(square, square);
+    Assert.that(squareOfSquare(2), Matcher.is(16));
+};
+
+suite.testNot = function() {
+    var truth = function() {
+        return true;
+    };
+    var notTruth = LambdaScript.not(truth);
+    Assert.that(truth(), Matcher.is(true));
+    Assert.that(notTruth(), Matcher.is(false));
+};
+
+suite.testComposeNot = function() {
+    var truth = function() {
+        return true;
+    };
+    var notTruth = LambdaScript.not(truth);
+    var notnotTruth = LambdaScript.compose(notTruth, notTruth);
+    Assert.that(notnotTruth(), Matcher.is(false)); // should be true?
+};
+
+suite.testIfTrue = function() {
+    var test = function() {
+        return true;
+    };
+    var i = 0;
+    var body = function() {
+        i++;
+    };
+    ifTrue(test, body)();
+    Assert.that(i, Matcher.is(1));
+};
+
+suite.testIfFalse = function() {
+    var test = function() {
+        return true;
+    };
+    var i = 0;
+    var body = function() {
+        i++;
+    };
+    ifFalse(test, body)();
+    Assert.that(i, Matcher.is(0));
+};
+
 suite.testToIterator1 = function() {
     var iterator = LambdaScript._toIterator([1, 2, 3, 4, 5]);
     Assert.that(iterator.toString(), Matcher.is('ArrayIterator'));
@@ -153,17 +214,6 @@ suite.testCurry = function() {
 suite.testPluck1 = function() {
     var a = ['a', 'aa', 'aaa', 'aaaa'];
     Assert.that(map(pluck('length'), a), Matcher.array([1, 2, 3, 4]));
-};
-
-suite.testCompose1 = function() {
-    var greet = function(name){
-        return "hi " + name;
-    };
-    var exclaim = function(statement){
-        return statement + "!";
-    };
-    var welcome = LambdaScript.compose(greet, exclaim);
-    Assert.that(welcome('dfa'), Matcher.is('hi dfa!'));
 };
 
 suite.testMemoize = function() {

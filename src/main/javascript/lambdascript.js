@@ -101,29 +101,6 @@ LambdaScript._ArrayIterator = function(array) {
 };
 
 /**
- * This function copies all the public functions in `LambdaScript` except itself
- * into the global namespace.
- *
- * @function
- * 
- * @example
- * >>> LambdaScript.install()
- */
-LambdaScript.install = function() {
-    var source = LambdaScript;
-    /** @ignore */
-    var target = (function() {
-        return this;
-    })(); // References the global object.
-
-    for (var name in source) {
-        if (name != 'install' && name.charAt(0) != '_') {
-            target[name] = source[name];
-        }
-    }
-};
-
-/**
  * unary/binary/ternary function factory.
  *
  * @function
@@ -142,6 +119,49 @@ LambdaScript.install = function() {
 LambdaScript.lambda = function(expr) {
     return function(a, b, c) {
         return eval(expr);
+    };
+};
+
+/**
+ * Given two functions, 'f' and 'g', returns another function f(g(x)).
+ *
+ * @function
+ * @param {Function} f a function
+ * @param {Function} g another function
+ * @returns {Function} the composed function
+ *
+ * @example
+ * >>> var greet = function(name){ return "hi: " + name; };
+ * >>> var exclaim  = function(statement){ return statement + "!"; };
+ * >>> var welcome = LambdaScript.compose(greet, exclaim);
+ * >>> welcome('moe');
+ * 'hi: moe!'
+ */
+LambdaScript.compose = function(f, g) {
+    return function() {
+        return f(g.apply(null, arguments));
+    };
+};
+
+LambdaScript.not = function(fn) {
+    return function() {
+        return !fn();
+    };
+};
+
+LambdaScript.ifTrue = function(test, body) {
+    return function() {
+        if (test()) {
+            body();
+        }
+    };
+};
+
+LambdaScript.ifFalse = function(test, body) {
+    return function() {
+        if (not(test)()) {
+            body();
+        }
     };
 };
 
@@ -422,26 +442,6 @@ LambdaScript.pluck = function(m) {
     }
 };
 
-/**
- * Given two functions, 'f' and 'g', returns another function f(g(x)).
- *
- * @function
- * @param {Function} f a function
- * @param {Function} g another function
- * @returns {Function} the composed function
- *
- * @example
- * >>> var greet = function(name){ return "hi: " + name; };
- * >>> var exclaim  = function(statement){ return statement + "!"; };
- * >>> var welcome = LambdaScript.compose(greet, exclaim);
- * >>> welcome('moe');
- * 'hi: moe!'
- */
-LambdaScript.compose = function(f, g) {
-    return function() {
-        return f(g.apply(null, arguments));
-    };
-};
 
 /**
  * Given a function 'f' returns another function that caches memoize results.
@@ -462,6 +462,29 @@ LambdaScript.memoize = function(f) {
 
         return cache[args];
     };
+};
+
+/**
+ * This function copies all the public functions in `LambdaScript` except itself
+ * into the global namespace.
+ *
+ * @function
+ *
+ * @example
+ * >>> LambdaScript.install()
+ */
+LambdaScript.install = function() {
+    var source = LambdaScript;
+    /** @ignore */
+    var target = (function() {
+        return this;
+    })(); // References the global object.
+
+    for (var name in source) {
+        if (name != 'install' && name.charAt(0) != '_') {
+            target[name] = source[name];
+        }
+    }
 };
 
 /* jsdoc: http://code.google.com/p/jsdoc-toolkit/w/list */
