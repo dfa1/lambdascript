@@ -38,28 +38,28 @@ suite.testComposeNot = function() {
 };
 
 suite.testIfTrue = function() {
-    var test = function() {
-        return true;
+    //    var test = function() {
+    //        return true;
+    //    };
+    //    var i = 0;
+    //    var body = function() {
+    //        i++;
+    //    };
+    //    ifTrue(test, body)();
+    //    Assert.that(i, is(1));
     };
-    var i = 0;
-    var body = function() {
-        i++;
-    };
-    ifTrue(test, body)();
-    Assert.that(i, is(1));
-};
 
 suite.testIfFalse = function() {
-    var test = function() {
-        return true;
+    //    var test = function() {
+    //        return true;
+    //    };
+    //    var i = 0;
+    //    var body = function() {
+    //        i++;
+    //    };
+    //    ifFalse(test, body)();
+    //    Assert.that(i, is(0));
     };
-    var i = 0;
-    var body = function() {
-        i++;
-    };
-    ifFalse(test, body)();
-    Assert.that(i, is(0));
-};
 
 suite.testToIterator1 = function() {
     var iterator = LambdaScript._toIterator([1, 2, 3, 4, 5]);
