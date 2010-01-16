@@ -166,13 +166,13 @@ LambdaScript.ifFalse = function(test, body) {
 };
 
 /**
- * Handy array builder.
+ * Range iterator.
  *
  * @function
  * @param [Number] begin defaults 1 when not specified
  * @param [Number] end always specified
  * @param [Number|String|Function] step a function or a costant
- * @returns {Array} a new array
+ * @returns {RangeIterator} a new range iterator
  *
  * @example
  * >>> range(5)
