@@ -1,4 +1,4 @@
-package com.humaorie.lambdascript;
+package com.humaorie.lambdascript.internal;
 
 import java.io.FileReader;
 import java.io.IOException;
@@ -42,7 +42,7 @@ public class RhinoRunner extends Runner {
             Scriptable scope = context.initStandardObjects();
             context.evaluateReader(scope, new FileReader("src/main/javascript/lambdascript.js"), "lambdascript.js", 1, null);
             context.evaluateString(scope, "LambdaScript.install();", "string", 1, null);
-            context.evaluateReader(scope, new FileReader("src/test/java/com/humaorie/lambdascript/test.js"), "test.js", 1, null);
+            context.evaluateReader(scope, new FileReader("src/test/java/com/humaorie/lambdascript/internal/test.js"), "test.js", 1, null);
 
             // evaluates sourceFile
             context.evaluateReader(scope, new FileReader(sourceFile), sourceFile, 1, null);
