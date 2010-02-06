@@ -1,5 +1,6 @@
 /*
  * LambdaScript, http://bitbucket.org/dfa/lambdascript
+ * Version: ${pom.version} (${changeSet} on ${changeSetDate})
  * (c) 2009, 2010 Davide Angelocola <davide.angelocola@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
