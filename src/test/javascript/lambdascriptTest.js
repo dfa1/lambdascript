@@ -129,6 +129,13 @@ suite.testRange42 = function() {
     Assert.that(r.next(), is(2));
     Assert.that(r.hasNext(), is(false));
 };
+
+suite.testForEach = function() {
+    forEach([1, 1, 1], function(e) {
+        Assert.that(e, is(1));
+    });
+}
+
 suite.testEach = function() {
     var count = 0;
     each(function counter() {

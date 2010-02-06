@@ -22,7 +22,6 @@
  */
 var LambdaScript = this.LambdaScript || {};
 
-
 /** @ignore */
 LambdaScript._toFunction = function(e) {
     if (typeof e === 'string') {
@@ -258,6 +257,13 @@ LambdaScript.each = function(e, iterable) {
     }
 
     return iterable;
+};
+
+/**
+ * Convenient alias for "each".
+ */
+LambdaScript.forEach = function(iterable, e) {
+    return LambdaScript.each(e, iterable);
 };
 
 /**
