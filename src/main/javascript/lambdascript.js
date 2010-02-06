@@ -19,6 +19,7 @@
 
 /**
  * @namespace `LambdaScript` is the namespace for the LambdaScript library.
+ * NB: documentation is out-of-sync
  */
 var LambdaScript = this.LambdaScript || {};
 
