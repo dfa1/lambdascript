@@ -32,18 +32,20 @@ import org.mozilla.javascript.Scriptable;
 public class RhinoRunner extends Runner {
 
     private final String sourceFile;
+    private final Class testClass;
 
     public RhinoRunner(Class cls) throws Exception {
         if (!cls.isAnnotationPresent(JavaScriptSourceFile.class)) {
             throw new IllegalArgumentException("missing @JavaScriptSourceFile annotation");
         }
 
-        this.sourceFile = ((JavaScriptSourceFile) cls.getAnnotation(JavaScriptSourceFile.class)).value();
+        sourceFile = ((JavaScriptSourceFile) cls.getAnnotation(JavaScriptSourceFile.class)).value();
+        testClass = cls;
     }
 
     @Override
     public Description getDescription() {
-        return Description.createTestDescription(String.class, sourceFile);
+        return Description.createTestDescription(testClass, sourceFile);
     }
 
     @Override
@@ -71,21 +73,21 @@ public class RhinoRunner extends Runner {
             Scriptable suite = (Scriptable) scope.get("suite", scope);
 
             for (Object name : NativeObject.getPropertyIds(suite)) {
-                 propertyName = (String) name;
+                propertyName = (String) name;
 
-                 if (propertyName.startsWith("test")) {
+                if (propertyName.startsWith("test")) {
                     Object property = NativeObject.getProperty(suite, (String) name);
 
                     if (property instanceof Function) {
                         Function test = (Function) property;
-                        notifier.fireTestStarted(Description.createTestDescription(String.class, propertyName));
+                        notifier.fireTestStarted(Description.createTestDescription(testClass, propertyName));
                         test.call(context, scope, suite, null);
-                        notifier.fireTestFinished(Description.createTestDescription(String.class, propertyName));
+                        notifier.fireTestFinished(Description.createTestDescription(testClass, propertyName));
                     }
                 }
             }
         } catch (RhinoException exception) {
-            notifier.fireTestFailure(new Failure(Description.createTestDescription(String.class, propertyName + ": " + exception.details()), exception));
+            notifier.fireTestFailure(new Failure(Description.createTestDescription(testClass, propertyName + ": " + exception.details()), exception));
         } catch (IOException ioe) {
             throw new RuntimeException(ioe);
         }
