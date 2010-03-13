@@ -270,12 +270,13 @@ LambdaScript.range = function() {
  * >>> map(toUpperCase, ['foo', 'bar', 'baZ'])
  * ['FOO', 'BAR', 'BAZ']
  */
-LambdaScript.each = function(iterable, lambda) { // TODO: pass also current index to callback?
+LambdaScript.each = function(iterable, lambda) { 
     var fn = LambdaScript._toFunction(lambda);
     var iterator = LambdaScript._toIterable(iterable);
+    var i = 1;
 
     while (iterator.hasNext()) {
-        fn(iterator.next());
+        fn(iterator.next(), i++);
     }
 
     return iterable;
@@ -446,13 +447,32 @@ LambdaScript.take = function(iterable, n) {
     return result;
 };
 
+// Returns an array of all but the first n items in iterable
+LambdaScript.drop = function(iterable, n) {
+    var iterator = LambdaScript._toIterable(iterable);
+    var result = [];
 
+    if (n < 1) {
+        return result;
+    }
+
+    LambdaScript.each(iterator, function(element, i) {
+        if (i > n) {
+            result.push(element);
+        }
+    });
+
+    return result;
+};
+
+
+
+LambdaScript.rest = function(iterable) {
+
+    };
+    
 LambdaScript.first = function(iterable) {
     
-    };
-
-LambdaScript.first = function(iterable) {
-
     };
 
 LambdaScript.last = function(iterable) {

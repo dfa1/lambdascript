@@ -246,3 +246,16 @@ suite.testTakeZero = function() {
 suite.testTakeLessThanZero = function() {
     Assert.that(take(range(10, 20), 0), is([]));
 };
+
+suite.testDrop = function() {
+    Assert.that(drop(range(1, 20), 17), is([18, 19, 20]));
+};
+
+suite.testDropZero = function() {
+    Assert.that(drop(range(1, 4), 0), is([]));
+};
+
+suite.testDropLessThanZero = function() {
+    Assert.that(drop(range(1, 4), -1), is([]));
+};
+
