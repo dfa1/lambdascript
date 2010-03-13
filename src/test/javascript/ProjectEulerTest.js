@@ -36,7 +36,7 @@ function print(object) {
 
 // problem 1
 function sum(array) {
-    return reduce(lambda('a+b'), array, 0);
+    return reduce(array, lambda('a+b'), 0);
 }
 
 function divisibleBy(p, q) {
@@ -44,7 +44,7 @@ function divisibleBy(p, q) {
 }
 
 function problem1(upTo) {
-    return sum(filter(lambda('a%3==0||a%5==0'), range(1, upTo)));
+    return sum(filter(range(1, upTo), lambda('a%3==0 || a%5==0')));
 }
 
 suite.testProblem1 = function() {
@@ -63,7 +63,7 @@ function fib(n) {
 
 // fib serie is: odd odd even odd odd even odd odd even .... forever
 suite.testFib = function() {
-    Assert.that(map(fib, range(11)), is([1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89]));
+    Assert.that(map(range(11), fib), is([1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89]));
 };
 
 suite.testProblem2 = function() {
@@ -72,7 +72,7 @@ suite.testProblem2 = function() {
 
 // problem 5
 function smallestIntegerDividedBy(factors) {
-    return reduce(lambda('a*b'), factors, 1);
+    return reduce(factors, lambda('a*b'), factors);
 }
 
 function problem5(n) {
@@ -85,7 +85,7 @@ suite.testProblem5 = function() {
 
 // problem 6: naive version
 function sumOfSquares(n) {
-    return sum(map(lambda('a*a'), range(n)));
+    return sum(map(range(n), lambda('a*a')));
 }
 
 function squareOfSum(n) {
