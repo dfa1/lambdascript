@@ -516,7 +516,7 @@ LambdaScript.curry = function(lambda) {
 * @returns {Function} a pluck function
 *
 * @example
-* >>> map(pluck('length'), ['a', 'aa', 'aaa', 'aaaa'])
+* >>> map(['a', 'aa', 'aaa', 'aaaa'], pluck('length'))
 * [1, 2, 3, 4]
 */
 LambdaScript.pluck = function(name) {
@@ -525,6 +525,18 @@ LambdaScript.pluck = function(name) {
     };
 };
 
+/**
+* Build a function that invokes the method 'name', with the arguments passed to
+* this function.
+*
+* @function
+* @param {String} name a method name
+* @returns {Function} an invoke function
+*
+* @example
+* >>> map(['hdr: a', 'hdr: aa', 'hdr: aaa', 'hdr: aaaa'], invoke('substr', 5, 10))
+* ['a', 'aa', 'aaa', 'aaaa']
+*/
 LambdaScript.invoke = function(name) {
     var args = Array.prototype.splice.call(arguments, 1);
     return function(object) {

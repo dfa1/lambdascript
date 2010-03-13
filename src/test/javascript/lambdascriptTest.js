@@ -245,8 +245,7 @@ suite.testInvoke = function() {
 };
 
 suite.testInvokeWithArgument = function() {
-    var array = ['hdr: a', 'hdr: aa', 'hdr: aaa', 'hdr: aaaa'];
-    
+    var array = ['hdr: a', 'hdr: aa', 'hdr: aaa', 'hdr: aaaa']; 
     Assert.that(map(array, invoke('substr', 5, 10)), is(['a', 'aa', 'aaa', 'aaaa']));
 };
 
