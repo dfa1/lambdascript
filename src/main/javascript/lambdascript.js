@@ -17,28 +17,40 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+/*
+ * jsdoc: http://code.google.com/p/jsdoc-toolkit/w/list
+ *
+ * naming parameter conventions:
+ *   - 'lambda'    -> function or string
+ *    - 'iterable'  -> iterator or array
+ *    - 'array'     -> array
+ *    - 'string'    -> string
+ *
+ *  suspicious usage are marked by a "TODO: naming" comment
+ */
+
 /**
- * @namespace `LambdaScript` is the namespace for the LambdaScript library.
- * NB: documentation is out-of-sync
+ * @namespace `LambdaScript` is the namespace for the LambdaScript library. 
  */
 var LambdaScript = this.LambdaScript || {};
 
 /** @ignore */
-LambdaScript._toFunction = function(e) {
-    if (typeof e === 'string') {
-        return LambdaScript.lambda(e);
+LambdaScript._toFunction = function(lambda) {
+    if (typeof lambda === 'string') {
+        return LambdaScript.lambda(lambda);
     } else if (typeof e === 'function') {
-        return e;
+        return lambda;
     } else {
         throw 'Not a string or function';
     }
 };
 
+// Iterable has the following methods: 'toArray', 'hasNext', 'next'
 /** @ignore */
-LambdaScript._toIterator = function(iterable) {
+LambdaScript._toIterable = function(iterable) {
     if (iterable.constructor === Array) {
         return new LambdaScript._ArrayIterator(iterable);
-    } else if (iterable.next && iterable.hasNext) {
+    } else if (iterable.next && iterable.hasNext && iterable.toArray) {
         return iterable;
     } else {
         throw 'Not iterable';
@@ -104,7 +116,7 @@ LambdaScript._ArrayIterator = function(array) {
  * unary/binary/ternary function factory.
  *
  * @function
- * @param {String} expr an expression
+ * @param {String} string an expression
  * @returns {Function} a function that evaluates to 'expr'
  *
  * @example
@@ -116,9 +128,9 @@ LambdaScript._ArrayIterator = function(array) {
  * @example
  * lambda('a * b + c') is equivalent to function (a, b, c) { return a * b + c; }
  */
-LambdaScript.lambda = function(expr) {
+LambdaScript.lambda = function(string) {
     return function(a, b, c) {
-        return eval(expr);
+        return eval(string);
     };
 };
 
@@ -137,7 +149,7 @@ LambdaScript.lambda = function(expr) {
  * >>> welcome('moe');
  * 'hi: moe!'
  */
-LambdaScript.compose = function(f, g) {
+LambdaScript.compose = function(f, g) { // TODO: naming
     return function() {
         return f(g.apply(null, arguments));
     };
@@ -214,10 +226,10 @@ LambdaScript.range = function() {
 };
 
 /**
- * Iterates over 'array', yielding each in turn to the function 'e'.
+ * Iterates over 'array', yielding each in turn to the function 'lambda'.
  *
  * @function
- * @param {Function} e a unary function to invoke for each element
+ * @param {Function}  a unary function to invoke for each element
  * @param {Array} array an array
  * @returns {Array} the 'array' itself
  *
@@ -227,22 +239,15 @@ LambdaScript.range = function() {
  * >>> map(toUpperCase, ['foo', 'bar', 'baZ'])
  * ['FOO', 'BAR', 'BAZ']
  */
-LambdaScript.each = function(e, iterable) {
-    var fn = LambdaScript._toFunction(e);
-    var iterator = LambdaScript._toIterator(iterable);
+LambdaScript.each = function(iterable, lambda) {
+    lambda = LambdaScript._toFunction(lambda);
+    iterable = LambdaScript._toIterable(iterable);
 
     while (iterator.hasNext()) {
         fn(iterator.next());
     }
 
     return iterable;
-};
-
-/**
- * Convenient alias for "each".
- */
-LambdaScript.forEach = function(iterable, e) {
-    return LambdaScript.each(e, iterable);
 };
 
 /**
@@ -261,14 +266,14 @@ LambdaScript.forEach = function(iterable, e) {
  * >>> reduce(lambda('a+b'), [1, 2, 3, 4], 0) // sum of range(1, 4)
  * 10
  */
-LambdaScript.reduce = function(e, iterable, initialValue) {
+LambdaScript.reduce = function(iterable, lambda, initialValue) {
     var i = initialValue;
-    var fn = LambdaScript._toFunction(e);
-    var iterator = LambdaScript._toIterator(iterable);
+    lambda = LambdaScript._toFunction(lambda);
+    iterable = LambdaScript._toIterable(iterable);
 
-    LambdaScript.each(function(element) {
+    LambdaScript.each(iterable, function(element) {
         i = fn(i, element);
-    }, iterator);
+    });
 
     return i;
 };
@@ -297,20 +302,20 @@ LambdaScript.reduce = function(e, iterable, initialValue) {
  * >>> map('a*a', [2, 3, 4, 5])
  * [4, 9, 16, 25]
  */
-LambdaScript.map = function(e, iterable) {
-    var fn = LambdaScript._toFunction(e);
-    var iterator = LambdaScript._toIterator(iterable);
+LambdaScript.map = function(iterable, lambda) {
+    lambda = LambdaScript._toFunction(lambda);
+    iterable = LambdaScript._toIterable(iterable);
     var result = [];
     
-    LambdaScript.each(function (element) {
-        result.push(fn(element));
-    }, iterator);
+    LambdaScript.each(iterable, function (element) {
+        result.push(lambda(element));
+    });
 
     return result;
 };
 
 /***
- * Looks through each value in 'array', returning a new array of all the values
+ * Looks through each value in 'iterable', returning a new array of all the values
  * that pass the truth test 'e'.
  *
  * AKA: #select in Smalltalk.
@@ -324,16 +329,16 @@ LambdaScript.map = function(e, iterable) {
  * >>> filter(lambda('a%2==0'), range(1, 10))
  * [2, 4, 6, 8, 10]
  */
-LambdaScript.filter = function(e, iterable) {
-    var fn = LambdaScript._toFunction(e);
-    var iterator = LambdaScript._toIterator(iterable);
+LambdaScript.filter = function(iterable, lambda) {
+    lambda = LambdaScript._toFunction(lambda);
+    iterable = LambdaScript._toIterable(iterable);
     var result = [];
 
-    LambdaScript.each(function(element) {
-        if (fn(element)) {
+    LambdaScript.each(iterable, function(element) {
+        if (lambda(element) === true) {
             result.push(element);
         } 
-    }, iterator);
+    });
 
     return result;
 };
@@ -350,16 +355,17 @@ LambdaScript.filter = function(e, iterable) {
  * @example
  *
  */
-LambdaScript.every = function(e, iterable) {
-    var fn = LambdaScript._toFunction(e);
-    var iterator = LambdaScript._toIterator(iterable);
+LambdaScript.every = function(iterable, lambda) {
+    lambda = LambdaScript._toFunction(lambda);
+    iterable = LambdaScript._toIterable(iterable);
     var result = true;
 
-    LambdaScript.each(function(element) {
-        if (!fn(element)) {
+    // TODO: abort the inner loop at the first false
+    LambdaScript.each(iterable, function(element) {
+        if (lambda(element) === false) {
             result = false;
         }
-    }, iterator);
+    });
 
     return result;
 };
@@ -375,9 +381,9 @@ LambdaScript.every = function(e, iterable) {
  *
  * @example
  */
-LambdaScript.some = function(e, iterable) {
-    var fn = LambdaScript._toFunction(e);
-    var iterator = LambdaScript._toIterator(iterable);
+LambdaScript.some = function(iterable, lambda) {
+    lambda = LambdaScript._toFunction(lambda);
+    iterable = LambdaScript._toIterable(iterable);
     var result = false;
 
     LambdaScript.each(function(element) {
@@ -402,28 +408,28 @@ LambdaScript.some = function(e, iterable) {
  * >>> mulBy2(21)
  * 42
  */
-LambdaScript.curry = function(e) {
-    var fn = LambdaScript._toFunction(e);
+LambdaScript.curry = function(lambda) {
+    lambda = LambdaScript._toFunction(lambda);
     var innerArgs = Array.prototype.slice.call(arguments, 1);
     return function () {
-        return fn.apply(this, innerArgs.concat(Array.prototype.slice.call(arguments, 0)))
+        return lambda.apply(this, innerArgs.concat(Array.prototype.slice.call(arguments, 0)))
     };
 };
 
 /**
- * Build a function that returns the value of the property 'm'.
+ * Build a function that returns the value of the property 'name'.
  *
  * @function
- * @param {String} m a property name
+ * @param {String} name a property name
  * @returns {Function} a pluck function
  *
  * @example
  * >>> map(pluck('length'), ['a', 'aa', 'aaa', 'aaaa'])
  * [ 1, 2, 3, 4 ]
  */
-LambdaScript.pluck = function(m) {
-    return function(o) {
-        return o[m];
+LambdaScript.pluck = function(name) {
+    return function(object) {
+        return object[name];
     }
 };
 
@@ -432,17 +438,17 @@ LambdaScript.pluck = function(m) {
  * Given a function 'f' returns another function that caches memoize results.
  *
  * @function
- * @param {Function} f a function
+ * @param {Function} fn a function
  * @returns {Function} a memoized version of 'f'
  */
-LambdaScript.memoize = function(f) {
+LambdaScript.memoize = function(fn) { // TODO: must work also for lambdas?
     var cache = {};
 
     return function() {
         var args = Array.prototype.splice.call(arguments, 0);
 
         if (!(args in cache)) {
-            cache[args] = f.apply(this, args);
+            cache[args] = fn.apply(this, args);
         }
 
         return cache[args];
@@ -472,5 +478,4 @@ LambdaScript.install = function() {
     }
 };
 
-/* jsdoc: http://code.google.com/p/jsdoc-toolkit/w/list */
 
