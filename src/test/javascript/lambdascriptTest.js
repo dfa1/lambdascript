@@ -18,6 +18,24 @@
 
 var suite = {};
 
+suite.testLambda = function() {
+    var neg = lambda('-a');
+    Assert.that(neg(42), is(-42));
+    Assert.that(neg(neg(42)), is(42));
+};
+
+suite.testLambda2 = function() {
+    var add = lambda('a + b');
+    Assert.that(add(1, 2), is(3));
+    Assert.that(add(-2, 2), is(0));
+};
+
+suite.testLambda3 = function() {
+    var f = lambda('a * b + c');
+    Assert.that(f(2, 3, 5), is(11));
+    Assert.that(f(3, 5, -10), is(5));
+};
+
 suite.testCompose1 = function() {
     var greet = function(name) {
         return "hi " + name;
@@ -30,31 +48,24 @@ suite.testCompose1 = function() {
 };
 
 suite.testCompose2 = function() {
-    var square = function(i) {
-        return i * i;
-    };
+    var square = lambda('a * a');
     var squareOfSquare= LambdaScript.compose(square, square);
     Assert.that(squareOfSquare(2), is(16));
 };
 
 suite.testNot = function() {
-    var truth = function() {
-        return true;
-    };
+    var truth = lambda('true');
     var notTruth = LambdaScript.not(truth);
     Assert.that(truth(), is(true));
     Assert.that(notTruth(), is(false));
 };
 
 suite.testComposeNot = function() {
-    var truth = function() {
-        return true;
-    };
+    var truth = lambda('true');
     var notTruth = LambdaScript.not(truth);
     var notnotTruth = LambdaScript.compose(notTruth, notTruth);
     Assert.that(notnotTruth(), is(false)); // should be true?
 };
-
 
 suite.testToIterator1 = function() {
     var iterator = LambdaScript._toIterator([1, 2, 3, 4, 5]);
@@ -125,30 +136,24 @@ suite.testRange42 = function() {
     Assert.that(r.hasNext(), is(false));
 };
 
-suite.testForEach = function() {
-    forEach([1, 1, 1], function(e) {
-        Assert.that(e, is(1));
-    });
-}
-
 suite.testEach = function() {
     var count = 0;
-    each(function counter() {
+    each([1, 2, 3], function counter() {
         count++;
-    }, [1, 2, 3]);
+    });
     Assert.that(count, is(3));
 };
 
 suite.testFilter = function() {
-    Assert.that(filter(lambda('a%2==0'), range(1, 10)), is([2, 4, 6, 8, 10]));
+    Assert.that(filter(range(1, 10), lambda('a%2==0')), is([2, 4, 6, 8, 10]));
 };
 
 suite.testFilter2 = function() {
-    Assert.that(filter(lambda('a===3'), range(1, 10)), is([3]));
+    Assert.that(filter(range(1, 10), lambda('a===3')), is([3]));
 };
 
 suite.testReduceSum = function() {
-    Assert.that(reduce(lambda('a+b'), range(3), 0), is(6));
+    Assert.that(reduce(range(3), lambda('a+b'), 0), is(6));
 };
 
 suite.testReduceSum2 = function() {
@@ -164,48 +169,30 @@ suite.testReduceFactoria2 = function() {
 };
 
 suite.testMap1 = function() {
-    Assert.that(map('a*a', [1, 2, 3]), is([1, 4, 9]));
+    Assert.that(map([1, 2, 3], 'a*a'), is([1, 4, 9]));
 };
 
 suite.testMap2 = function() {
     var toUpperCase = function(e) {
         return e.toUpperCase();
     };
-    Assert.that(map(toUpperCase, ['foo', 'bar', 'baZ']), is(['FOO', 'BAR', 'BAZ']));
+    Assert.that(map(['foo', 'bar', 'baZ'], toUpperCase), is(['FOO', 'BAR', 'BAZ']));
 };
 
 suite.testEvery = function() {
-    Assert.that(every(lambda('a<5'), [1, 2, 3, 4]), is(true));
+    Assert.that(every(range(1, 4), lambda('a<5')), is(true));
 };
 
 suite.testEvery2 = function() {
-    Assert.that(every(lambda('a<2'), [1, 2, 3, 4]), is(false));
+    Assert.that(every(range(1,4), lambda('a<2')), is(false));
 };
 
 suite.testSome = function() {
-    Assert.that(some(lambda('a>3'), [1, 2, 3, 4]), is(true));
+    Assert.that(some(range(1, 4), lambda('a>3')), is(true));
 };
 
 suite.testSome2 = function() {
-    Assert.that(some(lambda('a>6'), [1, 2, 3, 4]), is(false));
-};
-
-suite.testLambda = function() {
-    var neg = lambda('-a');
-    Assert.that(neg(42), is(-42));
-    Assert.that(neg(neg(42)), is(42));
-};
-
-suite.testLambda2 = function() {
-    var add = lambda('a + b');
-    Assert.that(add(1, 2), is(3));
-    Assert.that(add(-2, 2), is(0));
-};
-
-suite.testLambda3 = function() {
-    var f = lambda('a * b + c');
-    Assert.that(f(2, 3, 5), is(11));
-    Assert.that(f(3, 5, -10), is(5));
+    Assert.that(some(range(1, 4), lambda('a>6')), is(false));
 };
 
 suite.testCurry = function() {

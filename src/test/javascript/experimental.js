@@ -173,11 +173,7 @@ suite.testDetect2 = function() {
 }
 
 // TODO: I'm not sure about these functions
-//LambdaScript.not = function(fn) {
-//    return function() {
-//        return !fn();
-//    };
-//};
+
 //
 //LambdaScript.ifTrue = function(test, body) {
 //    return function() {
