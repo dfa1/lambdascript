@@ -25,8 +25,8 @@ import org.junit.runner.notification.Failure;
 import org.junit.runner.notification.RunNotifier;
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.Function;
-import org.mozilla.javascript.JavaScriptException;
 import org.mozilla.javascript.NativeObject;
+import org.mozilla.javascript.RhinoException;
 import org.mozilla.javascript.Scriptable;
 
 public class RhinoRunner extends Runner {
@@ -84,7 +84,7 @@ public class RhinoRunner extends Runner {
                     }
                 }
             }
-        } catch (JavaScriptException exception) {
+        } catch (RhinoException exception) {
             notifier.fireTestFailure(new Failure(Description.createTestDescription(String.class, propertyName + "(): " + exception.details()), exception));
         } catch (IOException ioe) {
             throw new RuntimeException(ioe);
