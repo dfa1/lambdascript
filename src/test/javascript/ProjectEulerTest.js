@@ -67,7 +67,7 @@ suite.testFib = function() {
 };
 
 suite.testProblem2 = function() {
-    each(compose(println, fib), range(20));
+    each(range(20), compose(println, fib));
 };
 
 // problem 5

@@ -39,7 +39,7 @@ var LambdaScript = this.LambdaScript || {};
 LambdaScript._toFunction = function(lambda) {
     if (typeof lambda === 'string') {
         return LambdaScript.lambda(lambda);
-    } else if (typeof e === 'function') {
+    } else if (typeof lambda === 'function') {
         return lambda;
     } else {
         throw 'Not a string or function';
@@ -182,7 +182,7 @@ LambdaScript.compose = function(f, g) { // TODO: generalize for n functions
 LambdaScript.not = function(lambda) {
     var fn = LambdaScript._toFunction(lambda);
     return function() {
-        return !fn();
+        return fn() === false;
     };
 };
 

@@ -67,20 +67,20 @@ suite.testComposeNot = function() {
     Assert.that(notnotTruth(), is(false)); // should be true?
 };
 
-suite.testToIterator1 = function() {
-    var iterator = LambdaScript._toIterator([1, 2, 3, 4, 5]);
+suite.testToIterator = function() {
+    var iterator = LambdaScript._toIterable([1, 2, 3, 4, 5]);
     Assert.that(iterator.toString(), is('ArrayIterator'));
 };
 
-suite.testToIterator2 = function() {
-    var iterator = LambdaScript._toIterator([1, 2, 3, 4, 5]);
-    var iterator2 = LambdaScript._toIterator(iterator);
+suite.testToIteratorWithSelf = function() {
+    var iterator = LambdaScript._toIterable([1, 2, 3, 4, 5]);
+    var iterator2 = LambdaScript._toIterable(iterator);
     Assert.that(iterator2.toString(), is('ArrayIterator'));
     Assert.that(iterator2 === iterator, is(true));
 };
 
 suite.testToIteratorWithNull = function() {
-    var iterator = LambdaScript._toIterator(null);
+    var iterator = LambdaScript._toIterable(null);
     Assert.that(iterator.toString(), is('NullIterator'));
     Assert.that(iterator.toArray(), is([]));
     Assert.that(iterator.hasNext(), is(false));
@@ -88,12 +88,12 @@ suite.testToIteratorWithNull = function() {
 };
 
 suite.testToIteratorWithNull = function() {
-    var iterator = LambdaScript._toIterator(null);
+    var iterator = LambdaScript._toIterable(null);
     Assert.that(iterator.toString(), is('NullIterator'));
 };
 
 suite.testToIteratorWithUndefined = function() {
-    var iterator = LambdaScript._toIterator(undefined);
+    var iterator = LambdaScript._toIterable(undefined);
     Assert.that(iterator.toString(), is('NullIterator'));
 };
 
@@ -166,7 +166,7 @@ suite.testFilter = function() {
     Assert.that(filter(range(1, 10), lambda('a%2==0')), is([2, 4, 6, 8, 10]));
 };
 
-suite.testFilter2 = function() {
+suite.testFilterShortVersion = function() {
     Assert.that(filter(range(1, 10), lambda('a===3')), is([3]));
 };
 
@@ -174,23 +174,23 @@ suite.testReduceSum = function() {
     Assert.that(reduce(range(3), lambda('a+b'), 0), is(6));
 };
 
-suite.testReduceSum2 = function() {
-    Assert.that(reduce('a+b', range(3), 0), is(6))
+suite.testReduceSumShortVersion = function() {
+    Assert.that(reduce(range(3), 'a+b'), is(6))
 };
 
 suite.testReduceFactorial = function() {
-    Assert.that(reduce(lambda('a*b'), range(5), 1), is(120));
+    Assert.that(reduce(range(5), lambda('a*b')), is(120));
 };
 
-suite.testReduceFactoria2 = function() {
-    Assert.that(reduce('a*b', range(5), 1), is(120));
+suite.testReduceFactoriaShortVersion = function() {
+    Assert.that(reduce(range(5), 'a*b'), is(120));
 };
 
-suite.testMap1 = function() {
+suite.testMapToSquare = function() {
     Assert.that(map([1, 2, 3], 'a*a'), is([1, 4, 9]));
 };
 
-suite.testMap2 = function() {
+suite.testMapToUppercase = function() {
     var toUpperCase = function(e) {
         return e.toUpperCase();
     };
@@ -220,7 +220,7 @@ suite.testCurry = function() {
 
 suite.testPluck1 = function() {
     var a = ['a', 'aa', 'aaa', 'aaaa'];
-    Assert.that(map(pluck('length'), a), is([1, 2, 3, 4]));
+    Assert.that(map(a, pluck('length')), is([1, 2, 3, 4]));
 };
 
 suite.testMemoize = function() {
