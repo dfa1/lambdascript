@@ -52,10 +52,13 @@ public class RhinoRunner extends Runner {
     }
 
     private void setup(RunNotifier notifier) {
+        String propertyName = "";
+
         try {
             // dependencies
             Context context = Context.enter();
             context.setLanguageVersion(Context.VERSION_1_5);
+            context.setGeneratingDebug(true);
             Scriptable scope = context.initStandardObjects();
             context.evaluateReader(scope, new FileReader("src/main/javascript/lambdascript.js"), "lambdascript.js", 1, null);
             context.evaluateString(scope, "LambdaScript.install();", "string", 1, null);
@@ -68,9 +71,9 @@ public class RhinoRunner extends Runner {
             Scriptable suite = (Scriptable) scope.get("suite", scope);
 
             for (Object name : NativeObject.getPropertyIds(suite)) {
-                String propertyName = (String) name;
+                 propertyName = (String) name;
 
-                if (propertyName.startsWith("test")) {
+                 if (propertyName.startsWith("test")) {
                     Object property = NativeObject.getProperty(suite, (String) name);
 
                     if (property instanceof Function) {
@@ -81,8 +84,8 @@ public class RhinoRunner extends Runner {
                     }
                 }
             }
-        } catch (JavaScriptException e) {
-            notifier.fireTestFailure(new Failure(Description.createTestDescription(String.class, e.details()), e));
+        } catch (JavaScriptException exception) {
+            notifier.fireTestFailure(new Failure(Description.createTestDescription(String.class, propertyName + "(): " + exception.details()), exception));
         } catch (IOException ioe) {
             throw new RuntimeException(ioe);
         }
