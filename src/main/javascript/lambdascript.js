@@ -181,7 +181,6 @@ LambdaScript.compose = function(f, g) { // TODO: generalize for n functions
 
 LambdaScript.not = function(lambda) {
     var fn = LambdaScript._toFunction(lambda);
-
     return function() {
         return !fn();
     };
@@ -299,9 +298,9 @@ LambdaScript.each = function(iterable, lambda) { // TODO: pass also current inde
  * 10
  */
 LambdaScript.reduce = function(iterable, lambda, initialValue) {
-    var fn = LambdaScript._toFunction(lambda);
     var iterator = LambdaScript._toIterable(iterable);
-    var i = initialValue;
+    var fn = LambdaScript._toFunction(lambda);
+    var i = initialValue || iterator.next();
 
     LambdaScript.each(iterator, function(element) {
         i = fn(i, element);

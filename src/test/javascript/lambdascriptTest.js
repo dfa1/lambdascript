@@ -48,13 +48,13 @@ suite.testCompose1 = function() {
 };
 
 suite.testCompose2 = function() {
-    var square = lambda('a * a');
+    var square = LambdaScript.lambda('a*a');
     var squareOfSquare= LambdaScript.compose(square, square);
     Assert.that(squareOfSquare(2), is(16));
 };
 
 suite.testNot = function() {
-    var truth = lambda('true');
+    var truth = LambdaScript.lambda('true');
     var notTruth = LambdaScript.not(truth);
     Assert.that(truth(), is(true));
     Assert.that(notTruth(), is(false));

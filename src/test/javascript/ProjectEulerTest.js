@@ -36,15 +36,15 @@ function print(object) {
 
 // problem 1
 function sum(array) {
-    return reduce(array, lambda('a+b'), 0);
+    return reduce(array, lambda('a+b'));
 }
 
-function divisibleBy(p, q) {
-    return p % q == 0;
+function divisibleBy3Or5(n) {
+    return n % 3 == 0 || n % 5 == 0;
 }
 
 function problem1(upTo) {
-    return sum(filter(range(1, upTo), lambda('a%3==0 || a%5==0')));
+    return sum(filter(range(1, upTo), divisibleBy3Or5));
 }
 
 suite.testProblem1 = function() {
@@ -72,7 +72,7 @@ suite.testProblem2 = function() {
 
 // problem 5
 function smallestIntegerDividedBy(factors) {
-    return reduce(factors, lambda('a*b'), factors);
+    return reduce(factors, lambda('a*b'));
 }
 
 function problem5(n) {
