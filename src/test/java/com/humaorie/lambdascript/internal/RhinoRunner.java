@@ -85,7 +85,7 @@ public class RhinoRunner extends Runner {
                 }
             }
         } catch (RhinoException exception) {
-            notifier.fireTestFailure(new Failure(Description.createTestDescription(String.class, propertyName + "(): " + exception.details()), exception));
+            notifier.fireTestFailure(new Failure(Description.createTestDescription(String.class, propertyName + ": " + exception.details()), exception));
         } catch (IOException ioe) {
             throw new RuntimeException(ioe);
         }
