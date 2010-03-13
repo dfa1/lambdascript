@@ -21,10 +21,11 @@
  * jsdoc: http://code.google.com/p/jsdoc-toolkit/w/list
  *
  * naming parameter conventions:
- *   - 'lambda'    -> function or string
+ *    - 'lambda'    -> function or string
  *    - 'iterable'  -> iterator or array
  *    - 'array'     -> array
  *    - 'string'    -> string
+ *    - 'object'    -> object
  *
  *  suspicious usage are marked by a "TODO: naming" comment
  */
