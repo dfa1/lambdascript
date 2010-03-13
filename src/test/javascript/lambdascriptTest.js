@@ -246,6 +246,13 @@ suite.testMemoize = function() {
     Assert.that(add(1,2), is(3)); // hit!
 };
 
+suite.testMemoizeWithStringLambda = function() {
+    var add = memoize('a + b');
+    Assert.that(add(1,2), is(3)); // miss
+    Assert.that(add(1,3), is(4)); // miss
+    Assert.that(add(1,2), is(3)); // hit!
+};
+
 suite.testType = function() {
     Assert.that(type([]), is('array'));
     Assert.that(type(null), is('null'));

@@ -517,7 +517,7 @@ LambdaScript.curry = function(lambda) {
 *
 * @example
 * >>> map(pluck('length'), ['a', 'aa', 'aaa', 'aaaa'])
-* [ 1, 2, 3, 4 ]
+* [1, 2, 3, 4]
 */
 LambdaScript.pluck = function(name) {
     return function(object) {
@@ -532,7 +532,8 @@ LambdaScript.pluck = function(name) {
 * @param {Function} fn a function
 * @returns {Function} a memoized version of 'f'
 */
-LambdaScript.memoize = function(fn) { // TODO: must work also for lambdas?
+LambdaScript.memoize = function(lambda) {
+    var fn = LambdaScript._toFunction(lambda);
     var cache = {};
 
     return function() {
