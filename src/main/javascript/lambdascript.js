@@ -143,29 +143,6 @@ LambdaScript.compose = function(f, g) {
     };
 };
 
-// TODO: I'm not sure about these functions
-//LambdaScript.not = function(fn) {
-//    return function() {
-//        return !fn();
-//    };
-//};
-//
-//LambdaScript.ifTrue = function(test, body) {
-//    return function() {
-//        if (test()) {
-//            body();
-//        }
-//    };
-//};
-//
-//LambdaScript.ifFalse = function(test, body) {
-//    return function() {
-//        if (not(test)()) {
-//            body();
-//        }
-//    };
-//};
-
 /**
  * Range iterator.
  *

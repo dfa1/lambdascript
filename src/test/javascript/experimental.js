@@ -171,3 +171,51 @@ suite.testDetect = function() {
 suite.testDetect2 = function() {
     Assert.that(detect(4, [1, 2, '3', 4], 'a==b'), Matcher.is(3));
 }
+
+// TODO: I'm not sure about these functions
+//LambdaScript.not = function(fn) {
+//    return function() {
+//        return !fn();
+//    };
+//};
+//
+//LambdaScript.ifTrue = function(test, body) {
+//    return function() {
+//        if (test()) {
+//            body();
+//        }
+//    };
+//};
+//
+//LambdaScript.ifFalse = function(test, body) {
+//    return function() {
+//        if (not(test)()) {
+//            body();
+//        }
+//    };
+//};
+
+
+//suite.testIfTrue = function() {
+//    var test = function() {
+//        return true;
+//    };
+//    var i = 0;
+//    var body = function() {
+//        i++;
+//    };
+//    ifTrue(test, body)();
+//    Assert.that(i, is(1));
+//};
+
+//suite.testIfFalse = function() {
+//    var test = function() {
+//        return true;
+//    };
+//    var i = 0;
+//    var body = function() {
+//        i++;
+//    };
+//    ifFalse(test, body)();
+//    Assert.that(i, is(0));
+//   };
