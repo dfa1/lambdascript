@@ -31,7 +31,7 @@
  */
 
 /**
- * @namespace `LambdaScript` is the namespace for the LambdaScript library. 
+ * @namespace `LambdaScript` is the namespace for the LambdaScript library.
  */
 var LambdaScript = this.LambdaScript || {};
 
@@ -137,21 +137,21 @@ LambdaScript._NullIterator = function() {
 };
 
 /**
- * unary/binary/ternary function factory.
- *
- * @function
- * @param {String} string an expression
- * @returns {Function} a function that evaluates to 'expr'
- *
- * @example
- * lambda('-a') is equivalent to function negate(a) { return -a; }
- *
- * @example
- * lambda('a + b') is equivalent to function (a, b) { return a + b; }
- *
- * @example
- * lambda('a * b + c') is equivalent to function (a, b, c) { return a * b + c; }
- */
+* unary/binary/ternary function factory.
+*
+* @function
+* @param {String} string an expression
+* @returns {Function} a function that evaluates to 'expr'
+*
+* @example
+* lambda('-a') is equivalent to function negate(a) { return -a; }
+*
+* @example
+* lambda('a + b') is equivalent to function (a, b) { return a + b; }
+*
+* @example
+* lambda('a * b + c') is equivalent to function (a, b, c) { return a * b + c; }
+*/
 LambdaScript.lambda = function(string) {
     return function(a, b, c) {
         return eval(string);
@@ -159,20 +159,20 @@ LambdaScript.lambda = function(string) {
 };
 
 /**
- * Given two functions, 'f' and 'g', returns another function f(g()).
- *
- * @function
- * @param {Function} f a function
- * @param {Function} g another function
- * @returns {Function} the composed function
- *
- * @example
- * >>> var greet = function(name){ return "hi: " + name; };
- * >>> var exclaim  = function(statement){ return statement + "!"; };
- * >>> var welcome = LambdaScript.compose(greet, exclaim);
- * >>> welcome('moe');
- * 'hi: moe!'
- */
+* Given two functions, 'f' and 'g', returns another function f(g()).
+*
+* @function
+* @param {Function} f a function
+* @param {Function} g another function
+* @returns {Function} the composed function
+*
+* @example
+* >>> var greet = function(name){ return "hi: " + name; };
+* >>> var exclaim  = function(statement){ return statement + "!"; };
+* >>> var welcome = LambdaScript.compose(greet, exclaim);
+* >>> welcome('moe');
+* 'hi: moe!'
+*/
 LambdaScript.compose = function(f, g) { // TODO: generalize for n functions
     return function() {
         return f(g.apply(null, arguments));
@@ -187,34 +187,34 @@ LambdaScript.not = function(lambda) {
 };
 
 /**
- * Range iterator.
- *
- * @function
- * @param [Number] begin defaults 1 when not specified
- * @param [Number] end always specified
- * @param [Number|String|Function] step a function or a costant
- * @returns {RangeIterator} a new range iterator
- *
- * @example
- * >>> range(5)
- * [1, 2, 3, 4, 5]
- *
- * @example
- * >>> range(5, 10)
- * [5, 6, 7, 8, 9, 10]
- *
- * @example
- * >>> range(5, 25, 5)
- * [5, 10, 15, 20, 25]
- *
- * @example
- * >>> range(1, 10, 'a+2')
- * [1, 3, 5, 7, 9]
- *
- * @example
- * >>> range(3, 100, function(a) { return a*3;})
- * [3, 9, 27, 81]
- */
+* Range iterator.
+*
+* @function
+* @param [Number] begin defaults 1 when not specified
+* @param [Number] end always specified
+* @param [Number|String|Function] step a function or a costant
+* @returns {RangeIterator} a new range iterator
+*
+* @example
+* >>> range(5)
+* [1, 2, 3, 4, 5]
+*
+* @example
+* >>> range(5, 10)
+* [5, 6, 7, 8, 9, 10]
+*
+* @example
+* >>> range(5, 25, 5)
+* [5, 10, 15, 20, 25]
+*
+* @example
+* >>> range(1, 10, 'a+2')
+* [1, 3, 5, 7, 9]
+*
+* @example
+* >>> range(3, 100, function(a) { return a*3;})
+* [3, 9, 27, 81]
+*/
 LambdaScript.range = function() {
     var begin = 1;
     var end = 1;
@@ -257,19 +257,19 @@ LambdaScript.range = function() {
 };
 
 /**
- * Iterates over 'array', yielding each in turn to the function 'lambda'.
- *
- * @function
- * @param {Function}  a unary function to invoke for each element
- * @param {Array} array an array
- * @returns {Array} the 'array' itself
- *
- * @example
- *
- * >>> function toUpperCase(s) { return s.toUpperCase(); }
- * >>> map(toUpperCase, ['foo', 'bar', 'baZ'])
- * ['FOO', 'BAR', 'BAZ']
- */
+* Iterates over 'array', yielding each in turn to the function 'lambda'.
+*
+* @function
+* @param {Function}  a unary function to invoke for each element
+* @param {Array} array an array
+* @returns {Array} the 'array' itself
+*
+* @example
+*
+* >>> function toUpperCase(s) { return s.toUpperCase(); }
+* >>> map(toUpperCase, ['foo', 'bar', 'baZ'])
+* ['FOO', 'BAR', 'BAZ']
+*/
 LambdaScript.each = function(iterable, lambda) { // TODO: pass also current index to callback?
     var fn = LambdaScript._toFunction(lambda);
     var iterator = LambdaScript._toIterable(iterable);
@@ -282,21 +282,21 @@ LambdaScript.each = function(iterable, lambda) { // TODO: pass also current inde
 };
 
 /**
- * Reduce boils down 'iterable' into a single value using 'i' as the initial state
- * of the reduction, and each successive step of it should be returned by 'e'.
- *
- * AKA: '#inject' in Smalltalk or 'fold' in lisp.
- *
- * @function
- * @param {Iterable} iterable an array to reduce
- * @param {Function} e a binary function
- * @param {Object} initialValue the initial value
- * @returns {Array} a new array
- *
- * @example
- * >>> reduce(lambda('a+b'), [1, 2, 3, 4], 0) // sum of range(1, 4)
- * 10
- */
+* Reduce boils down 'iterable' into a single value using 'i' as the initial state
+* of the reduction, and each successive step of it should be returned by 'e'.
+*
+* AKA: '#inject' in Smalltalk or 'fold' in lisp.
+*
+* @function
+* @param {Iterable} iterable an array to reduce
+* @param {Function} e a binary function
+* @param {Object} initialValue the initial value
+* @returns {Array} a new array
+*
+* @example
+* >>> reduce(lambda('a+b'), [1, 2, 3, 4], 0) // sum of range(1, 4)
+* 10
+*/
 LambdaScript.reduce = function(iterable, lambda, initialValue) {
     var iterator = LambdaScript._toIterable(iterable);
     var fn = LambdaScript._toFunction(lambda);
@@ -310,29 +310,29 @@ LambdaScript.reduce = function(iterable, lambda, initialValue) {
 };
 
 /**
- * Produces a new array of values by mapping each value in 'array' through
- * the unary transformation function 'e'.
- *
- * AKA: '#collect' in Smalltalk.
- *
- * @function
- * @param {Function} e an unary function
- * @param {Array} iterable an array
- * @returns {Array} a new array
- *
- * @example
- * >>> function square(a) { return a*a; }
- * >>> map(square, [2, 3, 4, 5])
- * [4, 9, 16, 25]
- *
- * @example
- * >>> map(lambda('a*a'), [2, 3, 4, 5])
- * [4, 9, 16, 25]
- *
- * @example
- * >>> map('a*a', [2, 3, 4, 5])
- * [4, 9, 16, 25]
- */
+* Produces a new array of values by mapping each value in 'array' through
+* the unary transformation function 'e'.
+*
+* AKA: '#collect' in Smalltalk.
+*
+* @function
+* @param {Function} e an unary function
+* @param {Array} iterable an array
+* @returns {Array} a new array
+*
+* @example
+* >>> function square(a) { return a*a; }
+* >>> map(square, [2, 3, 4, 5])
+* [4, 9, 16, 25]
+*
+* @example
+* >>> map(lambda('a*a'), [2, 3, 4, 5])
+* [4, 9, 16, 25]
+*
+* @example
+* >>> map('a*a', [2, 3, 4, 5])
+* [4, 9, 16, 25]
+*/
 LambdaScript.map = function(iterable, lambda) {
     var fn = LambdaScript._toFunction(lambda);
     var iterator = LambdaScript._toIterable(iterable);
@@ -346,20 +346,20 @@ LambdaScript.map = function(iterable, lambda) {
 };
 
 /***
- * Looks through each value in 'iterable', returning a new array of all the values
- * that pass the truth test 'e'.
- *
- * AKA: #select in Smalltalk.
- *
- * @function
- * @param {Function} e a truth test (a unary function)
- * @param {Array} array an array
- * @returns {Array} a new array 
- *
- * @example
- * >>> filter(lambda('a%2==0'), range(1, 10))
- * [2, 4, 6, 8, 10]
- */
+* Looks through each value in 'iterable', returning a new array of all the values
+* that pass the truth test 'e'.
+*
+* AKA: #select in Smalltalk.
+*
+* @function
+* @param {Function} e a truth test (a unary function)
+* @param {Array} array an array
+* @returns {Array} a new array 
+*
+* @example
+* >>> filter(lambda('a%2==0'), range(1, 10))
+* [2, 4, 6, 8, 10]
+*/
 LambdaScript.filter = function(iterable, lambda) {
     var fn = LambdaScript._toFunction(lambda);
     var iterator = LambdaScript._toIterable(iterable);
@@ -368,24 +368,24 @@ LambdaScript.filter = function(iterable, lambda) {
     LambdaScript.each(iterator, function(element) {
         if (fn(element) === true) {
             result.push(element);
-        } 
+        }
     });
 
     return result;
 };
 
 /**
- * Returns true if all of the values in 'array' pass the truth test 'e'.
- * 'all' maybe a convenient alias for this function.
- *
- * @function
- * @param {Function} e a truth test (a unary function)
- * @param {Array} iterable an array
- * @returns {Boolean}
- *
- * @example
- *
- */
+* Returns true if all of the values in 'array' pass the truth test 'e'.
+* 'all' maybe a convenient alias for this function.
+*
+* @function
+* @param {Function} e a truth test (a unary function)
+* @param {Array} iterable an array
+* @returns {Boolean}
+*
+* @example
+*
+*/
 LambdaScript.every = function(iterable, lambda) {
     var fn = LambdaScript._toFunction(lambda);
     var iterator = LambdaScript._toIterable(iterable);
@@ -402,16 +402,16 @@ LambdaScript.every = function(iterable, lambda) {
 };
 
 /**
- * Returns true if <b>any</b> of the values in 'array' pass the truth test 'e'.
- * 'any' maybe a convenient alias for this function.
- *
- * @function
- * @param {Function} e the truth test (a unary function)
- * @param {Array} iterable an array
- * @returns {Boolean}
- *
- * @example
- */
+* Returns true if <b>any</b> of the values in 'array' pass the truth test 'e'.
+* 'any' maybe a convenient alias for this function.
+*
+* @function
+* @param {Function} e the truth test (a unary function)
+* @param {Array} iterable an array
+* @returns {Boolean}
+*
+* @example
+*/
 LambdaScript.some = function(iterable, lambda) {
     var fn = LambdaScript._toFunction(lambda);
     var iterator = LambdaScript._toIterable(iterable);
@@ -427,18 +427,18 @@ LambdaScript.some = function(iterable, lambda) {
 };
 
 /**
- * Bind the last n-parameters to a function.
- *
- * @function
- * @param {Function|String} lambda a lambda function
- * @param [Arguments] ...
- * @returns {Function} a function
- *
- * @example
- * >>> var mulBy2 = curry('a*b', 2);
- * >>> mulBy2(21)
- * 42
- */
+* Bind the last n-parameters to a function.
+*
+* @function
+* @param {Function|String} lambda a lambda function
+* @param [Arguments] ...
+* @returns {Function} a function
+*
+* @example
+* >>> var mulBy2 = curry('a*b', 2);
+* >>> mulBy2(21)
+* 42
+*/
 LambdaScript.curry = function(lambda) {
     var fn = LambdaScript._toFunction(lambda);
     var innerArgs = Array.prototype.slice.call(arguments, 1);
@@ -448,16 +448,16 @@ LambdaScript.curry = function(lambda) {
 };
 
 /**
- * Build a function that returns the value of the property 'name'.
- *
- * @function
- * @param {String} name a property name
- * @returns {Function} a pluck function
- *
- * @example
- * >>> map(pluck('length'), ['a', 'aa', 'aaa', 'aaaa'])
- * [ 1, 2, 3, 4 ]
- */
+* Build a function that returns the value of the property 'name'.
+*
+* @function
+* @param {String} name a property name
+* @returns {Function} a pluck function
+*
+* @example
+* >>> map(pluck('length'), ['a', 'aa', 'aaa', 'aaaa'])
+* [ 1, 2, 3, 4 ]
+*/
 LambdaScript.pluck = function(name) {
     return function(object) {
         return object[name];
@@ -465,12 +465,12 @@ LambdaScript.pluck = function(name) {
 };
 
 /**
- * Given a function 'f' returns another function that caches memoize results.
- *
- * @function
- * @param {Function} fn a function
- * @returns {Function} a memoized version of 'f'
- */
+* Given a function 'f' returns another function that caches memoize results.
+*
+* @function
+* @param {Function} fn a function
+* @returns {Function} a memoized version of 'f'
+*/
 LambdaScript.memoize = function(fn) { // TODO: must work also for lambdas?
     var cache = {};
 
@@ -485,15 +485,28 @@ LambdaScript.memoize = function(fn) { // TODO: must work also for lambdas?
     };
 };
 
+// JavaScript: The Good Parts, Douglas Crockford, pp 106
+LambdaScript.type = function(object) {
+    if (object === null) {
+        return 'null';
+    } else if (typeof object === 'object'
+        && typeof object.length === 'number'
+        && !(object.propertyIsEnumerable('length'))) {
+        return 'array';
+    } else {
+        return typeof object;
+    }
+};
+
 /**
- * This function copies all the public functions in `LambdaScript` except itself
- * into the global namespace.
- *
- * @function
- *
- * @example
- * >>> LambdaScript.install()
- */
+* This function copies all the public functions in `LambdaScript` except itself
+* into the global namespace.
+*
+* @function
+*
+* @example
+* >>> LambdaScript.install()
+*/
 LambdaScript.install = function() {
     var source = LambdaScript;
     /** @ignore */
