@@ -275,3 +275,15 @@ suite.testDropLessThanZero = function() {
     Assert.that(drop(range(1, 4), -1), is([]));
 };
 
+suite.testFirst = function() {
+    Assert.that(first(range(1, 4)), is(1));
+};
+
+suite.testLast = function() {
+    Assert.that(last(range(1, 4)), is(4));
+};
+
+suite.testRest = function() {
+    Assert.that(rest(range(1, 4)), is([2, 3, 4]));
+};
+

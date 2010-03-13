@@ -465,39 +465,41 @@ LambdaScript.drop = function(iterable, n) {
     return result;
 };
 
-
-
+// like drop(iterable, 1)
 LambdaScript.rest = function(iterable) {
+    return LambdaScript.drop(iterable, 1);
+};
 
-    };
-    
+// like take(iterable, 1)
 LambdaScript.first = function(iterable) {
-    
-    };
+    return LambdaScript.take(iterable, 1)[0]; // TODO: check me!
+};
 
+// returns the last element
 LambdaScript.last = function(iterable) {
+    var iterator = LambdaScript._toIterable(iterable);
+    var result = null;
 
-    };
-LambdaScript.second = function(iterable) {
+    LambdaScript.each(iterator, function(element) {
+        result = element;
+    });
 
-    };
-LambdaScript.reverse = function(iterable) {
-
-    };
+    return result;
+};
 
 /**
-     * Bind the last n-parameters to a function.
-     *
-     * @function
-     * @param {Function|String} lambda a lambda function
-     * @param [Arguments] ...
-     * @returns {Function} a function
-     *
-     * @example
-     * >>> var mulBy2 = curry('a*b', 2);
-     * >>> mulBy2(21)
-     * 42
-     */
+* Bind the last n-parameters to a function.
+*
+* @function
+* @param {Function|String} lambda a lambda function
+* @param [Arguments] ...
+* @returns {Function} a function
+*
+* @example
+* >>> var mulBy2 = curry('a*b', 2);
+* >>> mulBy2(21)
+* 42
+*/
 LambdaScript.curry = function(lambda) {
     var fn = LambdaScript._toFunction(lambda);
     var innerArgs = Array.prototype.slice.call(arguments, 1);
@@ -507,16 +509,16 @@ LambdaScript.curry = function(lambda) {
 };
 
 /**
-     * Build a function that returns the value of the property 'name'.
-     *
-     * @function
-     * @param {String} name a property name
-     * @returns {Function} a pluck function
-     *
-     * @example
-     * >>> map(pluck('length'), ['a', 'aa', 'aaa', 'aaaa'])
-     * [ 1, 2, 3, 4 ]
-     */
+* Build a function that returns the value of the property 'name'.
+*
+* @function
+* @param {String} name a property name
+* @returns {Function} a pluck function
+*
+* @example
+* >>> map(pluck('length'), ['a', 'aa', 'aaa', 'aaaa'])
+* [ 1, 2, 3, 4 ]
+*/
 LambdaScript.pluck = function(name) {
     return function(object) {
         return object[name];
@@ -524,12 +526,12 @@ LambdaScript.pluck = function(name) {
 };
 
 /**
-     * Given a function 'f' returns another function that caches memoize results.
-     *
-     * @function
-     * @param {Function} fn a function
-     * @returns {Function} a memoized version of 'f'
-     */
+* Given a function 'f' returns another function that caches memoize results.
+*
+* @function
+* @param {Function} fn a function
+* @returns {Function} a memoized version of 'f'
+*/
 LambdaScript.memoize = function(fn) { // TODO: must work also for lambdas?
     var cache = {};
 
@@ -558,14 +560,14 @@ LambdaScript.type = function(object) {
 };
 
 /**
-     * This function copies all the public functions in `LambdaScript` except itself
-     * into the global namespace.
-     *
-     * @function
-     *
-     * @example
-     * >>> LambdaScript.install()
-     */
+* This function copies all the public functions in `LambdaScript` except itself
+* into the global namespace.
+*
+* @function
+*
+* @example
+* >>> LambdaScript.install()
+*/
 LambdaScript.install = function() {
     var source = LambdaScript;
     /** @ignore */
