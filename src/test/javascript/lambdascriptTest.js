@@ -229,3 +229,20 @@ suite.testMemoize = function() {
     Assert.that(add(1,3), is(4)); // miss
     Assert.that(add(1,2), is(3)); // hit!
 };
+
+suite.testType = function() {
+    Assert.that(type([]), is('array'));
+    Assert.that(type(null), is('null'));
+};
+
+suite.testTake = function() {
+    Assert.that(take(range(10, 20), 3), is([10, 11, 12]));
+};
+
+suite.testTakeZero = function() {
+    Assert.that(take(range(10, 20), 0), is([]));
+};
+
+suite.testTakeLessThanZero = function() {
+    Assert.that(take(range(10, 20), 0), is([]));
+};
