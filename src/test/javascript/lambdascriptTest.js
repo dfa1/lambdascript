@@ -162,6 +162,22 @@ suite.testEach = function() {
     Assert.that(count, is(3));
 };
 
+suite.testEachWithNull = function() {
+    var count = 0;
+    each(null, function counter() {
+        count++;
+    });
+    Assert.that(count, is(0));
+};
+
+suite.testEachIndex = function() {
+    var last = 0;
+    each([1, 2, 3], function counter(element, index) {
+        last = index;
+    });
+    Assert.that(last, is(3));
+};
+
 suite.testFilter = function() {
     Assert.that(filter(range(1, 10), lambda('a%2==0')), is([2, 4, 6, 8, 10]));
 };
