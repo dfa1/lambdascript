@@ -22,6 +22,6 @@ import com.humaorie.lambdascript.internal.RhinoRunner;
 import org.junit.runner.RunWith;
 
 @RunWith(RhinoRunner.class)
-@JavaScriptSourceFile("src/test/javascript/LambdaScriptTest.js")
+@JavaScriptSourceFile("src/test/javascript/lambdaScriptTest.js")
 public class LambdaScriptTest {
 }
