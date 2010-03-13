@@ -522,7 +522,14 @@ LambdaScript.curry = function(lambda) {
 LambdaScript.pluck = function(name) {
     return function(object) {
         return object[name];
-    }
+    };
+};
+
+LambdaScript.invoke = function(name) {
+    var args = Array.prototype.splice.call(arguments, 1);
+    return function(object) {
+        return object[name].apply(object, args);
+    };
 };
 
 /**

@@ -234,9 +234,20 @@ suite.testCurry = function() {
     Assert.that(by2(21), is(42));
 }
 
-suite.testPluck1 = function() {
-    var a = ['a', 'aa', 'aaa', 'aaaa'];
-    Assert.that(map(a, pluck('length')), is([1, 2, 3, 4]));
+suite.testPluck = function() {
+    var array = ['a', 'aa', 'aaa', 'aaaa'];
+    Assert.that(map(array, pluck('length')), is([1, 2, 3, 4]));
+};
+
+suite.testInvoke = function() {
+    var array = ['a', 'aa', 'aaa', 'aaaa'];
+    Assert.that(map(array, invoke('toUpperCase')), is(['A', 'AA', 'AAA', 'AAAA']));
+};
+
+suite.testInvokeWithArgument = function() {
+    var array = ['hdr: a', 'hdr: aa', 'hdr: aaa', 'hdr: aaaa'];
+    
+    Assert.that(map(array, invoke('substr', 5, 10)), is(['a', 'aa', 'aaa', 'aaaa']));
 };
 
 suite.testMemoize = function() {
