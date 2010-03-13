@@ -136,7 +136,7 @@ LambdaScript.lambda = function(string) {
 };
 
 /**
- * Given two functions, 'f' and 'g', returns another function f(g(x)).
+ * Given two functions, 'f' and 'g', returns another function f(g()).
  *
  * @function
  * @param {Function} f a function
@@ -248,7 +248,7 @@ LambdaScript.range = function() {
  * >>> map(toUpperCase, ['foo', 'bar', 'baZ'])
  * ['FOO', 'BAR', 'BAZ']
  */
-LambdaScript.each = function(iterable, lambda) {
+LambdaScript.each = function(iterable, lambda) { // TODO: pass also current index to callback?
     var fn = LambdaScript._toFunction(lambda);
     var iterator = LambdaScript._toIterable(iterable);
 
@@ -260,14 +260,14 @@ LambdaScript.each = function(iterable, lambda) {
 };
 
 /**
- * Reduce boils down 'array' into a single value using 'i' ss the initial state
+ * Reduce boils down 'iterable' into a single value using 'i' as the initial state
  * of the reduction, and each successive step of it should be returned by 'e'.
  *
  * AKA: '#inject' in Smalltalk or 'fold' in lisp.
  *
  * @function
+ * @param {Iterable} iterable an array to reduce
  * @param {Function} e a binary function
- * @param {Array} iterable an array to reduce
  * @param {Object} initialValue the initial value
  * @returns {Array} a new array
  *
@@ -276,9 +276,9 @@ LambdaScript.each = function(iterable, lambda) {
  * 10
  */
 LambdaScript.reduce = function(iterable, lambda, initialValue) {
-    var i = initialValue;
     var fn = LambdaScript._toFunction(lambda);
     var iterator = LambdaScript._toIterable(iterable);
+    var i = initialValue;
 
     LambdaScript.each(iterator, function(element) {
         i = fn(i, element);
