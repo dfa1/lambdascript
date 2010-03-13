@@ -79,6 +79,24 @@ suite.testToIterator2 = function() {
     Assert.that(iterator2 === iterator, is(true));
 };
 
+suite.testToIteratorWithNull = function() {
+    var iterator = LambdaScript._toIterator(null);
+    Assert.that(iterator.toString(), is('NullIterator'));
+    Assert.that(iterator.toArray(), is([]));
+    Assert.that(iterator.hasNext(), is(false));
+    Assert.that(iterator.next(), is(undefined));
+};
+
+suite.testToIteratorWithNull = function() {
+    var iterator = LambdaScript._toIterator(null);
+    Assert.that(iterator.toString(), is('NullIterator'));
+};
+
+suite.testToIteratorWithUndefined = function() {
+    var iterator = LambdaScript._toIterator(undefined);
+    Assert.that(iterator.toString(), is('NullIterator'));
+};
+
 suite.testArrayIterator = function() {
     var iterator = new LambdaScript._ArrayIterator([1, 2, 3, 4, 5]);
     Assert.that(iterator.toArray(), is([1, 2, 3, 4, 5]));

@@ -49,7 +49,11 @@ LambdaScript._toFunction = function(lambda) {
 // Iterable has the following methods: 'toArray', 'hasNext', 'next'
 /** @ignore */
 LambdaScript._toIterable = function(iterable) {
-    if (iterable.constructor === Array) {
+    if (iterable === null) {
+        return new LambdaScript._NullIterator();
+    } else if (iterable === undefined) {
+        return new LambdaScript._NullIterator();
+    } else if (iterable.constructor === Array) {
         return new LambdaScript._ArrayIterator(iterable);
     } else if (iterable.next && iterable.hasNext && iterable.toArray) {
         return iterable;
@@ -110,6 +114,25 @@ LambdaScript._ArrayIterator = function(array) {
 
     this.toString = function() {
         return 'ArrayIterator';
+    };
+};
+
+/** @ignore */
+LambdaScript._NullIterator = function() {
+    this.next = function() {
+        return undefined;
+    };
+
+    this.hasNext = function() {
+        return false;
+    };
+
+    this.toArray = function() {
+        return [];
+    };
+
+    this.toString = function() {
+        return 'NullIterator';
     };
 };
 
