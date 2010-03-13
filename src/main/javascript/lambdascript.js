@@ -150,9 +150,17 @@ LambdaScript.lambda = function(string) {
  * >>> welcome('moe');
  * 'hi: moe!'
  */
-LambdaScript.compose = function(f, g) { // TODO: naming
+LambdaScript.compose = function(f, g) { // TODO: generalize for n functions
     return function() {
         return f(g.apply(null, arguments));
+    };
+};
+
+LambdaScript.not = function(lambda) {
+    var fn = LambdaScript._toFunction(lambda);
+
+    return function() {
+        return !fn();
     };
 };
 
@@ -241,8 +249,8 @@ LambdaScript.range = function() {
  * ['FOO', 'BAR', 'BAZ']
  */
 LambdaScript.each = function(iterable, lambda) {
-    lambda = LambdaScript._toFunction(lambda);
-    iterable = LambdaScript._toIterable(iterable);
+    var fn = LambdaScript._toFunction(lambda);
+    var iterator = LambdaScript._toIterable(iterable);
 
     while (iterator.hasNext()) {
         fn(iterator.next());
@@ -269,10 +277,10 @@ LambdaScript.each = function(iterable, lambda) {
  */
 LambdaScript.reduce = function(iterable, lambda, initialValue) {
     var i = initialValue;
-    lambda = LambdaScript._toFunction(lambda);
-    iterable = LambdaScript._toIterable(iterable);
+    var fn = LambdaScript._toFunction(lambda);
+    var iterator = LambdaScript._toIterable(iterable);
 
-    LambdaScript.each(iterable, function(element) {
+    LambdaScript.each(iterator, function(element) {
         i = fn(i, element);
     });
 
@@ -304,12 +312,12 @@ LambdaScript.reduce = function(iterable, lambda, initialValue) {
  * [4, 9, 16, 25]
  */
 LambdaScript.map = function(iterable, lambda) {
-    lambda = LambdaScript._toFunction(lambda);
-    iterable = LambdaScript._toIterable(iterable);
+    var fn = LambdaScript._toFunction(lambda);
+    var iterator = LambdaScript._toIterable(iterable);
     var result = [];
     
-    LambdaScript.each(iterable, function (element) {
-        result.push(lambda(element));
+    LambdaScript.each(iterator, function (element) {
+        result.push(fn(element));
     });
 
     return result;
@@ -331,12 +339,12 @@ LambdaScript.map = function(iterable, lambda) {
  * [2, 4, 6, 8, 10]
  */
 LambdaScript.filter = function(iterable, lambda) {
-    lambda = LambdaScript._toFunction(lambda);
-    iterable = LambdaScript._toIterable(iterable);
+    var fn = LambdaScript._toFunction(lambda);
+    var iterator = LambdaScript._toIterable(iterable);
     var result = [];
 
-    LambdaScript.each(iterable, function(element) {
-        if (lambda(element) === true) {
+    LambdaScript.each(iterator, function(element) {
+        if (fn(element) === true) {
             result.push(element);
         } 
     });
@@ -357,13 +365,13 @@ LambdaScript.filter = function(iterable, lambda) {
  *
  */
 LambdaScript.every = function(iterable, lambda) {
-    lambda = LambdaScript._toFunction(lambda);
-    iterable = LambdaScript._toIterable(iterable);
+    var fn = LambdaScript._toFunction(lambda);
+    var iterator = LambdaScript._toIterable(iterable);
     var result = true;
 
     // TODO: abort the inner loop at the first false
-    LambdaScript.each(iterable, function(element) {
-        if (lambda(element) === false) {
+    LambdaScript.each(iterator, function(element) {
+        if (fn(element) === false) {
             result = false;
         }
     });
@@ -383,15 +391,15 @@ LambdaScript.every = function(iterable, lambda) {
  * @example
  */
 LambdaScript.some = function(iterable, lambda) {
-    lambda = LambdaScript._toFunction(lambda);
-    iterable = LambdaScript._toIterable(iterable);
+    var fn = LambdaScript._toFunction(lambda);
+    var iterator = LambdaScript._toIterable(iterable);
     var result = false;
 
-    LambdaScript.each(function(element) {
-        if (fn(element)) {
+    LambdaScript.each(iterator, function(element) {
+        if (fn(element) === true) {
             result = true;
         }
-    }, iterator);
+    });
 
     return result;
 };
@@ -400,7 +408,7 @@ LambdaScript.some = function(iterable, lambda) {
  * Bind the last n-parameters to a function.
  *
  * @function
- * @param {Function} e a function
+ * @param {Function|String} lambda a lambda function
  * @param [Arguments] ...
  * @returns {Function} a function
  *
@@ -410,10 +418,10 @@ LambdaScript.some = function(iterable, lambda) {
  * 42
  */
 LambdaScript.curry = function(lambda) {
-    lambda = LambdaScript._toFunction(lambda);
+    var fn = LambdaScript._toFunction(lambda);
     var innerArgs = Array.prototype.slice.call(arguments, 1);
     return function () {
-        return lambda.apply(this, innerArgs.concat(Array.prototype.slice.call(arguments, 0)))
+        return fn.apply(this, innerArgs.concat(Array.prototype.slice.call(arguments, 0)))
     };
 };
 
@@ -433,7 +441,6 @@ LambdaScript.pluck = function(name) {
         return object[name];
     }
 };
-
 
 /**
  * Given a function 'f' returns another function that caches memoize results.
