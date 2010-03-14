@@ -20,6 +20,7 @@ package com.humaorie.lambdascript.internal;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import org.junit.BeforeClass;
@@ -33,21 +34,19 @@ import org.mozilla.javascript.NativeObject;
 import org.mozilla.javascript.RhinoException;
 import org.mozilla.javascript.Scriptable;
 
-// TODO: @JavaScriptInclude(prerequisite)
 public class RhinoRunner extends Runner {
 
     private final String sourceFile;
     private final Class testClass;
 
     public RhinoRunner(Class cls) throws Exception {
-        if (!cls.isAnnotationPresent(JavaScriptSourceFile.class)) {
-            throw new IllegalArgumentException("missing @JavaScriptSourceFile annotation");
+        if (!cls.isAnnotationPresent(JavaScriptTest.class)) {
+            throw new IllegalArgumentException("missing @JavaScriptSource annotation");
         }
 
-        String directory = ((JavaScriptSourceFile) cls.getAnnotation(JavaScriptSourceFile.class)).directory();
-        sourceFile = directory + File.separator + ((JavaScriptSourceFile) cls.getAnnotation(JavaScriptSourceFile.class)).value();
+        JavaScriptTest javaScriptSource = (JavaScriptTest) cls.getAnnotation(JavaScriptTest.class);
+        sourceFile = javaScriptSource.value();
         testClass = cls;
-
     }
 
     @Override
@@ -59,28 +58,30 @@ public class RhinoRunner extends Runner {
     public void run(RunNotifier notifier) {
         Context context = Context.enter();
         Scriptable scope = context.initStandardObjects();
-
-        // customize context
-        for (Method method : testClass.getDeclaredMethods()) {
-            if (Modifier.isStatic(method.getModifiers()) && method.isAnnotationPresent(BeforeClass.class)) {
-                Class[] parameterTypes = method.getParameterTypes();
-
-                if (parameterTypes != null && parameterTypes.length == 1 && parameterTypes[0].isInstance(context)) {
-                    try {
-                        method.invoke(null, context);
-                    } catch (Exception ex) {
-                        throw new RuntimeException(ex);
-                    }
-                }
-            }
-        }
-
         String propertyName = "";
 
         try {
-            context.evaluateReader(scope, new FileReader("src/main/javascript/lambdascript.js"), "lambdascript.js", 1, null);
-            context.evaluateString(scope, "LambdaScript.install();", "string", 1, null);
-            context.evaluateReader(scope, new FileReader("src/test/java/com/humaorie/lambdascript/internal/test.js"), "test.js", 1, null);
+            // evaluates includes
+            JavaScriptInclude include = (JavaScriptInclude) testClass.getAnnotation(JavaScriptInclude.class);
+
+            for (String file : include.value()) {
+                context.evaluateReader(scope, new FileReader(file), file, 1, null);
+            }
+
+            // customize context
+            for (Method method : testClass.getDeclaredMethods()) {
+                if (Modifier.isStatic(method.getModifiers()) && method.isAnnotationPresent(BeforeClass.class)) {
+                    Class[] parameterTypes = method.getParameterTypes();
+
+                    if (parameterTypes != null && parameterTypes.length == 1 && parameterTypes[0].isInstance(context)) {
+                        try {
+                            method.invoke(null, context);
+                        } catch (Exception ex) {
+                            throw new RuntimeException(ex);
+                        }
+                    }
+                }
+            }
 
             // evaluates sourceFile
             context.evaluateReader(scope, new FileReader(sourceFile), sourceFile, 1, null);
@@ -88,6 +89,7 @@ public class RhinoRunner extends Runner {
             // run all functions that starts with "test" in the object "suite"
             Scriptable suite = (Scriptable) scope.get("suite", scope);
 
+            // run functions prefixed with "test"
             for (Object name : NativeObject.getPropertyIds(suite)) {
                 propertyName = (String) name;
 

@@ -17,11 +17,23 @@ package com.humaorie.lambdascript;
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-import com.humaorie.lambdascript.internal.JavaScriptSourceFile;
+import com.humaorie.lambdascript.internal.JavaScriptInclude;
+import com.humaorie.lambdascript.internal.JavaScriptTest;
 import com.humaorie.lambdascript.internal.RhinoRunner;
+import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
+import org.mozilla.javascript.Context;
 
 @RunWith(RhinoRunner.class)
-@JavaScriptSourceFile("ProjectEulerTest.js")
+@JavaScriptInclude({
+    "src/main/javascript/lambdascript.js",
+    "src/test/java/com/humaorie/lambdascript/internal/test.js"
+})
+@JavaScriptTest("src/test/javascript/ProjectEulerTest.js")
 public class ProjectEulerTest {
+
+    @BeforeClass
+    public static void setUpContext(Context context) {
+        context.setLanguageVersion(Context.VERSION_1_5);
+    }
 }

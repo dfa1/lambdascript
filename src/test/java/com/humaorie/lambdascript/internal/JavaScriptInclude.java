@@ -1,4 +1,4 @@
-package com.humaorie.lambdascript;
+package com.humaorie.lambdascript.internal;
 
 /*
  * LambdaScript, http://bitbucket.org/dfa/lambdascript
@@ -17,23 +17,14 @@ package com.humaorie.lambdascript;
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-import com.humaorie.lambdascript.internal.JavaScriptInclude;
-import com.humaorie.lambdascript.internal.JavaScriptTest;
-import com.humaorie.lambdascript.internal.RhinoRunner;
-import org.junit.BeforeClass;
-import org.junit.runner.RunWith;
-import org.mozilla.javascript.Context;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-@RunWith(RhinoRunner.class)
-@JavaScriptInclude({
-    "src/main/javascript/lambdascript.js",
-    "src/test/java/com/humaorie/lambdascript/internal/test.js"
-})
-@JavaScriptTest("src/test/javascript/lambdaScriptTest.js")
-public class LambdaScriptTest {
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.TYPE)
+public @interface JavaScriptInclude {
 
-    @BeforeClass
-    public static void setUpContext(Context context) {
-        context.setLanguageVersion(Context.VERSION_1_5);
-    }
+    String[] value();
 }
