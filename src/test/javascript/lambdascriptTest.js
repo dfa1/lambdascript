@@ -16,8 +16,10 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+// install in the global namespace
 LambdaScript.install();
 
+// the test suite: don't change the variable name
 var suite = {};
 
 suite.testLambda = function() {
