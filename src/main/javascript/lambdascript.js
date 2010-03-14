@@ -54,12 +54,12 @@ LambdaScript._toIterable = function(iterable) {
         return new LambdaScript._NullIterator();
     } else if (iterable === undefined) {
         return new LambdaScript._NullIterator();
-    } else if (iterable.constructor === Array) {
+    } else if (type(iterable) === 'array') {
         return new LambdaScript._ArrayIterator(iterable);
     } else if (iterable.next && iterable.hasNext && iterable.toArray) {
         return iterable;
     } else {
-        throw 'Not iterable';
+        throw 'Not iterable nor array';
     }
 }
 
