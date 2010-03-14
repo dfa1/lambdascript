@@ -20,6 +20,9 @@ package com.humaorie.lambdascript.internal;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+import org.junit.BeforeClass;
 import org.junit.runner.Description;
 import org.junit.runner.Runner;
 import org.junit.runner.notification.Failure;
@@ -31,7 +34,6 @@ import org.mozilla.javascript.RhinoException;
 import org.mozilla.javascript.Scriptable;
 
 // TODO: @JavaScriptInclude(prerequisite)
-// TODO: allow the class to customize the Context via @BeforeClass
 public class RhinoRunner extends Runner {
 
     private final String sourceFile;
@@ -45,6 +47,7 @@ public class RhinoRunner extends Runner {
         String directory = ((JavaScriptSourceFile) cls.getAnnotation(JavaScriptSourceFile.class)).directory();
         sourceFile = directory + File.separator + ((JavaScriptSourceFile) cls.getAnnotation(JavaScriptSourceFile.class)).value();
         testClass = cls;
+
     }
 
     @Override
@@ -54,18 +57,27 @@ public class RhinoRunner extends Runner {
 
     @Override
     public void run(RunNotifier notifier) {
-        setup(notifier);
-    }
+        Context context = Context.enter();
+        Scriptable scope = context.initStandardObjects();
 
-    private void setup(RunNotifier notifier) {
+        // customize context
+        for (Method method : testClass.getDeclaredMethods()) {
+            if (Modifier.isStatic(method.getModifiers()) && method.isAnnotationPresent(BeforeClass.class)) {
+                Class[] parameterTypes = method.getParameterTypes();
+
+                if (parameterTypes != null && parameterTypes.length == 1 && parameterTypes[0].isInstance(context)) {
+                    try {
+                        method.invoke(null, context);
+                    } catch (Exception ex) {
+                        throw new RuntimeException(ex);
+                    }
+                }
+            }
+        }
+
         String propertyName = "";
 
         try {
-            // dependencies
-            Context context = Context.enter();
-            context.setLanguageVersion(Context.VERSION_1_5);
-            context.setGeneratingDebug(true);
-            Scriptable scope = context.initStandardObjects();
             context.evaluateReader(scope, new FileReader("src/main/javascript/lambdascript.js"), "lambdascript.js", 1, null);
             context.evaluateString(scope, "LambdaScript.install();", "string", 1, null);
             context.evaluateReader(scope, new FileReader("src/test/java/com/humaorie/lambdascript/internal/test.js"), "test.js", 1, null);

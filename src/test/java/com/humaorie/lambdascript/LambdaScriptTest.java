@@ -19,9 +19,16 @@ package com.humaorie.lambdascript;
  */
 import com.humaorie.lambdascript.internal.JavaScriptSourceFile;
 import com.humaorie.lambdascript.internal.RhinoRunner;
+import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
+import org.mozilla.javascript.Context;
 
 @RunWith(RhinoRunner.class)
 @JavaScriptSourceFile("lambdaScriptTest.js")
 public class LambdaScriptTest {
+
+    @BeforeClass
+    public static void setUpContext(Context context) {
+        context.setLanguageVersion(Context.VERSION_1_5);
+    }
 }
