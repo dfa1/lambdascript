@@ -17,6 +17,7 @@ package com.humaorie.lambdascript.internal;
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import org.junit.runner.Description;
@@ -31,7 +32,6 @@ import org.mozilla.javascript.Scriptable;
 
 // TODO: @JavaScriptInclude(prerequisite)
 // TODO: allow the class to customize the Context via @BeforeClass
-// TODO @JavaScriptSourceFile by default uses the directory 'src/test/javascript'
 public class RhinoRunner extends Runner {
 
     private final String sourceFile;
@@ -42,7 +42,8 @@ public class RhinoRunner extends Runner {
             throw new IllegalArgumentException("missing @JavaScriptSourceFile annotation");
         }
 
-        sourceFile = ((JavaScriptSourceFile) cls.getAnnotation(JavaScriptSourceFile.class)).value();
+        String directory = ((JavaScriptSourceFile) cls.getAnnotation(JavaScriptSourceFile.class)).directory();
+        sourceFile = directory + File.separator + ((JavaScriptSourceFile) cls.getAnnotation(JavaScriptSourceFile.class)).value();
         testClass = cls;
     }
 

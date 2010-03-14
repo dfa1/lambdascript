@@ -27,4 +27,6 @@ import java.lang.annotation.Target;
 public @interface JavaScriptSourceFile {
 
     String value();
+
+    String directory() default "src/test/javascript";
 }
