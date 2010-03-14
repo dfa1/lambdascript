@@ -179,10 +179,47 @@ LambdaScript.compose = function(f, g) { // TODO: generalize for n functions
     };
 };
 
+// returns a functions that negates the input function
 LambdaScript.not = function(lambda) {
     var fn = LambdaScript._toFunction(lambda);
     return function() {
         return fn() === false;
+    };
+};
+
+// Returns a function that returns true when any the arguments (lambdas) returns true
+LambdaScript.or = function() {
+    var args = Array.prototype.splice.call(arguments, 0);
+    return function() {
+        var result = false;
+
+        LambdaScript.each(args, function(lambda) {
+            var fn = LambdaScript._toFunction(lambda);
+            if (fn() === true) {
+                result = true;
+                return false; // break the each function
+            }
+        });
+
+        return result;
+    };
+};
+
+// Returns a function that returns true when all the arguments (lambdas) returns true
+LambdaScript.and = function() {
+    var args = Array.prototype.splice.call(arguments, 0);
+    return function() {
+        var result = true;
+
+        LambdaScript.each(args, function(lambda) {
+            var fn = LambdaScript._toFunction(lambda);
+            if (fn() === false) { // TODO: it can be also a boolean
+                result = false;
+                return false; // break the each function
+            }
+        });
+
+        return result;
     };
 };
 
@@ -193,7 +230,7 @@ LambdaScript.not = function(lambda) {
  * @param [Number] begin defaults 1 when not specified
  * @param [Number] end always specified
  * @param [Number|String|Function] step a function or a costant
- * @returns {RangeIterator} a new range iterator
+ * @returns {Iterable} a new range iterator
  *
  * @example
  * >>> range(5)
@@ -257,18 +294,13 @@ LambdaScript.range = function() {
 };
 
 /**
- * Iterates over 'array', yielding each in turn to the function 'lambda'.
+ * Iterates over 'iterable', yielding each in turn to the function 'lambda'. If
+ * the function returns false 'each' immediately returns.
  *
  * @function
- * @param {Function}  a unary function to invoke for each element
- * @param {Array} array an array
+ * @param {Iterable} iterable an array or a range object
+ * @param {Function} lambda a function to invoke for each element
  * @returns {Array} the 'array' itself
- *
- * @example
- *
- * >>> function toUpperCase(s) { return s.toUpperCase(); }
- * >>> map(toUpperCase, ['foo', 'bar', 'baZ'])
- * ['FOO', 'BAR', 'BAZ']
  */
 LambdaScript.each = function(iterable, lambda) { 
     var fn = LambdaScript._toFunction(lambda);
@@ -276,7 +308,9 @@ LambdaScript.each = function(iterable, lambda) {
     var i = 1;
 
     while (iterator.hasNext()) {
-        fn(iterator.next(), i++);
+        if (fn(iterator.next(), i++) === false) {
+            break;
+        }
     }
 
     return iterable;

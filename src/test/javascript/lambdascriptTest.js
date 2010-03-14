@@ -43,18 +43,18 @@ suite.testCompose1 = function() {
     var exclaim = function(statement) {
         return statement + "!";
     };
-    var welcome = LambdaScript.compose(greet, exclaim);
+    var welcome = compose(greet, exclaim);
     Assert.that(welcome('dfa'), is('hi dfa!'));
 };
 
 suite.testCompose2 = function() {
-    var square = LambdaScript.lambda('a*a');
-    var squareOfSquare= LambdaScript.compose(square, square);
+    var square = lambda('a*a');
+    var squareOfSquare = compose(square, square);
     Assert.that(squareOfSquare(2), is(16));
 };
 
 suite.testNot = function() {
-    var truth = LambdaScript.lambda('true');
+    var truth = lambda('true');
     var notTruth = LambdaScript.not(truth);
     Assert.that(truth(), is(true));
     Assert.that(notTruth(), is(false));
@@ -63,8 +63,24 @@ suite.testNot = function() {
 suite.testComposeNot = function() {
     var truth = lambda('true');
     var notTruth = LambdaScript.not(truth);
-    var notnotTruth = LambdaScript.compose(notTruth, notTruth);
+    var notnotTruth = compose(notTruth, notTruth);
     Assert.that(notnotTruth(), is(false)); // should be true?
+};
+
+suite.testOrFalse = function() {
+    Assert.that(or('false', 'false'), is(false));
+};
+
+suite.testOrTrue = function() {
+    Assert.that(or('false', 'false', 'true'), is(true));
+};
+
+suite.testAndFalse = function() {
+    Assert.that(and('false', 'false'), is(false));
+};
+
+suite.testAndTrue = function() {
+    Assert.that(and('true', 'true', 'true'), is(true));
 };
 
 suite.testToIterator = function() {
