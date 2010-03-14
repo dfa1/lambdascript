@@ -154,6 +154,12 @@ LambdaScript._NullIterator = function() {
  * lambda('a * b + c') is equivalent to function (a, b, c) { return a * b + c; }
  */
 LambdaScript.lambda = function(string) {
+    if (string === null || string === undefined || string == '') {
+        return function() {
+            return false;
+        };
+    }
+
     return function(a, b, c) {
         return eval(string);
     };
