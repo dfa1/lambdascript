@@ -202,19 +202,17 @@ LambdaScript.not = function(lambda) {
  */
 LambdaScript.or = function() {
     var args = Array.prototype.splice.call(arguments, 0);
-    return function() {
-        var result = false;
+    var result = false;
 
-        LambdaScript.each(args, function(lambda) {
-            var fn = LambdaScript._toFunction(lambda);
-            if (fn() === true) {
-                result = true;
-                return false; // break the each function
-            }
-        });
+    LambdaScript.each(args, function(lambda) {
+        var fn = LambdaScript._toFunction(lambda);
+        if (fn() === true) {
+            result = true;
+            return false; // break the each function
+        }
+    });
 
-        return result;
-    };
+    return result;
 };
 
 /**
@@ -223,19 +221,17 @@ LambdaScript.or = function() {
  */
 LambdaScript.and = function() {
     var args = Array.prototype.splice.call(arguments, 0);
-    return function() {
-        var result = true;
+    var result = true;
 
-        LambdaScript.each(args, function(lambda) {
-            var fn = LambdaScript._toFunction(lambda);
-            if (fn() === false) { // TODO: it can be also a boolean
-                result = false;
-                return false; // break the each function
-            }
-        });
+    LambdaScript.each(args, function(lambda) {
+        var fn = LambdaScript._toFunction(lambda);
+        if (fn() === false) { // TODO: it can be also a boolean
+            result = false;
+            return false; // break the each function
+        }
+    });
 
-        return result;
-    };
+    return result;
 };
 
 /**
