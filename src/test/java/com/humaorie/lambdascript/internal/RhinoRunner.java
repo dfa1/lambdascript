@@ -29,6 +29,9 @@ import org.mozilla.javascript.NativeObject;
 import org.mozilla.javascript.RhinoException;
 import org.mozilla.javascript.Scriptable;
 
+// TODO: @JavaScriptInclude(prerequisite)
+// TODO: allow the class to customize the Context via @BeforeClass
+// TODO @JavaScriptSourceFile by default uses the directory 'src/test/javascript'
 public class RhinoRunner extends Runner {
 
     private final String sourceFile;
