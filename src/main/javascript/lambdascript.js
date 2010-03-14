@@ -26,6 +26,7 @@
  *    - 'array'     -> array
  *    - 'string'    -> string
  *    - 'object'    -> object
+ *    - 'n'         -> a positive number
  *
  *  suspicious usage are marked by a "TODO: naming" comment
  */
@@ -179,7 +180,9 @@ LambdaScript.compose = function(f, g) { // TODO: generalize for n functions
     };
 };
 
-// returns a functions that negates the input function
+/**
+ * Returns a functions that negates the input function.
+ */
 LambdaScript.not = function(lambda) {
     var fn = LambdaScript._toFunction(lambda);
     return function() {
@@ -187,7 +190,10 @@ LambdaScript.not = function(lambda) {
     };
 };
 
-// Returns a function that returns true when any the arguments (lambdas) returns true
+/**
+ * Returns a function that returns true when any the arguments (lambdas)
+ * returns true.
+ */
 LambdaScript.or = function() {
     var args = Array.prototype.splice.call(arguments, 0);
     return function() {
@@ -205,7 +211,10 @@ LambdaScript.or = function() {
     };
 };
 
-// Returns a function that returns true when all the arguments (lambdas) returns true
+/**
+ * Returns a function that returns true when all the arguments (lambdas)
+ * returns true.
+ */
 LambdaScript.and = function() {
     var args = Array.prototype.splice.call(arguments, 0);
     return function() {
@@ -461,7 +470,10 @@ LambdaScript.some = function(iterable, lambda) {
     return result;
 };
 
-// like filter but returns an array of the first n items that satisfy lambda'
+/**
+ * Like 'filter' but returns an array of the first n items that satisfy
+ * the 'lambda' parameter.
+ */
 LambdaScript.take = function(iterable, n) {
     var iterator = LambdaScript._toIterable(iterable);
     var result = [];
@@ -481,7 +493,9 @@ LambdaScript.take = function(iterable, n) {
     return result;
 };
 
-// Returns an array of all but the first n items in iterable
+/**
+ * Returns an array of all but the first 'n' items in 'iterable'.
+ */
 LambdaScript.drop = function(iterable, n) {
     var iterator = LambdaScript._toIterable(iterable);
     var result = [];
@@ -499,17 +513,23 @@ LambdaScript.drop = function(iterable, n) {
     return result;
 };
 
-// like drop(iterable, 1)
+/** 
+ * Like 'drop(iterable, 1)'.
+ */
 LambdaScript.rest = function(iterable) {
     return LambdaScript.drop(iterable, 1);
 };
 
-// like take(iterable, 1)
+/**
+ * Like 'take(iterable, 1)'.
+ */
 LambdaScript.first = function(iterable) {
     return LambdaScript.take(iterable, 1)[0]; // TODO: check me!
 };
 
-// returns the last element
+/**
+ * Returns the last element of 'iterable'.
+ */
 LambdaScript.last = function(iterable) {
     var iterator = LambdaScript._toIterable(iterable);
     var result = null;
@@ -600,7 +620,11 @@ LambdaScript.memoize = function(lambda) {
     };
 };
 
-// JavaScript: The Good Parts, Douglas Crockford, pp 106
+/**
+ * Fix the JavaScript typeof operator.
+ *
+ * (see: JavaScript: The Good Parts, Douglas Crockford, pp 106)
+ */
 LambdaScript.type = function(object) {
     if (object === null) {
         return 'null';
