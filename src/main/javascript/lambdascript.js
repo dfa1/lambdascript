@@ -311,7 +311,7 @@ LambdaScript.range = function() {
  * @function
  * @param {Iterable} iterable an array or a range object
  * @param {Function} lambda a function to invoke for each element
- * @returns {Array} the 'array' itself
+ * @returns {Array} the 'iterable' itself; handy for chaining
  */
 LambdaScript.each = function(iterable, lambda) { 
     var fn = LambdaScript._toFunction(lambda);
@@ -328,19 +328,21 @@ LambdaScript.each = function(iterable, lambda) {
 };
 
 /**
- * Reduce boils down 'iterable' into a single value using 'i' as the initial state
- * of the reduction, and each successive step of it should be returned by 'e'.
+ * Reduce boils down 'iterable' into a single value using 'initialValue' as
+ * the initial state of the reduction, and each successive step of it should
+ * be returned by 'lambda'.
  *
  * AKA: '#inject' in Smalltalk or 'fold' in lisp.
  *
  * @function
- * @param {Iterable} iterable an array to reduce
- * @param {Function} e a binary function
- * @param {Object} initialValue the initial value
+ * @param {Iterable} iterable the iterable to reduce
+ * @param {Function} lambda a binary function
+ * @param {Object} initialValue optional initial value, or the first value of
+ *                 'iterable'
  * @returns {Array} a new array
  *
  * @example
- * >>> reduce(lambda('a+b'), [1, 2, 3, 4], 0) // sum of range(1, 4)
+ * >>> reduce(lambda('a+b'), [1, 2, 3, 4]) // sum of range(1, 4)
  * 10
  */
 LambdaScript.reduce = function(iterable, lambda, initialValue) {
@@ -356,14 +358,14 @@ LambdaScript.reduce = function(iterable, lambda, initialValue) {
 };
 
 /**
- * Produces a new array of values by mapping each value in 'array' through
- * the unary transformation function 'e'.
+ * Produces a new array of values by mapping each value in 'iterable' through
+ * the unary transformation function 'lambda'.
  *
  * AKA: '#collect' in Smalltalk.
  *
  * @function
- * @param {Function} e an unary function
- * @param {Array} iterable an array
+ * @param {Iterable} iterable an iterable
+ * @param {Function} lambda an unary function
  * @returns {Array} a new array
  *
  * @example
@@ -392,14 +394,14 @@ LambdaScript.map = function(iterable, lambda) {
 };
 
 /***
- * Looks through each value in 'iterable', returning a new array of all the values
- * that pass the truth test 'e'.
+ * Looks through each value in 'iterable', returning a new array of all the
+ * values that pass the truth test 'lambda'.
  *
  * AKA: #select in Smalltalk.
  *
  * @function
- * @param {Function} e a truth test (a unary function)
- * @param {Array} array an array
+ * @param {Iterable} iterable an iterable
+ * @param {Function} lambda a truth test (a unary function)
  * @returns {Array} a new array
  *
  * @example
@@ -421,16 +423,13 @@ LambdaScript.filter = function(iterable, lambda) {
 };
 
 /**
- * Returns true if all of the values in 'array' pass the truth test 'e'.
- * 'all' maybe a convenient alias for this function.
- *
+ * Returns true if <b>all</b> of the values in 'iterable' pass the truth test
+ * 'lambda'.
+ * 
  * @function
- * @param {Function} e a truth test (a unary function)
- * @param {Array} iterable an array
+ * @param {Iterable} iterable an iterable
+ * @param {Function} lambda a truth test (a unary function)
  * @returns {Boolean}
- *
- * @example
- *
  */
 LambdaScript.every = function(iterable, lambda) {
     var fn = LambdaScript._toFunction(lambda);
@@ -448,12 +447,12 @@ LambdaScript.every = function(iterable, lambda) {
 };
 
 /**
- * Returns true if <b>any</b> of the values in 'array' pass the truth test 'e'.
- * 'any' maybe a convenient alias for this function.
+ * Returns true if <b>any</b> of the values in 'iterable' pass the truth test
+ * 'lambda'.
  *
  * @function
- * @param {Function} e the truth test (a unary function)
- * @param {Array} iterable an array
+ * @param {Iterable} iterable an array
+ * @param {Function} lambda the truth test (a unary function)
  * @returns {Boolean}
  *
  * @example
