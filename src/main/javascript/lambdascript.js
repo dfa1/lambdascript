@@ -544,12 +544,7 @@ LambdaScript.last = function(iterable) {
 };
 
 /**
-* Bind the last n-parameters to a function.
-*
-* @function
-* @param {Function|String} lambda a lambda function
-* @param [Arguments] ...
-* @returns {Function} a function
+* Bind the last n parameters to a function.
 *
 * @example
 * >>> var mulBy2 = curry('a*b', 2);
@@ -567,10 +562,6 @@ LambdaScript.curry = function(lambda) {
 /**
 * Build a function that returns the value of the property 'name'.
 *
-* @function
-* @param {String} name a property name
-* @returns {Function} a pluck function
-*
 * @example
 * >>> map(['a', 'aa', 'aaa', 'aaaa'], pluck('length'))
 * [1, 2, 3, 4]
@@ -584,11 +575,7 @@ LambdaScript.pluck = function(name) {
 /**
 * Build a function that invokes the method 'name', with the arguments passed to
 * this function.
-*
-* @function
-* @param {String} name a method name
-* @returns {Function} an invoke function
-*
+* 
 * @example
 * >>> map(['hdr: a', 'hdr: aa', 'hdr: aaa', 'hdr: aaaa'], invoke('substr', 5, 10))
 * ['a', 'aa', 'aaa', 'aaaa']
@@ -601,11 +588,7 @@ LambdaScript.invoke = function(name) {
 };
 
 /**
-* Given a function 'f' returns another function that caches memoize results.
-*
-* @function
-* @param {Function} fn a function
-* @returns {Function} a memoized version of 'f'
+* Given a function returns another function that caches memoize results.
 */
 LambdaScript.memoize = function(lambda) {
     var fn = LambdaScript._toFunction(lambda);
@@ -623,7 +606,7 @@ LambdaScript.memoize = function(lambda) {
 };
 
 /**
- * Fix the JavaScript typeof operator.
+ * an array-aware, typeof-like function.
  *
  * (see: JavaScript: The Good Parts, Douglas Crockford, pp 106)
  */
