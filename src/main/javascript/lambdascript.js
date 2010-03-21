@@ -56,7 +56,7 @@ LambdaScript._toIterable = function(iterable) {
         return new LambdaScript._NullIterator();
     } else if (type(iterable) === 'array') {
         return new LambdaScript._ArrayIterator(iterable);
-    } else if (iterable.next && iterable.hasNext && iterable.toArray) {
+    } else if (iterable.next && iterable.hasNext && iterable.toArray) { // TODO: 'iterable'
         return iterable;
     } else {
         throw 'Not iterable nor array';
