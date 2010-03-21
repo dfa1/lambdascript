@@ -145,17 +145,8 @@ function TypeOfMatcher(expected) {
 }
 
 // matcher interface
-
-// from "JavaScript: the good parts", pp. 106 
-function isArray(object) {
-    return object &&
-    /*  */ typeof object === 'object' &&
-    /*  */ typeof object.length === 'number' &&
-    /*  */ !(object.propertyIsEnumerable('lenght'));
-}
-
 function is(expected) {
-    if (isArray(expected)) {
+    if (type(expected) === 'array') {
         return new ArrayMatcher(expected);
     } else {
         return new IsMatcher(expected);
