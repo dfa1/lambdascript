@@ -336,3 +336,18 @@ suite.testRest = function() {
     Assert.that(rest(range(1, 4)), is([2, 3, 4]));
 };
 
+suite.testFormat = function() {
+    Assert.that(format("a{1}c", "b"), is("abc"));
+}
+
+suite.testFormatWithoutArgs = function() {
+    Assert.that(format("abc"), is("abc"));
+}
+
+suite.testFormatWithNull = function() {
+    Assert.that(format(null), is(""));
+}
+
+suite.testFormatWithUndefined = function() {
+    Assert.that(format(undefined), is(""));
+}

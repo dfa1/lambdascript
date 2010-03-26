@@ -622,6 +622,18 @@ LambdaScript.type = function(object) {
 };
 
 /**
+ * Like java.lang.String.format() but using {1}.. {n} in place of %
+ */
+LambdaScript.format = function(string) {
+    string = string || "";
+    var pattern = /\{\d+\}/g;
+    var args = arguments;
+    return string.replace(pattern, function(capture) {
+        return args[capture.match(/\d+/)];
+    });
+};
+
+/**
 * This function copies all the public functions in `LambdaScript` except itself
 * into the global namespace.
 *
