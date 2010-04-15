@@ -338,16 +338,26 @@ suite.testRest = function() {
 
 suite.testFormat = function() {
     Assert.that(format("a{1}c", "b"), is("abc"));
-}
+};
 
 suite.testFormatWithoutArgs = function() {
     Assert.that(format("abc"), is("abc"));
-}
+};
 
 suite.testFormatWithNull = function() {
     Assert.that(format(null), is(""));
-}
+};
 
 suite.testFormatWithUndefined = function() {
     Assert.that(format(undefined), is(""));
-}
+};
+
+suite.testIsNull = function() {
+    Assert.that(isnull(null), is(true));
+};
+
+suite.testIsUndef = function() {
+    Assert.that(isundef(undefined), is(true));
+};
+
+

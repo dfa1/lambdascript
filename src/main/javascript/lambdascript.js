@@ -633,6 +633,15 @@ LambdaScript.format = function(string) {
     });
 };
 
+LambdaScript.isnull = function(object) {
+    return object === null;
+};
+
+// checking for undefined is tricky (what about if window.undefined is defined?) 
+LambdaScript.isundef = function(object) {
+    return typeof object == 'undefined';
+};
+
 /**
 * This function copies all the public functions in `LambdaScript` except itself
 * into the global namespace.
@@ -655,5 +664,3 @@ LambdaScript.install = function() {
         }
     }
 };
-
-
