@@ -60,7 +60,7 @@ function NotMatcher(matcher) {
 function IsMatcher(expected) {
     this.expected = expected;
     this.actual = null;
-    
+
     this.matches = function(actual) {
         this.actual = actual;
         return this.actual === this.expected;
@@ -77,7 +77,7 @@ function IsMatcher(expected) {
         if (typeof a == 'string') {
             a = "'" + a + "'";
         }
-        
+
         description.append("expected: {1} got: {2}", e, a);
     };
 }
@@ -113,7 +113,7 @@ function ArrayMatcher(expected) {
         if (got.length == 0) {
             got = '[]';
         }
-        
+
         description.append("expected: {1} got: {2}", exp, got);
     };
 }
@@ -146,6 +146,7 @@ function TypeOfMatcher(expected) {
 
 // matcher interface
 function is(expected) {
+    // TODO: cannot use type since it is a library function
     if (type(expected) === 'array') {
         return new ArrayMatcher(expected);
     } else {
