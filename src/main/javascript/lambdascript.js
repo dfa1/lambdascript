@@ -56,10 +56,10 @@ LambdaScript._toIterable = function(iterable) {
         return new LambdaScript._NullIterator();
     } else if (type(iterable) === 'array') {
         return new LambdaScript._ArrayIterator(iterable);
-    } else if (iterable.next && iterable.hasNext && iterable.toArray) { // TODO: 'iterable'
+    } else if (iterable.next && iterable.hasNext && iterable.toArray) { 
         return iterable;
     } else {
-        throw 'Not iterable nor array';
+        throw "Not 'iterable' nor 'array'";
     }
 }
 
@@ -115,6 +115,29 @@ LambdaScript._ArrayIterator = function(array) {
 
     this.toString = function() {
         return 'ArrayIterator';
+    };
+};
+
+/** @Ignore */
+LambdaScript._IterateIterator = function(fn, start) {
+    this.fn = fn;
+    this.x = start;
+    
+    this.next = function() {
+        this.x = this.fn(this.x);
+	return this.x;
+    };
+
+    this.hasNext = function() {
+        return true;
+    };
+
+    this.toArray = function() {
+        return []; // TODO: cannot returns an infinite array
+    };
+
+    this.toString = function() {
+        return 'IterateIterator';
     };
 };
 
@@ -302,6 +325,14 @@ LambdaScript.range = function() {
     }
 
     return new LambdaScript._RangeIterator(begin, end, step);
+};
+
+/**
+ * Returns the iterator f(x) -> f(f(x)) -> f(f(f(x))) -> ...
+ */
+LambdaScript.iterate = function(lambda, start) {
+    var fn = LambdaScript._toFunction(lambda);
+    return new LambdaScript._IterateIterator(fn, start);
 };
 
 /**

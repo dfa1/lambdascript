@@ -374,3 +374,11 @@ suite.testConstant2 = function() {
 suite.testConstant3 = function() {
     Assert.that(map(range(5), constant(42)), is([42,42,42,42,42]));
 };
+
+suite.testIterate = function() {
+    var inc = lambda('a+1');
+    var iterate = iterate(inc, 0);
+    Assert.that(iterate, not(is(null)));
+    Assert.that(iterate.next(), is(1));			
+    Assert.that(iterate.next(), is(2));			
+};
