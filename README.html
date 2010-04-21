@@ -7,78 +7,75 @@
     </head>
     <body>
         <h1>LambdaScript ${pom.version}</h1>
-        <h2>Another functional javascript library</h2>
-	<p>LambaScript is intended to be practical rather than
-	beautiful or minimal. Inspirations:</p>
-	<ul>
-           <li><a href="http://crockford.com/onjs/2.ppt">Crockford</a></li>
-	   <li><a href="http://interglacial.com/hoj/hoj.html">High
+        <p>
+            LambaScript is intended to be practical functional rather
+            than elegant, beatiful or minimal. Inspirations:
+        </p>
+        <ul>
+            <li><a href="http://crockford.com/onjs/2.ppt">Crockford</a></li>
+            <li><a href="http://interglacial.com/hoj/hoj.html">High
 	   Order JavaScript</a></li>
-	   <li>clojure, in particular 
-              <a href="http://richhickey.github.com/clojure/clojure.core-api.html">core API</a></li>
-	  <li><a href="http://bitbucket.org/dfa/dollar">Dollar</a></li>	
-	</ul>
+            <li>clojure, in particular
+                <a href="http://richhickey.github.com/clojure/clojure.core-api.html">core API</a></li>
+            <li><a href="http://bitbucket.org/dfa/dollar">Dollar</a></li>
+        </ul>
 
-	<p>Disclaimer: I am no expert in functional programming, I
-don't use functional programming in my day job. But that is why I am
-trying to learn functional programming.</p>
+        <p>Disclaimer: I am no expert in functional programming, I
+            don't use functional programming in my day job. But that is why I am
+            trying to learn functional programming.</p>
 
 
         <h2>Usage</h2>
-	<pre>
+        <pre>
             &lt;script language="javascript"&gt;
                 LambdaScript.install();
             &lt;/script&gt;
-	    </pre>
+        </pre>
 
         <h2>Build documentation</h2>
-            In order to build documentation:
-            <code>$ mvn jsdoctk:jsdoc</code>
-	
-	<h1>Compelling Projects</h1>
-	<ul>
-	  <li><a href="http://osteele.com/sources/javascript/functional/">Functional
+        In order to build documentation:
+        <pre>
+$ mvn jsdoctk:jsdoc
+        </pre>
+
+        <h2>Compelling Projects</h2>
+        <ul>
+            <li><a href="http://osteele.com/sources/javascript/functional/">Functional
 	  Javascript</a>	
-	  <li><a href="http://documentcloud.github.com/underscore">underscore</a></li>
-	  <li><a href="http://github.com/runarorama/LambdaScript/">LambdaScript</a></li>
-</ul>
-	<h1>TODO</h1>
-<ul>
-<li>custom parameters names such as lambda("x,y: x + y")</li>
-<li>parameterless lambda
-(see <a href="http://debasishg.blogspot.com/2007/11/erlang-string-lambdas.html">Erlang
-string lambdas</a>)</li>
-<li>pipe(function1, function2, ...)</li>
-<li>iterative(f) -> f(x) -> f(f(x)) -> f(f(f(x))) -> ...</li>
-<li>da programming clojure
-(defn indexed [coll] (map vector (iterate inc 0) coll))
-indexed returns a sequence of pairs of the form [idx elt]. The expression
-(iterate inc 0) produces the indexes, and the coll argument provides the
-elements. Try indexing a string:
-(indexed "abcde")
-) ([0 \a] [1 \b] [2 \c] [3 \d] [4 \e])
-<li>add to Iterable also hasPrev, prev</li>
-<li>reverse</li> 
-<li>zip</li>
-<li>unzip</li>
-<li>sort</li>
-<li>sortBy</li>
-<li>repeat(function, n) // repeat a function n times</li>
-<li>time(function) // call </li>
-<li>contains</li>
-<li>union</li>
-<li>intersect</li>
-<li>cycle </li>
-<li>max</li>
-<li>min</li>
-<li>join</li>
-<li>concat</li>
-<li>interpose</li>
-<li>interleave</li>
-<li>detect</li>
-<li>keys(Object or Array), ownKeys(Object or Array), values(Object or Array)</li>
-<li>pre/post conditions</li>
-<li>update yuicompressor-maven-plugin</li>
-</ul>
+            <li><a href="http://documentcloud.github.com/underscore">underscore</a></li>
+            <li><a href="http://github.com/runarorama/LambdaScript/">LambdaScript</a></li>
+        </ul>
+
+
+        <h2>TODO</h2>
+        <ul>
+            <li>custom parameters names such as lambda("x,y: x + y")</li>
+            <li>parameterless lambda
+                (see <a href="http://debasishg.blogspot.com/2007/11/erlang-string-lambdas.html">Erlang
+                    string lambdas</a>)</li>
+            <li>pipe(function1, function2, ...)</li>
+            <li>add to Iterable also hasPrev, prev</li>
+            <li>reverse</li>
+            <li>zip</li>
+            <li>unzip</li>
+            <li>sort</li>
+            <li>sortBy</li>
+            <li>repeat(function, n) // repeat a function n times</li>
+            <li>time(function) // call </li>
+            <li>contains</li>
+            <li>union</li>
+            <li>intersect</li>
+            <li>cycle </li>
+            <li>max</li>
+            <li>min</li>
+            <li>join</li>
+            <li>concat</li>
+            <li>interpose</li>
+            <li>interleave</li>
+            <li>detect</li>
+            <li>keys(Object or Array), ownKeys(Object or Array), values(Object or Array)</li>
+            <li>pre/post conditions</li>
+            <li>update yuicompressor-maven-plugin</li>
+        </ul>
     </body>
 </html>
