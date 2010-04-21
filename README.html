@@ -40,6 +40,46 @@ trying to learn functional programming.</p>
 	  <li><a href="http://documentcloud.github.com/underscore">underscore</a></li>
 	  <li><a href="http://github.com/runarorama/LambdaScript/">LambdaScript</a></li>
 </ul>
-
+	<h1>TODO</h1>
+<ul>
+<li>custom parameters names such as lambda("x,y: x + y")</li>
+<li>parameterless lambda
+(see <a href="http://debasishg.blogspot.com/2007/11/erlang-string-lambdas.html">Erlang
+string lambdas</a>)</li>
+<li>pipe(function1, function2, ...)</li>
+<li>iterative(f) -> f(x) -> f(f(x)) -> f(f(f(x))) -> ...</li>
+<li>da programming clojure
+(defn indexed [coll] (map vector (iterate inc 0) coll))
+indexed returns a sequence of pairs of the form [idx elt]. The expression
+(iterate inc 0) produces the indexes, and the coll argument provides the
+elements. Try indexing a string:
+(indexed "abcde")
+) ([0 \a] [1 \b] [2 \c] [3 \d] [4 \e])
+<li>add also hasPrev, prev</li>
+constant is handy: 
+       return map(range(size), constant(1));
+   returns an array of 1
+<li>reverse</li> 
+<li>zip</li>
+<li>unzip</li>
+<li>sort</li>
+<li>sortBy</li>
+<li>repeat(function, n) // repeat a function n times</li>
+<li>time(function) // call </li>
+<li>contains</li>
+<li>union</li>
+<li>intersect</li>
+<li>cycle </li>
+<li>max</li>
+<li>min</li>
+<li>join</li>
+<li>concat</li>
+<li>interpose</li>
+<li>interleave</li>
+<li>detect</li>
+<li>keys(Object or Array), ownKeys(Object or Array), values(Object or Array)</li>
+<li>pre/post conditions</li>
+<li>update yuicompressor-maven-plugin</li>
+</ul>
     </body>
 </html>
