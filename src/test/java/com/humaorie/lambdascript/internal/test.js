@@ -146,8 +146,7 @@ function TypeOfMatcher(expected) {
 
 // matcher interface
 function is(expected) {
-    // TODO: cannot use type since it is a library function
-    if (type(expected) === 'array') {
+    if (expected instanceof Array) {
         return new ArrayMatcher(expected);
     } else {
         return new IsMatcher(expected);

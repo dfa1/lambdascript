@@ -642,6 +642,21 @@ LambdaScript.isundef = function(object) {
     return typeof object == 'undefined';
 };
 
+
+/**
+ * Returns a constant function that returns k. Sometimes it is very handy:
+ *
+ * >> map(range(n), constant(1))
+ * 
+ * returns an array of length 'n' filled with 1 
+ */
+LambdaScript.constant = function(k) {
+    return function() {
+	return k;
+    };
+};
+
+
 /**
 * This function copies all the public functions in `LambdaScript` except itself
 * into the global namespace.
