@@ -119,7 +119,7 @@ LambdaScript._ArrayIterator = function(array) {
 };
 
 /** @Ignore */
-LambdaScript._IterateIterator = function(fn, start) {
+LambdaScript._IterateIterator = function(start, fn) {
     this.fn = fn;
     this.x = start;
     
@@ -330,9 +330,9 @@ LambdaScript.range = function() {
 /**
  * Returns the iterator f(x) -> f(f(x)) -> f(f(f(x))) -> ...
  */
-LambdaScript.iterate = function(lambda, start) {
+LambdaScript.iterate = function(start, lambda) {
     var fn = LambdaScript._toFunction(lambda);
-    return new LambdaScript._IterateIterator(fn, start);
+    return new LambdaScript._IterateIterator(start, fn);
 };
 
 /**

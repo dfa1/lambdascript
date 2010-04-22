@@ -372,13 +372,18 @@ suite.testConstant2 = function() {
 };
 
 suite.testConstant3 = function() {
-    Assert.that(map(range(5), constant(42)), is([42,42,42,42,42]));
+    Assert.that(map(range(5), constant(42)), is([ 42, 42, 42, 42, 42]));
+};
+
+suite.testIterateIterator = function() {
+    var iterate = new LambdaScript._IterateIterator(0, lambda('a+1'));
+    Assert.that(iterate.next(), is(1));			
+    Assert.that(iterate.next(), is(2));			
 };
 
 suite.testIterate = function() {
-    var inc = lambda('a+1');
-    var iterate = iterate(inc, 0);
-    Assert.that(iterate, not(is(null)));
-    Assert.that(iterate.next(), is(1));			
-    Assert.that(iterate.next(), is(2));			
+    var iterate = LambdaScript.iterate(2, curry(lambda('a*b'), 2));
+    Assert.that(iterate.next(), is(4));			
+    Assert.that(iterate.next(), is(8));			
+    Assert.that(iterate.next(), is(16));			
 };
