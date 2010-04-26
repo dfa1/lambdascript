@@ -427,11 +427,25 @@ suite.testKeysWithObject = function() {
 };
 
 suite.testKeysWithNull = function() {
-    Assert.that(keys(null), is([]));
+    Assert.that(keys(null), is([null]));
 };
 
 suite.testKeysWithUndefined = function() {
-    Assert.that(keys(undefined), is([]));
+    Assert.that(keys(undefined), is([undefined]));
 };
 
+suite.testValuesWithArray = function() {
+    Assert.that(values([1, 2, 3]), is([1, 2, 3]));
+};
 
+suite.testValuesWithObject = function() {
+    Assert.that(values({ a: 42, b: -42 }), is([42, -42]));
+};
+
+suite.testValuesWithNull = function() {
+    Assert.that(values(null), is([null]));
+};
+
+suite.testValuesWithUndefined = function() {
+    Assert.that(values(undefined), is([undefined]));
+}; 

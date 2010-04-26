@@ -713,7 +713,23 @@ LambdaScript.keys = function(object) {
 
 	return res;
     } else {
-	return [];
+	return [ object ];
+    }
+};
+
+LambdaScript.values = function(object) {
+    if (type(object) == 'array') {
+	return object;
+    } else if(type(object) == 'object') {
+	var res = [];
+
+	for (var name in object) {
+	    res.push(object[name]);
+	}
+
+	return res;
+    } else {
+	return [ object ];
     }
 };
 
