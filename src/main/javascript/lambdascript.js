@@ -701,6 +701,22 @@ LambdaScript.zip = function() {
     return result;
 };
 
+LambdaScript.keys = function(object) {
+    if (type(object) == 'array') {
+	return range(0, object.length - 1).toArray();
+    } else if(type(object) == 'object') {
+	var res = [];
+
+	for (var name in object) {
+	    res.push(name);
+	}
+
+	return res;
+    } else {
+	return [];
+    }
+};
+
 /**
 * This function copies all the public functions in `LambdaScript` except itself
 * into the global namespace.

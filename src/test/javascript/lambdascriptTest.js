@@ -417,3 +417,21 @@ suite.testZip2 = function() {
     Assert.that(zipped[0], is([1]));
     Assert.that(zipped[1], is([2,4]));
 };
+
+suite.testKeysWithArray = function() {
+    Assert.that(keys([1, 2, 3]), is([0, 1, 2]));
+};
+
+suite.testKeysWithObject = function() {
+    Assert.that(keys({ a: 0, b: 1 }), is(['a', 'b']));
+};
+
+suite.testKeysWithNull = function() {
+    Assert.that(keys(null), is([]));
+};
+
+suite.testKeysWithUndefined = function() {
+    Assert.that(keys(undefined), is([]));
+};
+
+
