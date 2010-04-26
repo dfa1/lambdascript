@@ -664,15 +664,15 @@ LambdaScript.format = function(string) {
     });
 };
 
+
 LambdaScript.isnull = function(object) {
     return object === null;
 };
 
-// checking for undefined is tricky (what about if window.undefined is defined?) 
+// checking for undefined is tricky (what about if window.undefined is defined?)
 LambdaScript.isundef = function(object) {
     return typeof object == 'undefined';
 };
-
 
 /**
  * Returns a constant function that returns k. Sometimes it is very handy:
@@ -687,6 +687,19 @@ LambdaScript.constant = function(k) {
     };
 };
 
+LambdaScript.zip = function() {
+    var result = [];
+    var input = map(Array.prototype.splice.call(arguments, 0), 
+		LambdaScript._toIterable);
+
+    do {
+	each(input, function() {
+	    result.push(map(input, invoke('next')));
+	});
+    } while(some(input, invoke('hasNext')));
+	    
+    return result;
+};
 
 /**
 * This function copies all the public functions in `LambdaScript` except itself

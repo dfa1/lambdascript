@@ -403,3 +403,17 @@ suite.testIterate = function() {
     Assert.that(iterate.next(), is(8));			
     Assert.that(iterate.next(), is(16));			
 };
+
+suite.testZip1 = function() {
+    var zipped = zip([1, 2], [3, 4]);
+    Assert.that(zipped.length, is(2));
+    Assert.that(zipped[0], is([1,3]));
+    Assert.that(zipped[1], is([2,4]));
+};
+
+suite.testZip2 = function() {
+    var zipped = zip([1], [3, 4]);
+    Assert.that(zipped.length, is(2));
+    Assert.that(zipped[0], is([1]));
+    Assert.that(zipped[1], is([2,4]));
+};
