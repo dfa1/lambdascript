@@ -352,12 +352,28 @@ suite.testFormatWithUndefined = function() {
     Assert.that(format(undefined), is(""));
 };
 
-suite.testIsNull = function() {
+suite.testIsNull1 = function() {
     Assert.that(isnull(null), is(true));
 };
 
-suite.testIsUndef = function() {
+suite.testIsNull2 = function() {
+    Assert.that(isnull(undefined), is(false));
+};
+
+suite.testIsNull3 = function() {
+    Assert.that(isnull(""), is(false));
+};
+
+suite.testIsUndef1 = function() {
     Assert.that(isundef(undefined), is(true));
+};
+
+suite.testIsUndef2 = function() {
+    Assert.that(isundef(null), is(false));
+};
+
+suite.testIsUndef3 = function() {
+    Assert.that(isundef(""), is(false));
 };
 
 suite.testConstant = function() {
