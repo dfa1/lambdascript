@@ -1,36 +1,65 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html>
+<!doctype html>
+<html lang="en">
     <head>
-        <title></title>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <script language="javascript" src="lambdascript.js"></script>
+        <title>LambdaScript</title>
+        <meta charset="UTF-8">
     </head>
     <body>
         <h1>LambdaScript ${pom.version}</h1>
+
         <p>
-            LambaScript is intended to be practical functional rather
-            than elegant, beatiful or minimal. Inspirations:
+            <strong>Disclaimer</strong>: I am no expert in functional
+            programming, I don't use functional programming in my day
+            job. But that is why I am trying to learn functional
+            programming.
         </p>
-        <ul>
-            <li><a href="http://crockford.com/onjs/2.ppt">Crockford</a></li>
-            <li><a href="http://interglacial.com/hoj/hoj.html">High
-	   Order JavaScript</a></li>
-            <li>clojure, in particular
-                <a href="http://richhickey.github.com/clojure/clojure.core-api.html">core API</a></li>
-            <li><a href="http://bitbucket.org/dfa/dollar">Dollar</a></li>
-        </ul>
 
-        <p>Disclaimer: I am no expert in functional programming, I
-            don't use functional programming in my day job. But that is why I am
-            trying to learn functional programming.</p>
-
+        <p>
+            LambaScript is intended to be a practical functional
+            library rather than elegant, beautiful or minimal one.
+        </p>
 
         <h2>Usage</h2>
+
         <pre>
-            &lt;script language="javascript"&gt;
-                LambdaScript.install();
-            &lt;/script&gt;
+&lt;script language="javascript" src="lambdascript.js"&gt;&lt;/script&gt;
+
+&lt;script language="javascript"&gt;
+    LambdaScript.install();
+
+    map([1, 2, 3], lambda('a*a')) // [1, 4, 9]
+
+    // filter 
+    filter([-3, 4, 5, -6, -42], lambda('a>0')) // [4, 5] 
+
+    // reduce
+    function sum() {
+       return reduce(arguments, lambda('a+b'));
+    }
+
+    sum(1,2,3)  // 6
+
+    // factorial
+    function fact(n) {
+      return reduce(range(n), lambda('a*b'));
+    }
+
+    fact(5) // 120
+
+    // curry
+    var mul = lambda('a*b');
+    var mul_by2 = curry(mul, 2);
+    var mul_by3 = curry(mul, 3);
+    mul_by2(21) // 42
+    mul_by3(14) // 42
+
+    // range
+    range(3)           // [1, 2, 3] 
+    range(5, 7)       // [5, 6, 7]
+    range(1, 10, 2) // [1, 3, 5, 7, 9]
+&lt;/script&gt;
         </pre>
+
 
         <h2>Build documentation</h2>
         In order to build documentation:
@@ -38,16 +67,37 @@
 $ mvn jsdoctk:jsdoc
         </pre>
 
-        <h2>Compelling Projects</h2>
+
+	<h2>See also</h2>
         <ul>
-            <li><a href="http://osteele.com/sources/javascript/functional/">Functional
-	  Javascript</a>	
-            <li><a href="http://documentcloud.github.com/underscore">underscore</a></li>
-            <li><a href="http://github.com/runarorama/LambdaScript/">LambdaScript</a></li>
+            <li>
+       	      <a href="http://crockford.com/onjs/2.ppt">On Javascript
+       	      by Crockford</a>
+            </li>
+            <li>
+              <a href="http://interglacial.com/hoj/hoj.html">High
+              Order JavaScript</a>
+            </li>
+            <li>clojure, in particular
+                <a href="http://richhickey.github.com/clojure/clojure.core-api.html">core API</a>
+            </li>
+            <li>
+              <a href="http://bitbucket.org/dfa/dollar">Dollar</a>
+            </li>
+            <li>
+              <a href="http://osteele.com/sources/javascript/functional/">Functional Javascript</a>
+	    </li>  	
+            <li>
+              <a href="http://documentcloud.github.com/underscore">underscore</a></li>
+            <li>
+              <a href="http://github.com/runarorama/LambdaScript/">LambdaScript</a>
+            </li>
         </ul>
 
-
         <h2>TODO</h2>
+
+	<p>My personal wishlist:</p>
+
         <ul>
             <li>custom parameters names such as lambda("x,y: x + y")</li>
             <li>parameterless lambda
