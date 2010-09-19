@@ -210,7 +210,7 @@ LambdaScript.compose = function(f, g) { // TODO: generalize for n functions
 };
 
 /**
- * Returns a functions that negates the input function.
+ * Returns a function that negates the input function.
  */
 LambdaScript.not = function(lambda) {
     var fn = LambdaScript._toFunction(lambda);
