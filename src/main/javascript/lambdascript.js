@@ -263,7 +263,7 @@ LambdaScript.and = function() {
  * @function
  * @param [Number] begin defaults 1 when not specified
  * @param [Number] end always specified
- * @param [Number|String|Function] step a function or a costant
+ * @param [Number|String|Function] step a function or a constant
  * @returns {Iterable} a new range iterator
  *
  * @example
