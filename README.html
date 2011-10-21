@@ -1,24 +1,27 @@
 <!doctype html>
 <html lang="en">
     <head>
-        <title>LambdaScript</title>
+        <title>LambdaScript 2.0</title>
         <meta charset="UTF-8">
     </head>
     <body>
         <h1>LambdaScript ${pom.version}</h1>
 
         <p>
-            <strong>Disclaimer</strong>: I am no expert in functional
-            programming, I don't use functional programming in my day
-            job. But that is why I am trying to learn functional
-            programming.
-        </p>
-
-        <p>
             LambaScript is intended to be a practical functional
             library rather than elegant, beautiful or minimal one.
         </p>
 
+        <p>Version 2 is not backward compatible with version 1.0:
+        <ul>
+            <li>removed toArray in Iterable</li>
+            <li>consistent naming</li>
+            <li>preconditions</li>
+            <li>improved unit tests</li>
+        </ul>
+        
+        </p>
+        
         <h2>Usage</h2>
 
         <pre>
@@ -99,34 +102,24 @@ $ mvn jsdoctk:jsdoc
 	<p>My personal wishlist:</p>
 
         <ul>
-            <li>custom parameters names such as lambda("x,y: x + y")</li>
+            <li>custom parameters names such as lambda("x,y: x + y") or just detect them</li>
             <li>parameterless lambda
                 (see <a href="http://debasishg.blogspot.com/2007/11/erlang-string-lambdas.html">Erlang
                     string lambdas</a>)</li>
-            <li>pipe(function1, function2, ...)</li>
-            <li>add hasPrev() as well ass prev() to iterable</li>
-            <li>reverse()</li>
+            <li>pipe(function1, function2, ...) (like -> macro in clojure)</li>
+            <li>map(fn, iterable1, iterable2, ...iterableN)</li>
             <li>unzip()</li>
+            <li>reverse(iterable)</li>
             <li>sort()</li>
             <li>sortBy()</li>
-            <li>repeat(function, n) // repeat a function n times</li>
-            <li>time(function) // call </li>
-            <li>contains()</li>
-            <li>union()</li>
-            <li>intersect()</li>
-            <li>cycle()</li>
-            <li>max()</li>
-            <li>min()</li>
-            <li>join()</li>
-            <li>concat()</li>
-            <li>interpose()</li>
-            <li>interleave()</li>
-            <li>detect()</li>
-            <li>add pre conditions to functions</li>
-            <li>update yuicompressor-maven-plugin</li>
-            <li>remove buildnumber-maven-plugin </li>
-            <li>add something like Python's doctest</li>
-            <li><b>one assert per test</b></li>
+            <li>repeat(fn, n) // repeat a function n times</li>
+            <li>union(iterable1, iterable2, ...iterableN)</li>
+            <li>intersect(iterable1, iterable2 ... iterableN)</li>
+            <li>max(iterable)</li>
+            <li>min(iterable)</li>
+            <li>concat(iterable1, iterable2, ...iterableN)</li>
+            <li>join(iterable, [sep])</li>
+            <li>interpose(iterable1, value)</li>
         </ul>
     </body>
 </html>

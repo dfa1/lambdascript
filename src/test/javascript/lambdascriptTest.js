@@ -19,6 +19,24 @@
 // install in the global namespace
 LambdaScript.install();
 
+// utils
+function println(object) {
+    if (typeof object != 'string') {
+        object = object.toString();
+    }
+
+    java.lang.System.out.println(object);
+}
+
+function print(object) {
+    if (typeof object != 'string') {
+        object = object.toString();
+    }
+
+    java.lang.System.out.print(object);
+}
+
+
 // the test suite: don't change the variable name
 var suite = {};
 
@@ -404,18 +422,14 @@ suite.testIterate = function() {
     Assert.that(iterate.next(), is(16));			
 };
 
-suite.testZip1 = function() {
+suite.testZipArraysOfSameLenght = function() {
     var zipped = zip([1, 2], [3, 4]);
-    Assert.that(zipped.length, is(2));
-    Assert.that(zipped[0], is([1,3]));
-    Assert.that(zipped[1], is([2,4]));
+    Assert.that(zipped, is([1,3], [2, 4]));
 };
 
-suite.testZip2 = function() {
+suite.testZipsByShortestSequence = function() {
     var zipped = zip([1], [3, 4]);
-    Assert.that(zipped.length, is(2));
-    Assert.that(zipped[0], is([1]));
-    Assert.that(zipped[1], is([2,4]));
+    Assert.that(zipped, is([1, 3]));
 };
 
 suite.testKeysWithArray = function() {

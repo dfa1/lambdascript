@@ -29,7 +29,7 @@ import org.mozilla.javascript.Context;
     "src/main/javascript/lambdascript.js",
     "src/test/java/com/humaorie/lambdascript/internal/test.js"
 })
-@JavaScriptTest("src/test/javascript/lambdaScriptTest.js")
+@JavaScriptTest("src/test/javascript/lambdascriptTest.js")
 public class LambdaScriptTest {
 
     @BeforeClass
