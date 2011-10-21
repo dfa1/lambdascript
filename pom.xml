@@ -5,7 +5,7 @@
     <groupId>com.humaorie</groupId>
     <artifactId>lambdascript</artifactId>
     <packaging>jar</packaging>
-    <version>1.4-SNAPSHOT</version>
+    <version>2.0-SNAPSHOT</version>
     <name>lambdascript</name>
     <url>http://bitbucket.org/dfa/lambdascript</url>
 
