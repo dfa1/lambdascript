@@ -96,7 +96,7 @@ suite.testNot = function() {
 
 suite.testComposeNot = function() {
     var truth = lambda('true');
-    var notTruth = LambdaScript.not(truth);
+    var notTruth = not(truth);
     var notnotTruth = compose(notTruth, notTruth);
     Assert.that(notnotTruth(), is(false)); // should be true?
 };
@@ -132,7 +132,7 @@ suite.testToIteratorWithSelf = function() {
 suite.testToIteratorWithNull = function() {
     var iterator = LambdaScript._toIterable(null);
     Assert.that(iterator.toString(), is('NullIterator'));
-    Assert.that(iterator.toArray(), is([]));
+    Assert.that(toArray(iterator), is([]));
     Assert.that(iterator.hasNext(), is(false));
     Assert.that(iterator.next(), is(undefined));
 };
@@ -149,50 +149,38 @@ suite.testToIteratorWithUndefined = function() {
 
 suite.testArrayIterator = function() {
     var iterator = new LambdaScript._ArrayIterator([1, 2, 3, 4, 5]);
-    Assert.that(iterator.toArray(), is([1, 2, 3, 4, 5]));
+    Assert.that(toArray(iterator), is([1, 2, 3, 4, 5]));
 };
 
 suite.testRangeIterator = function() {
     var iterator = new LambdaScript._RangeIterator(1, 10, function(i) {
         return i + 1;
     });
-    Assert.that(iterator.toArray(), is([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]));
+    Assert.that(toArray(iterator), is([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]));
 };
 
 suite.testNegativeRange = function() {
-    Assert.that(range(-1).toArray(), is([]));
+    Assert.that(toArray(range(-1)), is([]));
 };
 
 suite.testRange0 = function() {
-    Assert.that(range(0).toArray(), is([]));
+    Assert.that(toArray(range(0)), is([]));
 };
 
 suite.testRange1 = function() {
-    Assert.that(range(3).toArray(), is([1, 2, 3]));
+    Assert.that(toArray(range(3)), is([1, 2, 3]));
 };
 
 suite.testRange2 = function() {
-    Assert.that(range(5, 7).toArray(), is([5, 6, 7]));
+    Assert.that(toArray(range(5, 7)), is([5, 6, 7]));
 };
 
 suite.testRange3 = function() {
-    Assert.that(range(1, 10, 2).toArray(),is([1, 3, 5, 7, 9]));
-};
-
-suite.testRange4 = function() {
-    Assert.that(range(1, 10, function(i) {
-        return i + 2;
-    }).toArray(), is([1, 3, 5, 7, 9]));
+    Assert.that(toArray(range(1, 10, 2)), is([1, 3, 5, 7, 9]));
 };
 
 suite.testRange5 = function() {
-    Assert.that(range(1, 10, 'a+2').toArray(), is([1, 3, 5, 7, 9]));
-};
-
-suite.testRange6 = function() {
-    Assert.that(range(3, 100, function(a) {
-        return a*3;
-    }).toArray(), is([3, 9, 27, 81]));
+    Assert.that(toArray(range(1, 10, 'a+2')), is([1, 3, 5, 7, 9]));
 };
 
 suite.testRange42 = function() {
@@ -416,15 +404,15 @@ suite.testIterateIterator = function() {
 };
 
 suite.testIterate = function() {
-    var iterate = LambdaScript.iterate(2, curry(lambda('a*b'), 2));
-    Assert.that(iterate.next(), is(4));			
-    Assert.that(iterate.next(), is(8));			
-    Assert.that(iterate.next(), is(16));			
+    var integers = iterate(1, lambda('a+1'));
+    Assert.that(integers.next(), is(2));			
+    Assert.that(integers.next(), is(3));			
+    Assert.that(integers.next(), is(4));			
 };
 
 suite.testZipArraysOfSameLenght = function() {
     var zipped = zip([1, 2], [3, 4]);
-    Assert.that(zipped, is([1,3], [2, 4]));
+    Assert.that(zipped, is([[1,3], [2, 4]]));
 };
 
 suite.testZipsByShortestSequence = function() {

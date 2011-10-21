@@ -47,7 +47,7 @@ LambdaScript._toLambda = function(lambda) {
     }
 };
 
-// Iterable is either an array or has the following methods: 'toArray', 'hasNext', 'next'
+// Iterable is either an array or has the following methods: 'hasNext', 'next'
 /** @ignore */
 LambdaScript._toIterable = function(iterable) {
     if (iterable === null) {
@@ -56,7 +56,7 @@ LambdaScript._toIterable = function(iterable) {
         return new LambdaScript._NullIterator();
     } else if (type(iterable) === 'array') {
         return new LambdaScript._ArrayIterator(iterable);
-    } else if (iterable.next && iterable.hasNext && iterable.toArray) { 
+    } else if (iterable.next && iterable.hasNext) { 
         return iterable;
     } else {
         throw "Not 'iterable' nor 'array'";
@@ -79,17 +79,6 @@ LambdaScript._RangeIterator = function(start, stopAt, stepBy) {
         return this.i <= this.stopAt;
     };
 
-    // convert the rest of this iterator to a regular array
-    this.toArray = function() {
-        var result = [];
-
-        for (var j = this.i; j <= this.stopAt; j = this.step(j)) {
-            result.push(j);
-        }
-
-        return result;
-    };
-
     this.toString = function() {
         return 'RangeIterator';
     };
@@ -106,11 +95,6 @@ LambdaScript._ArrayIterator = function(array) {
 
     this.hasNext = function() {
         return this.i < this.array.length;
-    };
-
-    // returns a copy of this array
-    this.toArray = function() {
-        return Array.prototype.slice.call(this.array);
     };
 
     this.toString = function() {
@@ -132,10 +116,6 @@ LambdaScript._IterateIterator = function(start, fn) {
         return true;
     };
 
-    this.toArray = function() {
-        return []; // TODO: cannot returns an infinite array
-    };
-
     this.toString = function() {
         return 'IterateIterator';
     };
@@ -144,15 +124,11 @@ LambdaScript._IterateIterator = function(start, fn) {
 /** @ignore */
 LambdaScript._NullIterator = function() {
     this.next = function() {
-        return undefined;
+        return undefined; // TODO: should throws
     };
 
     this.hasNext = function() {
         return false;
-    };
-
-    this.toArray = function() {
-        return [];
     };
 
     this.toString = function() {
@@ -692,15 +668,28 @@ LambdaScript.zip = function() {
     var iterables = LambdaScript.map(Array.prototype.splice.call(arguments, 0), LambdaScript._toIterable);
 
     while (LambdaScript.every(iterables, LambdaScript.invoke('hasNext'))) {
-        result.push(LambdaScript.map(iterables, LambdaScript.invoke('next')));
+        var z = LambdaScript.map(iterables, LambdaScript.invoke('next'))
+        println(LambdaScript._toIterable(z))
+        println(z)
+        result.push(z);
     }
 
     return result;
 };
 
+LambdaScript.toArray = function (iterable) { 
+        var result = [];
+
+        while (iterable.hasNext()) {
+            result.push(iterable.next())
+        }
+
+        return result;
+}
+
 LambdaScript.keys = function(object) {
     if (type(object) == 'array') {
-	return range(0, object.length - 1).toArray();
+        return LambdaScript.array(LambdaScript.range(object.length))
     } else if (type(object) == 'object') {
 	var res = [];
 
