@@ -72,11 +72,9 @@ suite.testIsUndefYieldsFalseWhenNotUndefined = function() {
     Assert.that(isUndef(""), is(false));
 };
 
-suite.testConstant = function() {
-    Assert.that(constant(1)(), is(1));
+suite.testConstantly = function() {
+    Assert.that(constantly(1)(), is(1));
 };
-
-
 
 suite.testLambda = function() {
     var neg = lambda('-a');
@@ -390,17 +388,6 @@ suite.testFormatWithNull = function() {
 
 suite.testFormatWithUndefined = function() {
     Assert.that(format(undefined), is(""));
-};
-
-suite.testConstant2 = function() {
-    var k = constant(42);
-    Assert.that(k(), is(42));
-    Assert.that(k(), is(42));
-    Assert.that(k(), is(42));
-};
-
-suite.testConstant3 = function() {
-    Assert.that(map(range(5), constant(42)), is([ 42, 42, 42, 42, 42]));
 };
 
 suite.testIterateIterator = function() {

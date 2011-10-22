@@ -37,6 +37,18 @@
 var LambdaScript = this.LambdaScript || {};
 
 /**
+ * Like java.lang.String.format() but using {1}.. {n} in place of %
+ */
+LambdaScript.format = function(string) {
+    string = string || "";
+    var pattern = /\{\d+\}/g;
+    var args = arguments;
+    return string.replace(pattern, function(capture) {
+        return args[capture.match(/\d+/)];
+    });
+};
+
+/**
  * an array-aware, typeof-like function.
  *
  * (see: JavaScript: The Good Parts, Douglas Crockford, pp 106)
@@ -203,6 +215,17 @@ LambdaScript.lambda = function(string) {
 LambdaScript.compose = function(f, g) { // TODO: generalize for n functions
     return function() {
         return f(g.apply(null, arguments));
+    };
+};
+
+/**
+ * Returns a function that always returns k. 
+ * TODO: provide also a ConstantIterator:
+ *   take(10, new ConstantIterator(0)) ->  [0, 0, 0 .. 0]
+ */
+LambdaScript.constantly = function(value) { 
+    return function() {
+        return value;
     };
 };
 
@@ -642,37 +665,14 @@ LambdaScript.memoize = function(lambda) {
     };
 };
 
-/**
- * Like java.lang.String.format() but using {1}.. {n} in place of %
- */
-LambdaScript.format = function(string) {
-    string = string || "";
-    var pattern = /\{\d+\}/g;
-    var args = arguments;
-    return string.replace(pattern, function(capture) {
-        return args[capture.match(/\d+/)];
-    });
-};
-
-/**
- * Returns a constant function that returns k. Sometimes it is very handy:
- *
- * >> map(range(n), constant(1))
- * 
- * returns an array of length 'n' filled with 1 
- */
-LambdaScript.constant = function(k) { // TODO: rename to constantly
-    return function() {
-        return k;
-    };
-};
-
 LambdaScript.zip = function() { 
     var result = [];
     var iterables = LambdaScript.map(Array.prototype.splice.call(arguments, 0), LambdaScript._toIterable);
 
     while (LambdaScript.every(iterables, LambdaScript.invoke('hasNext'))) {
         var z = LambdaScript.map(iterables, LambdaScript.invoke('next'))
+        println(isArray(z))
+        println(z)
         result.push(z);
     }
 
