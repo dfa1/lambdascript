@@ -67,7 +67,7 @@ LambdaScript.isNull = function(object) {
 
 // checking for undefined is tricky (what about if window.undefined is defined?)
 LambdaScript.isUndef = function(object) {
-    return typeof object == 'undefined';
+    return typeof object === 'undefined';
 };
 
 LambdaScript.isNumber = function(object) {
