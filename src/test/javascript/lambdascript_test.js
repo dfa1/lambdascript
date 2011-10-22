@@ -2,6 +2,10 @@ describe("format", function() {
   
     beforeEach(LambdaScript.install)
   
+    it("can format the empty string", function() {
+        expect(format("")).toBe("")
+    })
+    
     it("can yields constants", function() {
         expect(format("abc")).toBe("abc")
     })
@@ -23,11 +27,11 @@ describe("format", function() {
     })
 
     it("refuses null", function() {
-        expect(format(null)) // TODO  
+        expect(function() { format(null)}).toThrow("template must be a string, got null") 
     })
 
     it("refuses undefined ", function() {
-        expect(format(undefined)) // TODO
+        expect(function() { format(undefined)}).toThrow("template must be a string, got undefined") 
     })
 });
 

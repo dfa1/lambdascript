@@ -1,7 +1,7 @@
 /*
  * LambdaScript, http://bitbucket.org/dfa/lambdascript
  * Version: ${pom.version} (${changeSet} on ${changeSetDate})
- * (c) 2009, 2010 Davide Angelocola <davide.angelocola@gmail.com>
+ * (c) 2009, 2010, 2011 Davide Angelocola <davide.angelocola@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser Public License as published by
@@ -39,11 +39,11 @@ var LambdaScript = this.LambdaScript || {};
 /**
  * Like java.lang.String.format() but using {1}.. {n} in place of %
  */
-LambdaScript.format = function(string) {
-    string = string || "";
+LambdaScript.format = function(template) {
+    LambdaScript.precondition(LambdaScript.isString(template), "template must be a string, got " + template)
     var pattern = /\{\d+\}/g;
     var args = arguments;
-    return string.replace(pattern, function(capture) {
+    return template.replace(pattern, function(capture) {
         return args[capture.match(/\d+/)];
     });
 };
