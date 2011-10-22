@@ -511,8 +511,7 @@ LambdaScript.some = function(iterable, lambda) {
 };
 
 /**
- * Like 'filter' but returns an array of the first n items that satisfy
- * the 'lambda' parameter.
+ * Returns an array of the first n items.
  */
 LambdaScript.take = function(iterable, n) {
     var iterator = LambdaScript._toIterable(iterable);
