@@ -22,6 +22,7 @@
  *
  * naming parameter conventions:
  *    - 'fn'        -> a function
+ *    - 'pred'      -> a predicate
  *    - 'lambda'    -> function or string to be converted to 'fn'
  *    - 'iterable'  -> iterator or array
  *    - 'array'     -> array
@@ -265,8 +266,8 @@ LambdaScript.not = function(object) {
 };
 
 /**
- * Returns a function that returns true when any the arguments (lambdas)
- * returns true.
+ * Returns true when any the arguments (lambdas) returns true.
+ * TODO: must returns a function 
  */
 LambdaScript.or = function() {
     var args = Array.prototype.splice.call(arguments, 0);
@@ -284,8 +285,8 @@ LambdaScript.or = function() {
 };
 
 /**
- * Returns a function that returns true when all the arguments (lambdas)
- * returns true.
+ * Returns true when all the arguments (lambdas) returns true.
+ * TODO: must returns a function 
  */
 LambdaScript.and = function() {
     var args = Array.prototype.splice.call(arguments, 0);
@@ -749,7 +750,13 @@ LambdaScript.values = function(object) {
 * @example
 * >>> LambdaScript.install()
 */
-LambdaScript.install = function() {
+LambdaScript.install = function(pred) {
+    if (LambdaScript.isUndef(pred)) {
+        pred = function (name) {
+            return name != 'install' && name.charAt(0) != '_'
+        }
+    }
+    
     var source = LambdaScript;
     /** @ignore */
     var target = (function() {
@@ -757,7 +764,7 @@ LambdaScript.install = function() {
     })(); // References the global object.
 
     for (var name in source) {
-        if (name != 'install' && name.charAt(0) != '_') {
+        if (LambdaScript.isTrue(pred(name))) {
             target[name] = source[name];
         }
     }
