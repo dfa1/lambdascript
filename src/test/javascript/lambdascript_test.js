@@ -205,3 +205,13 @@ describe("lazymap", function() {
         expect(lazymap([], identity).hasNext()).toBeFalsy()
     })
 })
+
+describe("iterate", function() {
+  
+    beforeEach(LambdaScript.install)
+
+    it("yields f(x) first time", function() {
+        var inc = function(x) { return x + 1 }
+        expect(iterate(0, inc).next()).toEqual(1)
+    })
+})

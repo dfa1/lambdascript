@@ -106,18 +106,16 @@ LambdaScript._toFunction = function(lambdaOrFunction) {
 
 // Iterable is either an array or has the following methods: 'hasNext', 'next'
 /** @ignore */
-LambdaScript._toIterable = function(iterable) {
-    if (LambdaScript.isNull(iterable)) {
-        return new LambdaScript._NullIterator();
-    } else if (LambdaScript.isUndef(iterable)) {
-        return new LambdaScript._NullIterator();
-    } else if (LambdaScript.isArray(iterable)) {
-        return new LambdaScript._ArrayIterator(iterable);
-    } else if (iterable.next && iterable.hasNext) { // TODO: add isIterable 
-        return iterable;
-    } else {
-        throw "Not 'iterable' nor 'array'";
-    }
+LambdaScript._toIterable = function(object) {
+    if (LambdaScript.isArray(object)) {
+        return new LambdaScript._ArrayIterator(object);
+    } 
+    
+    if (object.next && object.hasNext) { // TODO: add isIterable 
+        return object;
+    } 
+
+    throw "Not 'iterable' nor 'array'";
 }
 
 /** @ignore */
@@ -135,10 +133,6 @@ LambdaScript._RangeIterator = function(start, stopAt, stepBy) {
     this.hasNext = function() {
         return this.i <= this.stopAt;
     };
-
-    this.toString = function() {
-        return 'RangeIterator';
-    };
 };
 
 /** @ignore */
@@ -152,10 +146,6 @@ LambdaScript._ArrayIterator = function(array) {
 
     this.hasNext = function() {
         return this.i < this.array.length;
-    };
-
-    this.toString = function() {
-        return 'ArrayIterator';
     };
 };
 
@@ -171,25 +161,6 @@ LambdaScript._IterateIterator = function(start, fn) {
 
     this.hasNext = function() {
         return true;
-    };
-
-    this.toString = function() {
-        return 'IterateIterator';
-    };
-};
-
-/** @ignore */
-LambdaScript._NullIterator = function() {
-    this.next = function() {
-        return undefined; // TODO: should throws
-    };
-
-    this.hasNext = function() {
-        return false;
-    };
-
-    this.toString = function() {
-        return 'NullIterator';
     };
 };
 
