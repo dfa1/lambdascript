@@ -21,7 +21,8 @@
  * jsdoc: http://code.google.com/p/jsdoc-toolkit/w/list
  *
  * naming parameter conventions:
- *    - 'lambda'    -> function or string
+ *    - 'fn'        -> a function
+ *    - 'lambda'    -> function or string to be converted to 'fn'
  *    - 'iterable'  -> iterator or array
  *    - 'array'     -> array
  *    - 'string'    -> string
@@ -89,9 +90,8 @@ LambdaScript.isFalse= function(object) {
     return object === false;
 }
 
-
 /** @ignore */
-LambdaScript._toLambda = function(lambda) {
+LambdaScript._toFunction = function(lambda) {
     if (LambdaScript.isString(lambda)) {
         return LambdaScript.lambda(lambda);
     } else if (LambdaScript.isFunction(lambda)) {
@@ -256,9 +256,9 @@ LambdaScript.constantly = function(value) {
  * Returns a function that negates the input function.
  */
 LambdaScript.not = function(object) {
-    var lambda = LambdaScript._toLambda(object);
+    var fn = LambdaScript._toFunction(object);
     return function() {
-        return lambda() === false;
+        return fn() === false;
     };
 };
 
@@ -271,7 +271,7 @@ LambdaScript.or = function() {
     var result = false;
 
     LambdaScript.each(args, function(lambda) {
-        var fn = LambdaScript._toLambda(lambda);
+        var fn = LambdaScript._toFunction(lambda);
         if (fn() === true) {
             result = true;
             return false; // break the each function
@@ -290,7 +290,7 @@ LambdaScript.and = function() {
     var result = true;
 
     LambdaScript.each(args, function(lambda) {
-        var fn = LambdaScript._toLambda(lambda);
+        var fn = LambdaScript._toFunction(lambda);
         if (fn() === false) { // TODO: it can be also a boolean
             result = false;
             return false; // break the each function
@@ -374,7 +374,7 @@ LambdaScript.range = function() {
  * Returns the iterator f(x) -> f(f(x)) -> f(f(f(x))) -> ...
  */
 LambdaScript.iterate = function(start, lambda) {
-    var fn = LambdaScript._toLambda(lambda);
+    var fn = LambdaScript._toFunction(lambda);
     return new LambdaScript._IterateIterator(start, fn);
 };
 
@@ -388,7 +388,7 @@ LambdaScript.iterate = function(start, lambda) {
  * @returns {Array} the 'iterable' itself; handy for chaining
  */
 LambdaScript.each = function(iterable, lambda) { 
-    var fn = LambdaScript._toLambda(lambda);
+    var fn = LambdaScript._toFunction(lambda);
     var iterator = LambdaScript._toIterable(iterable);
     var i = 1;
 
@@ -421,7 +421,7 @@ LambdaScript.each = function(iterable, lambda) {
  */
 LambdaScript.reduce = function(iterable, lambda, initialValue) {
     var iterator = LambdaScript._toIterable(iterable);
-    var fn = LambdaScript._toLambda(lambda);
+    var fn = LambdaScript._toFunction(lambda);
     var i = initialValue || iterator.next(); // TODO: not checking hasNext
 
     LambdaScript.each(iterator, function(element) {
@@ -456,7 +456,7 @@ LambdaScript.reduce = function(iterable, lambda, initialValue) {
  * [4, 9, 16, 25]
  */
 LambdaScript.map = function(iterable, lambda) {
-    var fn = LambdaScript._toLambda(lambda);
+    var fn = LambdaScript._toFunction(lambda);
     var iterator = LambdaScript._toIterable(iterable);
     var result = [];
 
@@ -468,7 +468,7 @@ LambdaScript.map = function(iterable, lambda) {
 };
 
 LambdaScript.lazymap = function(iterable, lambda) {
-    var mapper = LambdaScript._toLambda(lambda);
+    var fn = LambdaScript._toFunction(lambda);
     var lazyMapper = LambdaScript._toIterable(iterable);
 
     lazyMapper.next = function() {
@@ -494,7 +494,7 @@ LambdaScript.lazymap = function(iterable, lambda) {
  * [2, 4, 6, 8, 10]
  */
 LambdaScript.filter = function(iterable, lambda) {
-    var fn = LambdaScript._toLambda(lambda);
+    var fn = LambdaScript._toFunction(lambda);
     var iterator = LambdaScript._toIterable(iterable);
     var result = [];
 
@@ -517,7 +517,7 @@ LambdaScript.filter = function(iterable, lambda) {
  * @returns {Boolean}
  */
 LambdaScript.every = function(iterable, lambda) {
-    var fn = LambdaScript._toLambda(lambda);
+    var fn = LambdaScript._toFunction(lambda);
     var iterator = LambdaScript._toIterable(iterable);
     var result = true;
 
@@ -544,7 +544,7 @@ LambdaScript.every = function(iterable, lambda) {
  */
 LambdaScript.some = function(iterable, lambda) {
     var iterator = LambdaScript._toIterable(iterable);
-    var fn = LambdaScript._toLambda(lambda);
+    var fn = LambdaScript._toFunction(lambda);
     var result = false;
 
     LambdaScript.each(iterator, function(element) {
@@ -635,7 +635,7 @@ LambdaScript.last = function(iterable) {
 * 42
 */
 LambdaScript.curry = function(lambda) {
-    var fn = LambdaScript._toLambda(lambda);
+    var fn = LambdaScript._toFunction(lambda);
     var innerArgs = Array.prototype.slice.call(arguments, 1);
     return function () {
         return fn.apply(this, innerArgs.concat(Array.prototype.slice.call(arguments, 0)))
@@ -674,7 +674,7 @@ LambdaScript.invoke = function(name) {
 * Given a function returns another function that caches memoize results.
 */
 LambdaScript.memoize = function(lambda) {
-    var fn = LambdaScript._toLambda(lambda);
+    var fn = LambdaScript._toFunction(lambda);
     var cache = {};
 
     return function() {
