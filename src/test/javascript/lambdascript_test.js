@@ -2,12 +2,24 @@ describe("format", function() {
   
     beforeEach(LambdaScript.install)
   
-    it("yields constants", function() {
+    it("can yields constants", function() {
         expect(format("abc")).toBe("abc")
     })
     
-    it("expands variables starting from {1}", function() {
+    it("does not expands {} in templates", function() {
+        expect(format("{}")).toBe("{}")
+    })
+    
+    it("expands variables starting from 1", function() {
         expect(format("a{1}c", "b")).toBe("abc")
+    })
+
+    it("can expands variables twice", function() {
+        expect(format("a{1}c a{1}c", "b")).toBe("abc abc")
+    })
+
+    it("can expands several variables at once", function() {
+        expect(format("{1}/{2}", "p", "q")).toBe("p/q")
     })
 
     it("refuses null", function() {
