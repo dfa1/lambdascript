@@ -48,6 +48,8 @@ LambdaScript.format = function(string) {
     });
 };
 
+/* Handy typeof tests as predicates. */
+
 /**
  * an array-aware, typeof-like function.
  *
@@ -89,11 +91,12 @@ LambdaScript.isFalse= function(object) {
     return object === false;
 }
 
+
 /** @ignore */
 LambdaScript._toLambda = function(lambda) {
-    if (isString(lambda)) {
+    if (LambdaScript.isString(lambda)) {
         return LambdaScript.lambda(lambda);
-    } else if (isFunction(lambda)) {
+    } else if (LambdaScript.isFunction(lambda)) {
         return lambda;
     } else {
         throw 'Not a string or function';
@@ -103,9 +106,9 @@ LambdaScript._toLambda = function(lambda) {
 // Iterable is either an array or has the following methods: 'hasNext', 'next'
 /** @ignore */
 LambdaScript._toIterable = function(iterable) {
-    if (iterable === null) {
+    if (LambdaScript.isNull(iterable)) {
         return new LambdaScript._NullIterator();
-    } else if (iterable === undefined) {
+    } else if (LambdaScript.isUndef(iterable)) {
         return new LambdaScript._NullIterator();
     } else if (LambdaScript.isArray(iterable)) {
         return new LambdaScript._ArrayIterator(iterable);
@@ -206,7 +209,7 @@ LambdaScript._NullIterator = function() {
  * lambda('a * b + c') is equivalent to function (a, b, c) { return a * b + c; }
  */
 LambdaScript.lambda = function(string) {
-    if (string === null || string === undefined || string == '') {
+    if (string === null || string === undefined || string == '') { // TODO: really useful?
         return function() {
             return false;
         };
