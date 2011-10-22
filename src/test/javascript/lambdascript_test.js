@@ -50,7 +50,7 @@ describe("isArray", function() {
     it("yields false when argument is a string", function() {
         expect(isArray("string")).toBeFalsy()
     })  
-});
+})
 
 describe("isNull", function() {
   
@@ -67,7 +67,28 @@ describe("isNull", function() {
     it("yields false when argument is a string", function() {
         expect(isNull("string")).toBeFalsy()
     })  
-});
+})
+
+describe("isString", function() {
+  
+    beforeEach(LambdaScript.install)
+  
+    it("yields true when argument is string", function() {
+        expect(isString("string")).toBeTruthy()
+    })
+  
+    it("yields false when argument is undefined", function() {
+        expect(isString(undefined)).toBeFalsy()
+    })  
+
+    it("yields false when argument is null", function() {
+        expect(isString(null)).toBeFalsy()
+    })  
+
+    it("yields false when argument is a number", function() {
+        expect(isString(0)).toBeFalsy()
+    })  
+})
 
 describe("isUndef", function() {
   
@@ -98,7 +119,19 @@ describe("lambda", function() {
     it("can yields opposite", function() {
         var opposite = lambda('-a')
         expect(opposite(1)).toBe(-1)
-    })  
+    })
+    
+    it("refuses null", function() {
+        expect(function() { lambda(null) }).toThrow("expecting a string, not null")
+    })
+    
+    it("refuses undefined", function() {
+        expect(function() { lambda(undefined) }).toThrow("expecting a string, not undefined")
+    })
+    
+    it("refuses empty string", function() {
+        expect(function() { lambda("") }).toThrow("string cannot be empty")
+    })
 });
 
 describe("pluck", function() {

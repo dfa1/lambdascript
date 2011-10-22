@@ -27,8 +27,6 @@
  *    - 'string'    -> string
  *    - 'object'    -> object
  *    - 'n'         -> a positive number
- *
- *  suspicious usage are marked by a "TODO: naming" comment
  */
 
 /**
@@ -192,6 +190,12 @@ LambdaScript._NullIterator = function() {
     };
 };
 
+LambdaScript.precondition = function(test, msg) {
+    if (test === false) {
+        throw msg
+    }
+}
+
 /**
  * unary/binary/ternary function factory.
  *
@@ -209,13 +213,9 @@ LambdaScript._NullIterator = function() {
  * lambda('a * b + c') is equivalent to function (a, b, c) { return a * b + c; }
  */
 LambdaScript.lambda = function(string) {
-    if (string === null || string === undefined || string == '') { // TODO: really useful?
-        return function() {
-            return false;
-        };
-    }
-
-    return function(a, b, c) {
+    LambdaScript.precondition(LambdaScript.isString(string), format("expecting a string, not {1}", string))
+    LambdaScript.precondition(string.length > 0, format("string cannot be empty"))
+    return function(a, b, c, d, e, f, g) {
         return eval(string);
     };
 };
@@ -235,7 +235,7 @@ LambdaScript.lambda = function(string) {
  * >>> welcome('moe');
  * 'hi: moe!'
  */
-LambdaScript.compose = function(f, g) { // TODO: generalize for n functions
+LambdaScript.compose = function(f, g) { // TODO: generalize for n functions/lambdas
     return function() {
         return f(g.apply(null, arguments));
     };
@@ -490,7 +490,7 @@ LambdaScript.lazymap = function(iterable, lambda) {
  * @returns {Array} a new array
  *
  * @example
- * >>> filter(range(1, 10),lambda('a%2==0'))
+ * >>> filter(range(1, 10), lambda('a%2==0'))
  * [2, 4, 6, 8, 10]
  */
 LambdaScript.filter = function(iterable, lambda) {

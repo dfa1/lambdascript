@@ -32,18 +32,6 @@ suite.testLambda3 = function() {
     Assert.that(f(3, 5, -10), is(5));
 };
 
-suite.testLambdaWithNull = function() {
-    Assert.that(lambda(null)(), is(false));
-};
-
-suite.testLambdaWithUndefined = function() {
-    Assert.that(lambda(undefined)(), is(false));
-};
-
-suite.testLambdaWithEmptyString = function() {
-    Assert.that(lambda('')(), is(false));
-};
-
 suite.testCompose1 = function() {
     var greet = function(name) {
         return "hi " + name;
