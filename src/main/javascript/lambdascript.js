@@ -91,14 +91,16 @@ LambdaScript.isFalse= function(object) {
 }
 
 /** @ignore */
-LambdaScript._toFunction = function(lambda) {
-    if (LambdaScript.isString(lambda)) {
-        return LambdaScript.lambda(lambda);
-    } else if (LambdaScript.isFunction(lambda)) {
-        return lambda;
-    } else {
-        throw 'Not a string or function';
-    }
+LambdaScript._toFunction = function(lambdaOrFunction) {
+    if (LambdaScript.isString(lambdaOrFunction)) {
+        return LambdaScript.lambda(lambdaOrFunction);
+    } 
+    
+    if (LambdaScript.isFunction(lambdaOrFunction)) {
+        return lambdaOrFunction;
+    } 
+    
+    throw 'Not a string or function';
 };
 
 // Iterable is either an array or has the following methods: 'hasNext', 'next'
