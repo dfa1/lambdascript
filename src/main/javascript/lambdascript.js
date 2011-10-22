@@ -36,6 +36,27 @@
  */
 var LambdaScript = this.LambdaScript || {};
 
+/**
+ * an array-aware, typeof-like function.
+ *
+ * (see: JavaScript: The Good Parts, Douglas Crockford, pp 106)
+ */
+LambdaScript.isArray = function(object) {
+    return  typeof object === 'object'
+    && typeof object.length === 'number'
+    && !(object.propertyIsEnumerable('length'))
+};
+
+
+LambdaScript.isNull = function(object) {
+    return object === null;
+};
+
+// checking for undefined is tricky (what about if window.undefined is defined?)
+LambdaScript.isUndef = function(object) {
+    return typeof object == 'undefined';
+};
+
 /** @ignore */
 LambdaScript._toLambda = function(lambda) {
     if (typeof lambda === 'string') {
@@ -54,7 +75,7 @@ LambdaScript._toIterable = function(iterable) {
         return new LambdaScript._NullIterator();
     } else if (iterable === undefined) {
         return new LambdaScript._NullIterator();
-    } else if (type(iterable) === 'array') {
+    } else if (LambdaScript.isArray(iterable)) {
         return new LambdaScript._ArrayIterator(iterable);
     } else if (iterable.next && iterable.hasNext) { 
         return iterable;
@@ -109,7 +130,7 @@ LambdaScript._IterateIterator = function(start, fn) {
     
     this.next = function() {
         this.x = this.fn(this.x);
-	return this.x;
+        return this.x;
     };
 
     this.hasNext = function() {
@@ -612,23 +633,6 @@ LambdaScript.memoize = function(lambda) {
 };
 
 /**
- * an array-aware, typeof-like function.
- *
- * (see: JavaScript: The Good Parts, Douglas Crockford, pp 106)
- */
-LambdaScript.type = function(object) {
-    if (object === null) {
-        return 'null';
-    } else if (typeof object === 'object'
-        && typeof object.length === 'number'
-        && !(object.propertyIsEnumerable('length'))) {
-        return 'array';
-    } else {
-        return typeof object;
-    }
-};
-
-/**
  * Like java.lang.String.format() but using {1}.. {n} in place of %
  */
 LambdaScript.format = function(string) {
@@ -640,16 +644,6 @@ LambdaScript.format = function(string) {
     });
 };
 
-
-LambdaScript.isnull = function(object) {
-    return object === null;
-};
-
-// checking for undefined is tricky (what about if window.undefined is defined?)
-LambdaScript.isundef = function(object) {
-    return typeof object == 'undefined';
-};
-
 /**
  * Returns a constant function that returns k. Sometimes it is very handy:
  *
@@ -659,7 +653,7 @@ LambdaScript.isundef = function(object) {
  */
 LambdaScript.constant = function(k) { // TODO: rename to constantly
     return function() {
-	return k;
+        return k;
     };
 };
 
@@ -678,45 +672,41 @@ LambdaScript.zip = function() {
 };
 
 LambdaScript.toArray = function (iterable) { 
-        var result = [];
+    var result = [];
 
-        while (iterable.hasNext()) {
-            result.push(iterable.next())
-        }
+    while (iterable.hasNext()) {
+        result.push(iterable.next())
+    }
 
-        return result;
+    return result;
 }
 
 LambdaScript.keys = function(object) {
-    if (type(object) == 'array') {
+    if (LambdaScript.isArray(object)) {
         return LambdaScript.array(LambdaScript.range(object.length))
-    } else if (type(object) == 'object') {
-	var res = [];
+    } 
+    
+    var res = [];
 
-	for (var name in object) {
-	    res.push(name);
-	}
-
-	return res;
-    } else {
-	return [ object ];
+    for (var name in object) {
+        res.push(name);
     }
+
+    return res;
 };
 
 LambdaScript.values = function(object) {
-    if (type(object) == 'array') {
-	return object;
-    } else if (type(object) == 'object') {
-	var res = [];
+    if (LambdaScript.isArray(object)) {
+        return object;
+    } 
+    
+    var res = [];
 
-	for (var name in object) {
-	    res.push(object[name]);
-	}
-
-	return res;
-    } else {
-	return [ object ];
+    for (var name in object) {
+        res.push(object[name]);
     }
+
+    return res;
 };
 
 /**

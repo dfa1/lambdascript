@@ -40,6 +40,44 @@ function print(object) {
 // the test suite: don't change the variable name
 var suite = {};
 
+suite.testIsArrayYieldsTrueOnArray = function() {
+    Assert.that(isArray([]), is(true));
+};
+
+suite.testIsArrayYieldsFalseWhenNotArray = function() {
+    Assert.that(isArray(""), is(false));
+};
+
+suite.testIsNullYieldsTrueWhenNull = function() {
+    Assert.that(isNull(null), is(true));
+};
+
+suite.testIsNullYieldsFalseWhenUndefined = function() {
+    Assert.that(isNull(undefined), is(false));
+};
+
+suite.testIsNullYieldsFalseWhenNotNull = function() {
+    Assert.that(isNull(""), is(false));
+};
+
+suite.testIsUndefYieldsTrueWhenUndefined = function() {
+    Assert.that(isUndef(undefined), is(true));
+};
+
+suite.testIsUndefYieldsFalseWhenNull = function() {
+    Assert.that(isUndef(null), is(false));
+};
+
+suite.testIsUndefYieldsFalseWhenNotUndefined = function() {
+    Assert.that(isUndef(""), is(false));
+};
+
+suite.testConstant = function() {
+    Assert.that(constant(1)(), is(1));
+};
+
+
+
 suite.testLambda = function() {
     var neg = lambda('-a');
     Assert.that(neg(42), is(-42));
@@ -301,10 +339,6 @@ suite.testMemoizeWithStringLambda = function() {
     Assert.that(add(1,2), is(3)); // hit!
 };
 
-suite.testType = function() {
-    Assert.that(type([]), is('array'));
-    Assert.that(type(null), is('null'));
-};
 
 suite.testTake = function() {
     Assert.that(take(range(10, 20), 3), is([10, 11, 12]));
@@ -356,34 +390,6 @@ suite.testFormatWithNull = function() {
 
 suite.testFormatWithUndefined = function() {
     Assert.that(format(undefined), is(""));
-};
-
-suite.testIsNull1 = function() {
-    Assert.that(isnull(null), is(true));
-};
-
-suite.testIsNull2 = function() {
-    Assert.that(isnull(undefined), is(false));
-};
-
-suite.testIsNull3 = function() {
-    Assert.that(isnull(""), is(false));
-};
-
-suite.testIsUndef1 = function() {
-    Assert.that(isundef(undefined), is(true));
-};
-
-suite.testIsUndef2 = function() {
-    Assert.that(isundef(null), is(false));
-};
-
-suite.testIsUndef3 = function() {
-    Assert.that(isundef(""), is(false));
-};
-
-suite.testConstant = function() {
-    Assert.that(constant(1)(), is(1));
 };
 
 suite.testConstant2 = function() {
