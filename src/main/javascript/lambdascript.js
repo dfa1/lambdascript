@@ -69,11 +69,31 @@ LambdaScript.isUndef = function(object) {
     return typeof object == 'undefined';
 };
 
+LambdaScript.isNumber = function(object) {
+    return typeof object === 'number';
+}
+
+LambdaScript.isString = function(object) {
+    return typeof object === 'string';
+}
+
+LambdaScript.isFunction = function(object) {
+    return typeof object === 'function';
+}
+
+LambdaScript.isTrue = function(object) {
+    return object === true;
+}
+
+LambdaScript.isFalse= function(object) {
+    return object === false;
+}
+
 /** @ignore */
 LambdaScript._toLambda = function(lambda) {
-    if (typeof lambda === 'string') {
+    if (isString(lambda)) {
         return LambdaScript.lambda(lambda);
-    } else if (typeof lambda === 'function') {
+    } else if (isFunction(lambda)) {
         return lambda;
     } else {
         throw 'Not a string or function';
