@@ -325,16 +325,6 @@ suite.testIterate = function() {
     Assert.that(integers.next(), is(4));			
 };
 
-suite.testZipArraysOfSameLenght = function() {
-    var zipped = zip([1, 2], [3, 4]);
-    Assert.that(zipped, is([[1,3], [2, 4]]));
-};
-
-suite.testZipsByShortestSequence = function() {
-    var zipped = zip([1], [3, 4]);
-    Assert.that(zipped, is([1, 3]));
-};
-
 suite.testKeysWithArray = function() {
     Assert.that(keys([1, 2, 3]), is([0, 1, 2]));
 };

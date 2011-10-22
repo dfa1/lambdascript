@@ -111,3 +111,17 @@ describe("pluck", function() {
     })
 });
 
+describe("zip", function() {
+  
+    beforeEach(LambdaScript.install)
+  
+    it("zips iterators of same lenght", function() {
+        var zipped = zip([1, 2], [3, 4])
+        expect(zipped).toEqual([[1,3], [2, 4]])
+    })
+
+    it("zips by the shortest iterator", function() {
+        var zipped = zip([1], [3, 4])
+        expect(zipped).toEqual([[1, 3]])    
+    })
+});

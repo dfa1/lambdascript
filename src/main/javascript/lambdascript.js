@@ -694,8 +694,6 @@ LambdaScript.zip = function() {
 
     while (LambdaScript.every(iterables, LambdaScript.invoke('hasNext'))) {
         var z = LambdaScript.map(iterables, LambdaScript.invoke('next'))
-        println(isArray(z))
-        println(z)
         result.push(z);
     }
 
