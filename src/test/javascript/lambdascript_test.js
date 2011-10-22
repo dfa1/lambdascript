@@ -108,7 +108,7 @@ describe("pluck", function() {
     it("can yields length", function() {
         var lenghtOf = pluck('length')
         expect(lenghtOf("a")).toBe(1)
-    })
+    })  
 });
 
 describe("zip", function() {
@@ -125,3 +125,32 @@ describe("zip", function() {
         expect(zipped).toEqual([[1, 3]])    
     })
 });
+
+describe("keys", function() {
+  
+    beforeEach(LambdaScript.install)
+
+    it("yields array indexes when argument is an array", function() {
+        expect(keys(["a", "b"])).toEqual([0, 1])
+    })
+
+    it("yields keys when argument is an object", function() {
+        var object = { a: 2, b: 3}
+        expect(keys(object)).toEqual(['a', 'b'])
+    })
+})
+
+describe("values", function() {
+  
+    beforeEach(LambdaScript.install)
+
+    it("yields array values when argument is an array", function() {
+        expect(values(["a", "b"])).toEqual(["a", "b"])
+    })
+
+    it("yields object values when argument is an object", function() {
+        var object = { a: 2, b: 3}
+        expect(values(object)).toEqual([2, 3])
+    })
+})
+

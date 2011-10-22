@@ -325,38 +325,6 @@ suite.testIterate = function() {
     Assert.that(integers.next(), is(4));			
 };
 
-suite.testKeysWithArray = function() {
-    Assert.that(keys([1, 2, 3]), is([0, 1, 2]));
-};
-
-suite.testKeysWithObject = function() {
-    Assert.that(keys({ a: 0, b: 1 }), is(['a', 'b']));
-};
-
-suite.testKeysWithNull = function() {
-    Assert.that(keys(null), is([null]));
-};
-
-suite.testKeysWithUndefined = function() {
-    Assert.that(keys(undefined), is([undefined]));
-};
-
-suite.testValuesWithArray = function() {
-    Assert.that(values([1, 2, 3]), is([1, 2, 3]));
-};
-
-suite.testValuesWithObject = function() {
-    Assert.that(values({ a: 42, b: -42 }), is([42, -42]));
-};
-
-suite.testValuesWithNull = function() {
-    Assert.that(values(null), is([null]));
-};
-
-suite.testValuesWithUndefined = function() {
-    Assert.that(values(undefined), is([undefined]));
-}; 
-
 suite.testLazyMap = function() {
     Assert.that(toArray(lazymap(range(2), invoke('toString'))), is(["0", "1"]))
 }

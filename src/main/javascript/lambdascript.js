@@ -712,7 +712,7 @@ LambdaScript.toArray = function (iterable) {
 
 LambdaScript.keys = function(object) {
     if (LambdaScript.isArray(object)) {
-        return LambdaScript.array(LambdaScript.range(object.length))
+        return LambdaScript.toArray(LambdaScript.range(0, object.length - 1))
     } 
     
     var res = [];
