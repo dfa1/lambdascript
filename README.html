@@ -12,17 +12,17 @@
             library rather than elegant, beautiful or minimal one.
         </p>
 
-        <p>Version 2 is not backward compatible with version 1.0:
+        <p>Version 2 is not backward compatible with version 1.0:</p>
         <ul>
+            <li>lazy </li>
+            <li>don't build NullIterator when argument is null or undefined</li>
             <li>type(object) == 'array' renamed to isArray()</li>
             <li>toArray now is a function, not a method of Iterable</li>
             <li>consistent naming</li>
             <li>preconditions</li>
             <li>improved unit tests</li>
         </ul>
-        
-        </p>
-        
+
         <h2>Usage</h2>
 
         <pre>
@@ -72,35 +72,35 @@ $ mvn jsdoctk:jsdoc
         </pre>
 
 
-	<h2>See also</h2>
+        <h2>See also</h2>
         <ul>
             <li>
-       	      <a href="http://crockford.com/onjs/2.ppt">On Javascript
-       	      by Crockford</a>
+                <a href="http://crockford.com/onjs/2.ppt">On Javascript
+                    by Crockford</a>
             </li>
             <li>
-              <a href="http://interglacial.com/hoj/hoj.html">High
-              Order JavaScript</a>
+                <a href="http://interglacial.com/hoj/hoj.html">High
+                    Order JavaScript</a>
             </li>
             <li>clojure, in particular
                 <a href="http://richhickey.github.com/clojure/clojure.core-api.html">core API</a>
             </li>
             <li>
-              <a href="http://bitbucket.org/dfa/dollar">Dollar</a>
+                <a href="http://bitbucket.org/dfa/dollar">Dollar</a>
             </li>
             <li>
-              <a href="http://osteele.com/sources/javascript/functional/">Functional Javascript</a>
-	    </li>  	
+                <a href="http://osteele.com/sources/javascript/functional/">Functional Javascript</a>
+            </li>  	
             <li>
-              <a href="http://documentcloud.github.com/underscore">underscore</a></li>
+                <a href="http://documentcloud.github.com/underscore">underscore</a></li>
             <li>
-              <a href="http://github.com/runarorama/LambdaScript/">LambdaScript</a>
+                <a href="http://github.com/runarorama/LambdaScript/">LambdaScript</a>
             </li>
         </ul>
 
         <h2>TODO</h2>
 
-	<p>My personal wishlist:</p>
+        <p>My personal wishlist:</p>
 
         <ul>
             <li>custom parameters names such as lambda("x,y: x + y") or just detect them</li>

@@ -77,7 +77,7 @@ LambdaScript._toIterable = function(iterable) {
         return new LambdaScript._NullIterator();
     } else if (LambdaScript.isArray(iterable)) {
         return new LambdaScript._ArrayIterator(iterable);
-    } else if (iterable.next && iterable.hasNext) { 
+    } else if (iterable.next && iterable.hasNext) { // TODO: add isIterable 
         return iterable;
     } else {
         throw "Not 'iterable' nor 'array'";
@@ -413,12 +413,23 @@ LambdaScript.map = function(iterable, lambda) {
     var fn = LambdaScript._toLambda(lambda);
     var iterator = LambdaScript._toIterable(iterable);
     var result = [];
-    
+
     LambdaScript.each(iterator, function (element) {
         result.push(fn(element));
     });
 
     return result;
+};
+
+LambdaScript.lazymap = function(iterable, lambda) {
+    var mapper = LambdaScript._toLambda(lambda);
+    var lazyMapper = LambdaScript._toIterable(iterable);
+
+    lazyMapper.next = function() {
+        return mapper(iterator.next());
+    };
+
+    return lazyMapper;
 };
 
 /***
@@ -663,8 +674,6 @@ LambdaScript.zip = function() {
 
     while (LambdaScript.every(iterables, LambdaScript.invoke('hasNext'))) {
         var z = LambdaScript.map(iterables, LambdaScript.invoke('next'))
-        println(LambdaScript._toIterable(z))
-        println(z)
         result.push(z);
     }
 

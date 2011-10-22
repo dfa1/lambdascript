@@ -457,3 +457,7 @@ suite.testValuesWithNull = function() {
 suite.testValuesWithUndefined = function() {
     Assert.that(values(undefined), is([undefined]));
 }; 
+
+suite.testLazyMap = function() {
+    Assert.that(toArray(lazymap(range(2), invoke('toString'))), is(["0", "1"]))
+}
