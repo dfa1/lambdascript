@@ -1,3 +1,4 @@
+o   
 /*
  * LambdaScript, http://bitbucket.org/dfa/lambdascript
  * (c) 2009, 2010 Davide Angelocola <davide.angelocola@gmail.com>

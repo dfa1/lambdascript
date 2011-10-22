@@ -56,11 +56,11 @@ LambdaScript.format = function(string) {
  * (see: JavaScript: The Good Parts, Douglas Crockford, pp 106)
  */
 LambdaScript.isArray = function(object) {
-    return  typeof object === 'object'
+    return object !== null 
+    &&  typeof object === 'object'
     && typeof object.length === 'number'
     && !(object.propertyIsEnumerable('length'))
 };
-
 
 LambdaScript.isNull = function(object) {
     return object === null;

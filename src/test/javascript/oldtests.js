@@ -16,70 +16,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-// install in the global namespace
-LambdaScript.install();
-
-// utils
-function println(object) {
-    if (typeof object != 'string') {
-        object = object.toString();
-    }
-
-    java.lang.System.out.println(object);
-}
-
-function print(object) {
-    if (typeof object != 'string') {
-        object = object.toString();
-    }
-
-    java.lang.System.out.print(object);
-}
-
-
-// the test suite: don't change the variable name
-var suite = {};
-
-suite.testIsArrayYieldsTrueOnArray = function() {
-    Assert.that(isArray([]), is(true));
-};
-
-suite.testIsArrayYieldsFalseWhenNotArray = function() {
-    Assert.that(isArray(""), is(false));
-};
-
-suite.testIsNullYieldsTrueWhenNull = function() {
-    Assert.that(isNull(null), is(true));
-};
-
-suite.testIsNullYieldsFalseWhenUndefined = function() {
-    Assert.that(isNull(undefined), is(false));
-};
-
-suite.testIsNullYieldsFalseWhenNotNull = function() {
-    Assert.that(isNull(""), is(false));
-};
-
-suite.testIsUndefYieldsTrueWhenUndefined = function() {
-    Assert.that(isUndef(undefined), is(true));
-};
-
-suite.testIsUndefYieldsFalseWhenNull = function() {
-    Assert.that(isUndef(null), is(false));
-};
-
-suite.testIsUndefYieldsFalseWhenNotUndefined = function() {
-    Assert.that(isUndef(""), is(false));
-};
-
 suite.testConstantly = function() {
     Assert.that(constantly(1)(), is(1));
-};
-
-suite.testLambda = function() {
-    var neg = lambda('-a');
-    Assert.that(neg(42), is(-42));
-    Assert.that(neg(neg(42)), is(42));
 };
 
 suite.testLambda2 = function() {
@@ -372,22 +310,6 @@ suite.testLast = function() {
 
 suite.testRest = function() {
     Assert.that(rest(range(1, 4)), is([2, 3, 4]));
-};
-
-suite.testFormat = function() {
-    Assert.that(format("a{1}c", "b"), is("abc"));
-};
-
-suite.testFormatWithoutArgs = function() {
-    Assert.that(format("abc"), is("abc"));
-};
-
-suite.testFormatWithNull = function() {
-    Assert.that(format(null), is(""));
-};
-
-suite.testFormatWithUndefined = function() {
-    Assert.that(format(undefined), is(""));
 };
 
 suite.testIterateIterator = function() {
