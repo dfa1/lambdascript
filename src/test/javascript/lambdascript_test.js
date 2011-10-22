@@ -33,7 +33,7 @@ describe("format", function() {
     it("refuses undefined ", function() {
         expect(function() { format(undefined)}).toThrow("template must be a string, got undefined") 
     })
-});
+})
 
 describe("isArray", function() {
   
@@ -109,7 +109,7 @@ describe("isUndef", function() {
     it("yields false when argument is a string", function() {
         expect(isUndef("string")).toBeFalsy()
     })  
-});
+})
 
 describe("lambda", function() {
   
@@ -142,7 +142,7 @@ describe("pluck", function() {
   
     beforeEach(LambdaScript.install)
   
-    it("can yields length", function() {
+    it("can yields length of a string", function() {
         var lenghtOf = pluck('length')
         expect(lenghtOf("a")).toBe(1)
     })  
@@ -191,3 +191,17 @@ describe("values", function() {
     })
 })
 
+describe("lazymap", function() {
+  
+    beforeEach(LambdaScript.install)
+
+    it("yields transfomed values according to mapping function", function() {
+        var inc = function(x) { return x + 1 }
+        expect(lazymap([0], inc).next()).toEqual(1)
+    })
+
+    it("yields nothing when called on empty array", function() {
+        var identity = function(x) { return x }
+        expect(lazymap([], identity).hasNext()).toBeFalsy()
+    })
+})

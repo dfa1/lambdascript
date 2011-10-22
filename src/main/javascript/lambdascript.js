@@ -470,15 +470,23 @@ LambdaScript.map = function(iterable, lambda) {
     return result;
 };
 
+LambdaScript._LazyMapper = function(iterator, fn) {
+    this.iterator = iterator;
+    this.fn = fn;
+    
+    this.next = function() {
+        return fn(this.iterator.next());
+    };
+    
+    this.hasNext = function() {
+        return this.iterator.hasNext();
+    }
+};
+
 LambdaScript.lazymap = function(iterable, lambda) {
     var fn = LambdaScript._toFunction(lambda);
-    var lazyMapper = LambdaScript._toIterable(iterable);
-
-    lazyMapper.next = function() {
-        return mapper(iterator.next());
-    };
-
-    return lazyMapper;
+    var iterator = LambdaScript._toIterable(iterable);
+    return new LambdaScript._LazyMapper(iterator, fn)
 };
 
 /***
@@ -524,7 +532,6 @@ LambdaScript.every = function(iterable, lambda) {
     var iterator = LambdaScript._toIterable(iterable);
     var result = true;
 
-    // TODO: abort the inner loop at the first false
     LambdaScript.each(iterator, function(element) {
         if (fn(element) === false) {
             result = false;

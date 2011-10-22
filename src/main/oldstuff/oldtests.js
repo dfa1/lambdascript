@@ -312,7 +312,3 @@ suite.testIterate = function() {
     Assert.that(integers.next(), is(3));			
     Assert.that(integers.next(), is(4));			
 };
-
-suite.testLazyMap = function() {
-    Assert.that(toArray(lazymap(range(2), invoke('toString'))), is(["0", "1"]))
-}
