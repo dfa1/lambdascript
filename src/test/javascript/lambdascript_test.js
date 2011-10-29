@@ -1,6 +1,6 @@
+beforeEach(LambdaScript.install)
+
 describe("format", function() {
-  
-    beforeEach(LambdaScript.install)
   
     it("can format the empty string", function() {
         expect(format("")).toBe("")
@@ -37,8 +37,6 @@ describe("format", function() {
 
 describe("isArray", function() {
   
-    beforeEach(LambdaScript.install)
-  
     it("yields true when argument is array", function() {
         expect(isArray([1])).toBeTruthy()
     })
@@ -58,8 +56,6 @@ describe("isArray", function() {
 
 describe("isNull", function() {
   
-    beforeEach(LambdaScript.install)
-  
     it("yields true when argument is null", function() {
         expect(isNull(null)).toBeTruthy()
     })
@@ -74,8 +70,6 @@ describe("isNull", function() {
 })
 
 describe("isString", function() {
-  
-    beforeEach(LambdaScript.install)
   
     it("yields true when argument is string", function() {
         expect(isString("string")).toBeTruthy()
@@ -96,8 +90,6 @@ describe("isString", function() {
 
 describe("isUndef", function() {
   
-    beforeEach(LambdaScript.install)
-  
     it("yields true when argument is undefined", function() {
         expect(isUndef(undefined)).toBeTruthy()
     })
@@ -112,8 +104,6 @@ describe("isUndef", function() {
 })
 
 describe("lambda", function() {
-  
-    beforeEach(LambdaScript.install)
   
     it("can yields identity", function() {
         var identity = lambda('a')
@@ -140,8 +130,6 @@ describe("lambda", function() {
 
 describe("pluck", function() {
   
-    beforeEach(LambdaScript.install)
-  
     it("can yields length of a string", function() {
         var lenghtOf = pluck('length')
         expect(lenghtOf("a")).toBe(1)
@@ -149,8 +137,6 @@ describe("pluck", function() {
 });
 
 describe("zip", function() {
-  
-    beforeEach(LambdaScript.install)
   
     it("zips iterators of same lenght", function() {
         var zipped = zip([1, 2], [3, 4])
@@ -165,8 +151,6 @@ describe("zip", function() {
 
 describe("keys", function() {
   
-    beforeEach(LambdaScript.install)
-
     it("yields array indexes when argument is an array", function() {
         expect(keys(["a", "b"])).toEqual([0, 1])
     })
@@ -179,8 +163,6 @@ describe("keys", function() {
 
 describe("values", function() {
   
-    beforeEach(LambdaScript.install)
-
     it("yields array values when argument is an array", function() {
         expect(values(["a", "b"])).toEqual(["a", "b"])
     })
@@ -193,8 +175,6 @@ describe("values", function() {
 
 describe("lazymap", function() {
   
-    beforeEach(LambdaScript.install)
-
     it("yields transfomed values according to mapping function", function() {
         var inc = function(x) { return x + 1 }
         expect(lazymap([0], inc).next()).toEqual(1)
@@ -208,8 +188,6 @@ describe("lazymap", function() {
 
 describe("iterate", function() {
   
-    beforeEach(LambdaScript.install)
-
     it("yields f(x) first time", function() {
         var inc = function(x) { return x + 1 }
         expect(iterate(0, inc).next()).toEqual(1)
