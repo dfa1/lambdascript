@@ -57,9 +57,9 @@ LambdaScript.format = function(template) {
  */
 LambdaScript.isArray = function(object) {
     return object !== null 
-    &&  typeof object === 'object'
-    && typeof object.length === 'number'
-    && !(object.propertyIsEnumerable('length'))
+	&& typeof object === 'object'
+	&& typeof object.length === 'number'
+	&& !(object.propertyIsEnumerable('length'))
 };
 
 LambdaScript.isNull = function(object) {
@@ -87,7 +87,7 @@ LambdaScript.isTrue = function(object) {
     return object === true;
 }
 
-LambdaScript.isFalse= function(object) {
+LambdaScript.isFalse = function(object) {
     return object === false;
 }
 
@@ -104,14 +104,16 @@ LambdaScript._toFunction = function(lambdaOrFunction) {
     throw 'Not a string or function';
 };
 
-// Iterable is either an array or has the following methods: 'hasNext', 'next'
-/** @ignore */
+
+/**
+ * An Iterable is either an array or has methods 'hasNext' and 'next' 
+*/
 LambdaScript._toIterable = function(object) {
     if (LambdaScript.isArray(object)) {
         return new LambdaScript._ArrayIterator(object);
     } 
     
-    if (object.next && object.hasNext) { // TODO: add isIterable 
+    if (object.next && object.hasNext) { // TODO: isIterable() 
         return object;
     } 
 
@@ -152,11 +154,11 @@ LambdaScript._ArrayIterator = function(array) {
 /** @Ignore */
 LambdaScript._IterateIterator = function(start, fn) {
     this.fn = fn;
-    this.x = start;
+    this.i = start;
     
     this.next = function() {
-        this.x = this.fn(this.x);
-        return this.x;
+        this.i = this.fn(this.i);
+        return this.i;
     };
 
     this.hasNext = function() {
@@ -208,8 +210,11 @@ LambdaScript.lambda = function(string) {
  * >>> var welcome = LambdaScript.compose(greet, exclaim);
  * >>> welcome('moe');
  * 'hi: moe!'
+ * 
+ * TODO: generalize for n functions/lambdas 
  */
-LambdaScript.compose = function(f, g) { // TODO: generalize for n functions/lambdas
+LambdaScript.compose = function(f, g) {
+
     return function() {
         return f(g.apply(null, arguments));
     };
@@ -217,6 +222,7 @@ LambdaScript.compose = function(f, g) { // TODO: generalize for n functions/lamb
 
 /**
  * Returns a function that always returns k. 
+ *
  * TODO: provide also a ConstantIterator:
  *   take(10, new ConstantIterator(0)) ->  [0, 0, 0 .. 0]
  */
@@ -238,6 +244,7 @@ LambdaScript.not = function(object) {
 
 /**
  * Returns true when any the arguments (lambdas) returns true.
+ *
  * TODO: must returns a function 
  */
 LambdaScript.or = function() {
@@ -257,6 +264,7 @@ LambdaScript.or = function() {
 
 /**
  * Returns true when all the arguments (lambdas) returns true.
+ *
  * TODO: must returns a function 
  */
 LambdaScript.and = function() {
@@ -353,8 +361,8 @@ LambdaScript.iterate = function(start, lambda) {
 };
 
 /**
- * Iterates over 'iterable', yielding each in turn to the function 'lambda'. If
- * the function returns false 'each' immediately returns.
+ * Iterates over 'iterable', yielding each in turn to the function 'lambda'. 
+ * If the function returns false 'each' immediately returns.
  *
  * @function
  * @param {Iterable} iterable an array or a range object
@@ -504,7 +512,7 @@ LambdaScript.every = function(iterable, lambda) {
     var result = true;
 
     LambdaScript.each(iterator, function(element) {
-        if (fn(element) === false) {
+       if (fn(element) === false) {
             result = false;
         }
     });
